@@ -552,7 +552,7 @@ body{font-family:var(--font-body);background:var(--bg);color:var(--text);display
 .tl-beat-has-content{width:6px;height:6px;border-radius:50%;background:#378ADD;display:inline-block;margin-left:4px;vertical-align:middle;}
 .tl-beat-panel{position:absolute;bottom:0;top:38px;width:1px;background:var(--border2);pointer-events:none;z-index:0;}
 .tl-beat-zone-lbl{position:absolute;top:44px;font-family:var(--font-ui);font-size:8px;letter-spacing:0.1em;color:var(--border2);white-space:nowrap;pointer-events:none;z-index:0;text-transform:uppercase;}
-.tl-card{position:absolute;width:130px;background:var(--card);border:0.5px solid var(--border);border-radius:10px;overflow:hidden;cursor:grab;user-select:none;z-index:6;box-shadow:0 1px 4px rgba(0,0,0,0.07);transition:box-shadow 0.1s;}
+.tl-card{touch-action:none;position:absolute;width:130px;background:var(--card);border:0.5px solid var(--border);border-radius:10px;overflow:hidden;cursor:grab;user-select:none;z-index:6;box-shadow:0 1px 4px rgba(0,0,0,0.07);transition:box-shadow 0.1s;}
 .tl-card:active,.tl-card.dragging{cursor:grabbing;box-shadow:0 6px 20px rgba(0,0,0,0.16);z-index:20;}
 .tl-card-portrait{width:100%;height:80px;background:var(--bg2);display:flex;align-items:center;justify-content:center;overflow:hidden;pointer-events:none;}
 .tl-card-portrait img{width:100%;height:100%;object-fit:cover;}
@@ -884,6 +884,185 @@ body{font-family:var(--font-body);background:var(--bg);color:var(--text);display
 
 .proj-screen-body,.sheet-area,.faction-list,.faction-detail-area,.world-list,.world-detail-area,.tp-body,.qn-body,.map-panel,#overviewScrollArea{-webkit-overflow-scrolling:touch;overscroll-behavior:contain;min-height:0;}
 .app-body,.main-view,.content-area,.view-pane,.faction-tab-layout,.world-tab-layout,.world-body{min-height:0;}
+/* ══════════════════════════════════════════════
+   FULL-ENTRY EDITOR (all screen sizes)
+══════════════════════════════════════════════ */
+.fe-bg{display:none;position:fixed;inset:0;z-index:1200;background:rgba(0,0,0,0.5);align-items:center;justify-content:center;padding:24px;}
+.fe-bg.open{display:flex;}
+.fe{background:var(--bg);border:0.5px solid var(--border2);border-radius:14px;width:min(760px,100%);height:min(640px,100%);display:flex;flex-direction:column;overflow:hidden;box-shadow:0 24px 64px rgba(0,0,0,0.35);}
+.fe-head{display:flex;align-items:center;gap:12px;padding:14px 18px;border-bottom:0.5px solid var(--border);flex-shrink:0;}
+.fe-title{flex:1;min-width:0;font-family:var(--font-ui);font-size:11px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--text2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.fe-done{font-family:var(--font-ui);font-size:11px;letter-spacing:0.1em;text-transform:uppercase;background:var(--gold);color:var(--bg);border:none;border-radius:20px;padding:9px 18px;cursor:pointer;flex-shrink:0;}
+.fe-done:hover{background:var(--gold2);}
+#feTa{flex:1;width:100%;border:none;outline:none;resize:none;background:transparent;color:var(--text);font-family:var(--font-body);font-size:18px;line-height:1.7;padding:20px 22px;}
+#feTa::placeholder{color:var(--text3);font-style:italic;}
+.fe.single #feTa{flex:0 0 auto;height:auto;min-height:120px;}
+.fe.single{height:auto;}
+.fe-foot{padding:8px 18px 12px;font-family:var(--font-ui);font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:var(--text3);text-align:right;flex-shrink:0;font-variant-numeric:tabular-nums;}
+.fe-btn{position:fixed;z-index:1150;width:26px;height:26px;border-radius:7px;border:0.5px solid var(--border2);background:var(--bg);color:var(--text2);display:none;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,0.15);padding:0;}
+.fe-btn.show{display:flex;}
+.fe-btn:hover{color:var(--gold);border-color:var(--gold);}
+.fe-btn svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;}
+/* textareas grow with their content instead of hiding it */
+textarea.aw-grow{overflow:hidden;resize:none;}
+/* sheet titles wrap instead of cutting off */
+textarea.char-name-input,textarea.sheet-sub-name{display:block;resize:none;overflow:hidden;font:inherit;}
+textarea.char-name-input{font-family:var(--font-ui);font-size:24px;font-weight:600;line-height:1.25;}
+textarea.sheet-sub-name{font-family:var(--font-body);font-size:16px;line-height:1.4;}
+
+/* ══════════════════════════════════════════════
+   BOTTOM SHEET (phone) / dialog (desktop)
+══════════════════════════════════════════════ */
+.msheet-bg{display:none;position:fixed;inset:0;z-index:1100;background:rgba(0,0,0,0.45);align-items:center;justify-content:center;padding:24px;}
+.msheet-bg.open{display:flex;}
+.msheet{background:var(--bg);border:0.5px solid var(--border2);border-radius:14px;width:min(520px,100%);max-height:min(720px,100%);display:flex;flex-direction:column;overflow:hidden;box-shadow:0 24px 64px rgba(0,0,0,0.35);}
+.msheet-grab{display:none;}
+.msheet-head{display:flex;align-items:center;gap:12px;padding:14px 18px;border-bottom:0.5px solid var(--border);flex-shrink:0;}
+.msheet-title{flex:1;min-width:0;font-family:var(--font-ui);font-size:12px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.msheet-body{overflow-y:auto;padding:16px 18px 22px;display:flex;flex-direction:column;gap:14px;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;}
+.msheet-row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
+.msheet-row>select{flex:1;min-width:0;}
+.m-btn{font-family:var(--font-ui);font-size:10px;letter-spacing:0.1em;text-transform:uppercase;padding:10px 16px;border-radius:22px;border:0.5px solid var(--border2);background:var(--bg);color:var(--text2);cursor:pointer;}
+.m-btn:hover{background:var(--bg2);color:var(--text);}
+.m-btn.primary{background:var(--gold);border-color:var(--gold);color:var(--bg);}
+.m-btn.danger{color:#c0392b;border-color:rgba(192,57,43,0.4);}
+.m-field{display:flex;flex-direction:column;gap:6px;}
+.m-lbl{font-family:var(--font-ui);font-size:9px;letter-spacing:0.14em;text-transform:uppercase;color:var(--text3);}
+.m-input,.m-ta,.m-select{font-family:var(--font-body);font-size:16px;color:var(--text);background:var(--bg2);border:0.5px solid var(--border2);border-radius:10px;padding:10px 12px;outline:none;width:100%;}
+.m-ta{min-height:110px;resize:none;line-height:1.55;}
+.m-input:focus,.m-ta:focus,.m-select:focus{border-color:var(--gold);}
+.m-chips{display:flex;flex-wrap:wrap;gap:6px;}
+.m-chip{display:inline-flex;align-items:center;gap:6px;font-family:var(--font-ui);font-size:10px;letter-spacing:0.06em;padding:6px 6px 6px 11px;border-radius:16px;border:0.5px solid var(--border2);background:var(--bg2);color:var(--text2);}
+.m-chip button{background:none;border:none;color:inherit;cursor:pointer;font-size:11px;padding:2px 4px;}
+
+/* ══════════════════════════════════════════════
+   TIMELINE — PHONE VIEW (vertical story spine)
+══════════════════════════════════════════════ */
+.tlm{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;padding:12px 16px 28px;}
+.tlm-bar{display:flex;gap:8px;position:sticky;top:-12px;z-index:3;background:var(--bg);padding:12px 0 12px;margin-top:-12px;}
+.tlm-bar .m-btn{flex:1;}
+.tlm-spine{position:relative;padding-left:26px;}
+.tlm-spine::before{content:'';position:absolute;left:9px;top:10px;bottom:10px;width:1.5px;background:var(--border2);}
+.tlm-beat{position:relative;margin-bottom:18px;}
+.tlm-node{position:absolute;left:-26px;top:14px;width:20px;height:20px;border-radius:50%;background:var(--bg);border:1.5px solid var(--gold);display:flex;align-items:center;justify-content:center;font-family:var(--font-ui);font-size:8px;color:var(--gold);font-weight:600;}
+.tlm-beat.pre .tlm-node{border-color:var(--border2);color:var(--text3);}
+.tlm-beat-card{background:var(--card);border:0.5px solid var(--border);border-radius:12px;overflow:hidden;}
+.tlm-beat-head{display:flex;align-items:flex-start;gap:10px;padding:12px 14px;cursor:pointer;width:100%;background:none;border:none;text-align:left;color:inherit;}
+.tlm-beat-main{flex:1;min-width:0;}
+.tlm-beat-name{font-family:var(--font-ui);font-size:13px;font-weight:600;letter-spacing:0.04em;color:var(--text);}
+.tlm-beat-name.empty{color:var(--text3);font-style:italic;font-weight:400;}
+.tlm-beat-theme{font-size:14px;line-height:1.5;color:var(--text2);margin-top:4px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;}
+.tlm-chev{color:var(--text3);font-size:16px;line-height:1;padding-top:2px;}
+.tlm-tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px;}
+.tlm-tag{font-family:var(--font-ui);font-size:9px;letter-spacing:0.06em;padding:3px 9px;border-radius:12px;border:0.5px solid var(--border2);color:var(--text2);}
+.tlm-chars{border-top:0.5px solid var(--border);}
+.tlm-char{display:flex;align-items:center;gap:11px;padding:10px 14px;cursor:pointer;width:100%;background:none;border:none;border-bottom:0.5px solid var(--border);text-align:left;color:inherit;}
+.tlm-char:last-child{border-bottom:none;}
+.tlm-char:active{background:var(--bg2);}
+.tlm-av{width:36px;height:36px;border-radius:50%;background:var(--bg3);overflow:hidden;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--text3);font-family:var(--font-ui);}
+.tlm-av img{width:100%;height:100%;object-fit:cover;}
+.tlm-char-main{flex:1;min-width:0;}
+.tlm-char-name{font-family:var(--font-ui);font-size:12px;font-weight:600;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.tlm-char-note{font-size:13px;color:var(--text3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.tlm-empty{padding:2.5rem 1rem;text-align:center;color:var(--text3);font-style:italic;font-size:15px;}
+
+/* ══════════════════════════════════════════════
+   PHONE LAYOUT
+══════════════════════════════════════════════ */
+:root{--nav-h:calc(56px + env(safe-area-inset-bottom,0px));--bar-h:52px;}
+.m-back,.m-title{display:none;}
+@media (max-width:768px){
+  html{-webkit-text-size-adjust:100%;}
+  body{touch-action:manipulation;-webkit-tap-highlight-color:transparent;}
+  /* iPhone zooms into any field smaller than 16px; keep every field at 16px+ */
+  input,textarea,select{font-size:16px !important;}
+  textarea.char-name-input{font-size:22px !important;}
+
+  /* app bar */
+  .topbar{height:var(--bar-h);padding:0 8px 0 4px !important;gap:4px;position:relative;}
+  .topbar-brand,.proj-back-btn,.proj-current-lbl,.tb-bg,.menu-btn{display:none !important;}
+  .m-back{display:flex;align-items:center;gap:2px;background:none;border:none;color:var(--gold);font-family:var(--font-ui);font-size:12px;letter-spacing:0.04em;padding:10px 8px;cursor:pointer;max-width:38%;flex-shrink:0;min-height:44px;}
+  .m-back span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .m-back svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0;}
+  .m-title{display:block;position:absolute;left:50%;transform:translateX(-50%);max-width:46%;font-family:var(--font-ui);font-size:14px;font-weight:600;letter-spacing:0.04em;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:center;pointer-events:none;}
+  .sync-btn{margin-left:auto;min-height:34px;padding:4px 12px;border-radius:18px;}
+
+  /* bottom nav: height includes the home-indicator area instead of squeezing the icons */
+  .bottom-nav{height:var(--nav-h) !important;}
+  .bnav-item{font-size:9px;gap:4px;}
+  .bnav-item svg{width:22px;height:22px;}
+  .sheet-area,.view-pane{padding-bottom:0 !important;}
+  .content-area{padding-bottom:var(--nav-h);}
+  .mobile-more-panel{bottom:var(--nav-h) !important;padding-bottom:16px !important;}
+  .qn-panel{top:var(--bar-h) !important;bottom:var(--nav-h) !important;}
+  .cs-toast{bottom:calc(var(--nav-h) + 14px) !important;max-width:calc(100vw - 32px);}
+  .sidebar{top:var(--bar-h) !important;bottom:var(--nav-h) !important;box-shadow:none !important;}
+  .sidebar.drawer-open{box-shadow:4px 0 24px rgba(0,0,0,0.18) !important;}
+
+  /* comfortable tap targets */
+  .tb-btn,.sb-btn,.pw-btn,.map-tool,.faction-roster-btn,.pw-link-btn,.add-btn,.faction-add-btn,.trait-add-btn,.world-conn-btn,.portrait-btn,.portrait-toggle,.role-pill,.section-toggle,.faction-filter-pill,.world-cat-pill,.proj-card-btn{min-height:36px;font-size:10px !important;padding-left:14px;padding-right:14px;}
+  .role-pill{padding:6px 14px;}
+  .section-header{padding:12px 0 12px 2px;}
+  .section-toggle{padding:8px 10px;}
+
+  /* character sheet */
+  .sheet-area{padding:14px 16px 32px !important;}
+  #sheetContent{max-width:none !important;margin:0 !important;}
+  .sheet-header{flex-direction:column;gap:14px;}
+  .sheet-header-left{width:100%;}
+  .portrait-panel{order:-1;width:100%;flex-direction:row;align-items:flex-start;flex-wrap:wrap;gap:12px;}
+  .portrait-wrap{width:104px;height:132px;flex-shrink:0;}
+  .portrait-panel .portrait-btn-row{flex-direction:column;width:auto;flex:1;min-width:120px;gap:8px;}
+  .portrait-panel .portrait-notes{flex:1 1 100%;}
+  .role-row{gap:8px;}
+  .field-grid,.two-col,.three-col{gap:12px !important;}
+  .sheet{padding:0 !important;max-width:none !important;}
+  .likes-grid{grid-template-columns:1fr !important;gap:16px !important;}
+  #overviewArea{padding:0 !important;}
+  .sync-btn{border-radius:18px !important;}
+
+  /* list → detail navigation (Factions, World, Powers) */
+  .faction-tab-layout,.world-body{flex-direction:column !important;}
+  .faction-sidebar,.world-sidebar,.pw-sidebar{width:100% !important;max-height:none !important;flex:1;border-right:none !important;border-bottom:none !important;}
+  .faction-tab-layout:not(.m-detail) .faction-detail-area,.world-tab-layout:not(.m-detail) .world-detail-area{display:none !important;}
+  .faction-tab-layout.m-detail .faction-sidebar,.world-tab-layout.m-detail .world-sidebar,.world-tab-layout.m-detail .world-subnav{display:none !important;}
+  .faction-tab-layout.m-detail .faction-detail-area,.world-tab-layout.m-detail .world-detail-area{flex:1;}
+  .faction-list-item,.pw-item,.world-list-item{padding:14px 16px;min-height:56px;}
+  .faction-list-name,.pw-item-name,.world-list-name{font-size:13px;}
+  .world-list-cat,.pw-item-cat{font-size:11px;}
+  .faction-sidebar-head,.world-sidebar-head{padding:12px 16px;}
+  .world-subnav{justify-content:stretch;padding:0 !important;}
+  .world-subnav-btn{flex:1;padding:14px 4px;font-size:10px;}
+  .faction-sidebar-footer,.world-sidebar-footer{padding:12px 16px calc(12px);}
+  .faction-detail-area,.world-detail-area:not(.map-mode){padding:16px 16px 40px !important;}
+  .faction-two-col,.world-two-col{grid-template-columns:1fr !important;}
+  .faction-name-inp,.world-name-inp{font-size:22px !important;}
+
+  /* cast list as its own screen */
+  body.m-tab-sheets.m-sheets-list .sidebar{transform:none !important;width:100% !important;box-shadow:none !important;border-right:none;z-index:150;}
+  body.m-tab-sheets.m-sheets-list .sidebar-overlay{display:none !important;}
+  .tree .sheet-item,.tree .folder-header{min-height:48px;}
+
+  /* dialogs become bottom sheets */
+  .modal-overlay,.proj-modal-overlay,.acct-modal-bg,.msheet-bg,.fe-bg{align-items:flex-end !important;padding:0 !important;}
+  .modal,.proj-modal,.acct-modal,.msheet{width:100% !important;max-width:none !important;border-radius:18px 18px 0 0 !important;border-bottom:none;padding-bottom:calc(18px + env(safe-area-inset-bottom,0px)) !important;max-height:88dvh;animation:mSheetUp 0.22s ease-out;}
+  .msheet{padding-bottom:env(safe-area-inset-bottom,0px) !important;}
+  .msheet-grab{display:block;width:38px;height:5px;border-radius:3px;background:var(--border2);margin:8px auto 0;flex-shrink:0;}
+  .fe{width:100%;height:100%;max-height:none;border-radius:0;border:none;padding-top:env(safe-area-inset-top,0px);animation:mSheetUp 0.22s ease-out;}
+  .fe.single{height:auto;border-radius:18px 18px 0 0;}
+  #feTa{font-size:18px !important;padding:16px;}
+  .fe-btn{display:none !important;}
+
+  /* projects screen */
+  .proj-screen-head{padding:calc(20px + env(safe-area-inset-top,0px)) 16px 0 !important;}
+  .proj-screen-body{padding:16px 16px calc(32px + env(safe-area-inset-bottom,0px)) !important;}
+  .proj-screen-title{font-size:28px !important;}
+  .proj-card{padding:1.1rem 1.1rem 1rem;}
+  .proj-card-actions{flex-wrap:wrap;}
+}
+@keyframes mSheetUp{from{transform:translateY(40px);opacity:0.6;}to{transform:none;opacity:1;}}
+@media (prefers-reduced-motion:reduce){.modal,.proj-modal,.acct-modal,.msheet,.fe{animation:none !important;}}
+
 /* elements toggled with the hidden attribute must stay hidden even when a class sets display */
 [hidden]{display:none !important;}
 /* ── MAPS ── */
@@ -1077,12 +1256,12 @@ body{font-family:var(--font-body);background:var(--bg);color:var(--text);display
 .acct-code-row input{flex:1;}
 </style>
 </head>
-<body>
+<body class="m-tab-sheets">
 
 <!-- PROJECT SCREEN -->
 <div class="proj-screen" id="projScreen"><!-- visible by default -->
   <div class="proj-screen-head">
-    <div class="proj-screen-brand" style="font-family:var(--font-brand);font-size:22px;font-weight:700;letter-spacing:0.02em;color:var(--text);">Arc<span style="color:var(--gold,#b8923a);">Wright</span> <span style="font-family:var(--font-ui);font-size:10px;font-weight:300;letter-spacing:0.14em;opacity:0.5;vertical-align:middle;">v111</span></div>
+    <div class="proj-screen-brand" style="font-family:var(--font-brand);font-size:22px;font-weight:700;letter-spacing:0.02em;color:var(--text);">Arc<span style="color:var(--gold,#b8923a);">Wright</span> <span style="font-family:var(--font-ui);font-size:10px;font-weight:300;letter-spacing:0.14em;opacity:0.5;vertical-align:middle;">v112</span></div>
     <div class="proj-screen-title">Your Projects</div>
     <p class="proj-screen-sub">Each project is its own world — characters, factions, locations, lore, and story. Select one to open it.</p>
     <div class="proj-screen-divider"></div>
@@ -1117,7 +1296,7 @@ body{font-family:var(--font-body);background:var(--bg);color:var(--text);display
   <button class="onboard-x" onclick="dismissOnboard()">Skip</button>
   <div class="onboard-card">
     <div class="onboard-wordmark">Arc<span class="ow-gold">Wright</span></div>
-    <div class="onboard-wordmark-sub">World-building studio for writers &amp; game masters &nbsp;·&nbsp; v111</div>
+    <div class="onboard-wordmark-sub">World-building studio for writers &amp; game masters &nbsp;·&nbsp; v112</div>
     <div class="onboard-rule"><span class="onboard-rule-glyph">✦ ✦ ✦</span></div>
     <div class="onboard-title">Build worlds.<br/><em>Write them.</em></div>
     <div class="onboard-body">Every character, faction, power, map, and story beat in one place. Works offline, installs to your phone, and syncs across your devices when you sign in.</div>
@@ -1221,12 +1400,14 @@ body{font-family:var(--font-body);background:var(--bg);color:var(--text);display
 
 <!-- TOPBAR -->
 <div class="topbar">
+  <button class="m-back" id="mBack" onclick="mBack()" aria-label="Back"><svg viewBox="0 0 24 24"><polyline points="15 5 8 12 15 19"/></svg><span id="mBackLbl">Worlds</span></button>
+  <div class="m-title" id="mTitle"></div>
   <button class="menu-btn" id="menuBtn" onclick="toggleDrawer()" aria-label="Toggle character list"><svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
-  <div class="topbar-brand">Arc<span class="brand-gold">Wright</span> <span class="topbar-ver">v111</span></div>
+  <div class="topbar-brand">Arc<span class="brand-gold">Wright</span> <span class="topbar-ver">v112</span></div>
   <button class="proj-back-btn" onclick="openProjectScreen()" title="Back to projects">◂ Projects</button>
   <span class="proj-current-lbl" id="projCurrentLbl"></span>
   <div class="tab-div"></div>
-  <div style="display:flex;align-items:center;gap:6px;">
+  <div class="tb-bg" style="display:flex;align-items:center;gap:6px;">
     <span style="font-family:var(--font-ui);font-size:9px;letter-spacing:0.1em;color:var(--text3);">BG</span>
     <div class="bg-swatch" id="bgSwatch" onclick="openBgPicker(event)" title="Page background"></div>
   </div>
@@ -2067,6 +2248,345 @@ renderWorldDetail=function(){
   if(currentWorldSection==='locations'&&currentWorldId){var a=document.getElementById('worldDetailArea');if(a)a.insertAdjacentHTML('beforeend',mapBacklinksHTML(currentWorldId));}
 };
 
+/* ══════════════════════════════════════════════════════
+   AUTO-GROWING TEXTAREAS
+   Long entries show in full instead of being cut off at a fixed height.
+══════════════════════════════════════════════════════ */
+var GROW_SKIP='#qnScratch,#feTa,.qn-add-input,.qn-textarea,.m-ta,#acctModalBg textarea';
+function autoGrow(ta){
+  if(!ta||ta.tagName!=='TEXTAREA'||ta.matches(GROW_SKIP)||!ta.offsetParent)return;
+  ta.classList.add('aw-grow');
+  ta.style.height='auto';
+  ta.style.height=(ta.scrollHeight+2)+'px';
+}
+function autoGrowAll(root){(root||document).querySelectorAll('textarea').forEach(autoGrow);}
+var _growQ=false;
+function queueGrow(){if(_growQ)return;_growQ=true;requestAnimationFrame(function(){_growQ=false;autoGrowAll();});}
+document.addEventListener('input',function(e){if(e.target.tagName==='TEXTAREA')autoGrow(e.target);},true);
+new MutationObserver(function(muts){for(var i=0;i<muts.length;i++){if(muts[i].addedNodes.length){queueGrow();return;}}}).observe(document.documentElement,{childList:true,subtree:true});
+window.addEventListener('resize',queueGrow);
+// sheet titles: Enter finishes instead of adding a line
+document.addEventListener('keydown',function(e){if(e.key==='Enter'&&e.target.matches&&e.target.matches('textarea.char-name-input,textarea.sheet-sub-name')){e.preventDefault();e.target.blur();}},true);
+
+/* ══════════════════════════════════════════════════════
+   FULL-ENTRY EDITOR
+   Any text field can open in a large editor so the whole entry is readable.
+   Desktop: the ⤢ button on a focused or hovered field. Phone: tap a long field.
+══════════════════════════════════════════════════════ */
+var FE_SCOPE='#sheetContent,#factionDetailArea,#worldDetailArea,#powerDetailArea,#mapPanel,#overviewContent,#mSheetBody,#qnPanel .qn-add-row';
+var feTarget=null,_feHover=null,_feHideT=null;
+function feEligible(el){
+  if(!el||!el.matches)return false;
+  var ok=el.tagName==='TEXTAREA'||(el.tagName==='INPUT'&&(!el.getAttribute('type')||el.type==='text'||el.type==='search'));
+  if(!ok||el.readOnly||el.disabled||el.id==='feTa')return false;
+  if(!el.closest(FE_SCOPE))return false;
+  if(el.matches('#factionNewName,.world-search,#powerSearchInp,#mapNameInp'))return false;
+  return true;
+}
+function feLabel(el){
+  var w=el.closest('.field,.faction-field,.world-field,.tension-card,.arc-block,.m-field,.portrait-panel');
+  var l=w&&w.querySelector('.field-lbl,.faction-field-lbl,.world-field-lbl,.tc-lbl,.m-lbl');
+  var t=l&&l.textContent.trim();
+  if(!t&&el.id==='f-sheetname')t='Sheet title';
+  if(!t&&el.id==='f-name')t='Character name';
+  if(!t&&el.id==='portraitNotes')t='Visual notes';
+  return t||el.getAttribute('aria-label')||(el.placeholder||'').replace(/^e\.g\.\s*/i,'').slice(0,60)||'Edit';
+}
+function feOpen(el){
+  feTarget=el;feHideBtn();
+  var single=el.tagName==='INPUT'||el.matches('textarea.char-name-input,textarea.sheet-sub-name');
+  var box=document.querySelector('#feBg .fe');box.classList.toggle('single',single);
+  document.getElementById('feTitle').textContent=feLabel(el);
+  var ta=document.getElementById('feTa');ta.value=el.value;ta.placeholder=el.placeholder||'';
+  feCount();
+  document.getElementById('feBg').classList.add('open');
+  ta.focus();try{ta.setSelectionRange(ta.value.length,ta.value.length);}catch(e){}
+  ta.scrollTop=0;
+}
+function feCount(){var v=document.getElementById('feTa').value.trim();var n=v?v.split(/\s+/).length:0;document.getElementById('feCount').textContent=n+' word'+(n===1?'':'s');}
+function feSync(){
+  if(!feTarget)return;var v=document.getElementById('feTa').value;
+  if(feTarget.tagName==='INPUT'||feTarget.matches('textarea.char-name-input,textarea.sheet-sub-name'))v=v.replace(/\s*\n+\s*/g,' ');
+  if(feTarget.value===v)return;
+  feTarget.value=v;
+  feTarget.dispatchEvent(new Event('input',{bubbles:true}));
+  autoGrow(feTarget);
+}
+function feClose(){
+  if(!feTarget){document.getElementById('feBg').classList.remove('open');return;}
+  feSync();feTarget.dispatchEvent(new Event('change',{bubbles:true}));
+  document.getElementById('feBg').classList.remove('open');feTarget=null;
+}
+document.addEventListener('keydown',function(e){
+  if(!document.getElementById('feBg').classList.contains('open'))return;
+  if(e.key==='Escape'){e.preventDefault();feClose();}
+  if(e.key==='Enter'&&document.querySelector('#feBg .fe.single')&&!e.shiftKey){e.preventDefault();feClose();}
+});
+/* desktop: expand button */
+function feBtn(){return document.getElementById('feBtn');}
+function feShowBtn(el){
+  if(isPhone()||!feEligible(el))return;
+  clearTimeout(_feHideT);_feHover=el;
+  var r=el.getBoundingClientRect(),b=feBtn();if(!r.width)return;
+  b.style.left=Math.round(r.right-30)+'px';b.style.top=Math.round(r.top+(el.tagName==='INPUT'?Math.max(0,(r.height-26)/2):4))+'px';
+  b.classList.add('show');
+}
+function feHideBtn(){var b=feBtn();if(b)b.classList.remove('show');_feHover=null;}
+document.addEventListener('focusin',function(e){if(feEligible(e.target))feShowBtn(e.target);});
+document.addEventListener('focusout',function(e){if(e.target===_feHover)_feHideT=setTimeout(feHideBtn,180);});
+document.addEventListener('mouseover',function(e){
+  if(isPhone())return;
+  if(e.target.closest&&e.target.closest('#feBtn')){clearTimeout(_feHideT);return;}
+  if(feEligible(e.target))feShowBtn(e.target);
+  else if(_feHover&&document.activeElement!==_feHover){clearTimeout(_feHideT);_feHideT=setTimeout(feHideBtn,250);}
+});
+document.addEventListener('scroll',function(){if(_feHover&&document.activeElement===_feHover)feShowBtn(_feHover);else feHideBtn();},true);
+/* phone: tapping a textarea (or a field whose text doesn't fit) opens the editor */
+var _feTouch=null;
+document.addEventListener('touchstart',function(e){var t=e.touches[0];_feTouch={x:t.clientX,y:t.clientY,el:e.target};},{passive:true,capture:true});
+document.addEventListener('touchend',function(e){
+  if(!_feTouch||!isPhone())return;var t=e.changedTouches[0],s=_feTouch;_feTouch=null;
+  if(Math.hypot(t.clientX-s.x,t.clientY-s.y)>8)return;
+  var el=s.el;if(!feEligible(el)||document.activeElement===el)return;
+  var long=el.tagName==='TEXTAREA'||el.scrollWidth>el.clientWidth+2;
+  if(!long)return;
+  e.preventDefault();feOpen(el);
+},{capture:true});
+
+/* ══════════════════════════════════════════════════════
+   PHONE NAVIGATION
+   Tabs show a list first; tapping an item opens it full screen with a back button.
+══════════════════════════════════════════════════════ */
+var _mq=window.matchMedia('(max-width: 768px)');
+function isPhone(){return _mq.matches;}
+function mTab(){var p=document.querySelector('.view-pane.active');return p?p.id.replace('pane-',''):'sheets';}
+function mLayout(t){
+  if(t==='factions')return document.querySelector('#pane-factions .faction-tab-layout');
+  if(t==='powers')return document.querySelector('#pane-powers .faction-tab-layout');
+  if(t==='world')return document.querySelector('#pane-world .world-tab-layout');
+  return null;
+}
+function mInDetail(t){t=t||mTab();if(t==='sheets')return!document.body.classList.contains('m-sheets-list')&&!!currentSid;var l=mLayout(t);return!!(l&&l.classList.contains('m-detail'));}
+function mOpenDetail(t){
+  if(!isPhone())return;t=t||mTab();
+  if(t==='sheets'){document.body.classList.remove('m-sheets-list');var sa=document.getElementById('sheetArea');if(sa)sa.scrollTop=0;}
+  else{var l=mLayout(t);if(l){l.classList.add('m-detail');var a=l.querySelector('.faction-detail-area,.world-detail-area');if(a)a.scrollTop=0;}}
+  queueGrow();mUpdateBar();
+}
+function mShowList(t){
+  t=t||mTab();
+  if(t==='sheets'){document.body.classList.add('m-sheets-list');}
+  else{var l=mLayout(t);if(l)l.classList.remove('m-detail');}
+  mUpdateBar();
+}
+function mBack(){
+  var t=mTab();
+  if(t!=='overview'&&mInDetail(t)){collectSheet();persist();mShowList(t);if(t==='sheets')renderTree();if(t==='powers')renderPowerList();if(t==='factions')renderFactionSidebar();return;}
+  openProjectScreen();
+}
+var M_TAB_TITLES={sheets:'Cast',overview:'Story',factions:'Factions',world:'World',powers:'Powers'};
+function mUpdateBar(){
+  var title=document.getElementById('mTitle'),back=document.getElementById('mBackLbl');if(!title)return;
+  var t=mTab(),detail=mInDetail(t),txt=M_TAB_TITLES[t]||'',projName=(document.getElementById('projCurrentLbl')||{}).textContent||'';
+  if(detail){
+    if(t==='sheets'){var sh=getCurrentSheet();txt=sh?(sh.charName||sh.name||'Character'):'Character';}
+    else if(t==='factions'){var f=data.factions[currentFactionId];txt=f?(f.name||'Faction'):'Faction';}
+    else if(t==='powers'){var p=getPowers()[currentPowerId];txt=p?powerName(p):'Power';}
+    else if(t==='world'){
+      if(currentWorldSection==='maps'){var m=getMaps()[currentMapId];txt=m?mapName(m):'Map';}
+      else{var w=getWorldStore()[currentWorldSection];var e=w&&w[currentWorldId];txt=e?(e.name||'Untitled'):'World';}
+    }
+    back.textContent=M_TAB_TITLES[t]==='World'?(currentWorldSection==='maps'?'Maps':currentWorldSection==='lore'?'Lore':'Locations'):M_TAB_TITLES[t];
+  } else {
+    if(t==='sheets')txt=projName||'Cast';
+    back.textContent='Worlds';
+  }
+  title.textContent=txt;
+  document.body.classList.toggle('m-detail-open',detail);
+}
+// keep the bar title in step with renames
+document.addEventListener('input',function(e){if(isPhone()&&e.target.matches&&e.target.matches('#f-sheetname,#f-name,#factionNameInp,#worldNameInp,#pwNameInp,#mapNameInp'))mUpdateBar();});
+
+/* hook the existing navigation so phones get list → detail */
+(function(){
+  var _switchTab=switchTab;
+  switchTab=function(tab){
+    var prev=mTab();
+    _switchTab(tab);
+    ['sheets','overview','factions','world','powers'].forEach(function(x){document.body.classList.toggle('m-tab-'+x,x===tab);});
+    if(isPhone()&&prev===tab&&tab!=='overview')mShowList(tab); // tapping the tab you're on goes back to its list
+    queueGrow();mUpdateBar();
+  };
+  var _loadSheet=loadSheet;
+  loadSheet=function(fid,sid){_loadSheet(fid,sid);if(isPhone()&&!window._mQuiet)mOpenDetail('sheets');mUpdateBar();queueGrow();};
+  var _openProject=openProject;
+  openProject=function(id){window._mQuiet=true;try{_openProject(id);}finally{window._mQuiet=false;}if(isPhone()){Object.keys(data.folders||{}).forEach(function(f){openFolders.add(f);});renderTree();}document.body.classList.add('m-tab-sheets');mShowList('sheets');['factions','world','powers'].forEach(function(t){var l=mLayout(t);if(l)l.classList.remove('m-detail');});mUpdateBar();};
+  var _openPower=openPower;openPower=function(id){_openPower(id);mOpenDetail('powers');};
+  var _newPower=newPower;newPower=function(k,p){_newPower(k,p);mOpenDetail('powers');};
+  var _openMap=openMap;openMap=function(id,pin){_openMap(id,pin);mOpenDetail('world');};
+  var _newMap=newMap;newMap=function(){_newMap();mOpenDetail('world');};
+  var _openLocation=openLocation;openLocation=function(id){_openLocation(id);mOpenDetail('world');};
+  var _addWorldEntry=addWorldEntry;addWorldEntry=function(){_addWorldEntry();mOpenDetail('world');};
+  var _switchWorldSection=switchWorldSection;switchWorldSection=function(s){_switchWorldSection(s);mShowList('world');};
+  var _createNewFaction=createNewFaction;createNewFaction=function(){_createNewFaction();mOpenDetail('factions');};
+  var _toggleSection=toggleSection;toggleSection=function(id){_toggleSection(id);queueGrow();};
+  if(typeof toggleAbDesc==='function'){var _tad=toggleAbDesc;toggleAbDesc=function(b){_tad(b);queueGrow();};}
+  // list taps open the detail screen
+  function onListTap(listId,itemSel,tab){
+    document.addEventListener('click',function(e){
+      if(!isPhone())return;var it=e.target.closest&&e.target.closest('#'+listId+' '+itemSel);
+      if(!it||e.target.closest('.faction-list-arrow'))return;
+      setTimeout(function(){mOpenDetail(tab);},0);
+    },true); // capture: the item's own handler re-renders the list
+  }
+  onListTap('factionList','.faction-list-item','factions');
+  onListTap('worldList','.world-list-item','world');
+  onListTap('powerList','.pw-item','powers');
+  _mq.addEventListener('change',function(){
+    if(mTab()==='overview')renderOverview();
+    if(!isPhone()){document.body.classList.remove('m-sheets-list');['factions','world','powers'].forEach(function(t){var l=mLayout(t);if(l)l.classList.remove('m-detail');});}
+    else mShowList(mTab());
+    queueGrow();
+  });
+})();
+
+/* ══════════════════════════════════════════════════════
+   BOTTOM SHEET
+══════════════════════════════════════════════════════ */
+var _mSheetClose=null;
+function mSheet(title,html,onClose){
+  document.getElementById('mSheetTitle').textContent=title;
+  document.getElementById('mSheetBody').innerHTML=html;
+  _mSheetClose=onClose||null;
+  document.getElementById('mSheetBg').classList.add('open');
+  queueGrow();
+}
+function mSheetClose(){
+  document.getElementById('mSheetBg').classList.remove('open');
+  var cb=_mSheetClose;_mSheetClose=null;if(cb)cb();
+}
+
+/* ══════════════════════════════════════════════════════
+   TIMELINE — PHONE VIEW
+   Same data as the desktop canvas: beats ordered by x, and each character card
+   belongs to the beat whose span its x falls in. Moving things here rewrites x.
+══════════════════════════════════════════════════════ */
+function tlSortedBeats(){ensureTimeline();return data.timeline.beats.slice().sort(function(a,b){return(a.x||0)-(b.x||0);});}
+function tlBeatOfCard(c,beats){var owner=null;beats.forEach(function(b){if((c.x||0)>=(b.x||0))owner=b;});return owner;}
+function tlSheetOf(c){return c.fid&&c.sid&&data.folders[c.fid]&&data.folders[c.fid].sheets?data.folders[c.fid].sheets[c.sid]:null;}
+function tlCardName(c){var s=tlSheetOf(c);return c.label||(s?(s.charName||s.name||'?'):'Character');}
+function tlTagLabel(tag){
+  var p=tag.split('::');
+  if(p[0]==='char'){var s=data.folders[p[1]]&&data.folders[p[1]].sheets&&data.folders[p[1]].sheets[p[2]];return s?(s.charName||s.name||'?'):'?';}
+  if(p[0]==='faction'){var f=data.factions[p[1]];return f?f.name:'?';}
+  if(p[0]==='location'){var l=data.world&&data.world.locations&&data.world.locations[p[1]];return l?l.name:'?';}
+  return '?';
+}
+function renderTimelineMobile(container){
+  ensureTimeline();
+  var beats=tlSortedBeats(),cards=data.timeline.cards;
+  var groups=beats.map(function(b){return{beat:b,cards:[]};}),pre=[];
+  cards.forEach(function(c){var b=tlBeatOfCard(c,beats);if(!b){pre.push(c);return;}groups[beats.indexOf(b)].cards.push(c);});
+  groups.forEach(function(g){g.cards.sort(function(a,b){return(a.y||0)-(b.y||0);});});
+  var charRow=function(c){var s=tlSheetOf(c);var nm=tlCardName(c);
+    return '<button class="tlm-char" onclick="tlmCard(\''+c.id+'\')"><span class="tlm-av">'+(s&&s.portraitImg?'<img src="'+s.portraitImg+'" alt=""/>':esc(getInitials(nm)))+'</span><span class="tlm-char-main"><span class="tlm-char-name" style="display:block">'+esc(nm)+'</span><span class="tlm-char-note" style="display:block">'+esc(c.notes||(s&&s.role)||'Add notes…')+'</span></span><span class="tlm-chev">›</span></button>';};
+  var html='<div class="tlm"><div class="tlm-bar"><button class="m-btn primary" onclick="tlmAddBeat()">+ Story beat</button><button class="m-btn" onclick="tlmAddChar()">+ Character</button></div>';
+  if(!beats.length&&!cards.length)html+='<div class="tlm-empty">Add your first story beat, then place characters under it.</div>';
+  html+='<div class="tlm-spine">';
+  if(pre.length)html+='<div class="tlm-beat pre"><span class="tlm-node">·</span><div class="tlm-beat-card"><div class="tlm-beat-head" style="cursor:default"><span class="tlm-beat-main"><span class="tlm-beat-name empty">Before the first beat</span></span></div><div class="tlm-chars">'+pre.map(charRow).join('')+'</div></div></div>';
+  groups.forEach(function(g,i){
+    var b=g.beat,tags=(b.tags||[]);
+    html+='<div class="tlm-beat"><span class="tlm-node">'+(ARC_NUMS[i]||i+1)+'</span><div class="tlm-beat-card">'+
+      '<button class="tlm-beat-head" onclick="tlmBeat(\''+b.id+'\')"><span class="tlm-beat-main"><span class="tlm-beat-name'+(b.name?'':' empty')+'" style="display:block">'+esc(b.name||'Untitled beat')+'</span>'+
+      (b.theme?'<span class="tlm-beat-theme">'+esc(b.theme)+'</span>':'')+
+      (tags.length?'<span class="tlm-tags">'+tags.map(function(t){return'<span class="tlm-tag">'+esc(tlTagLabel(t))+'</span>';}).join('')+'</span>':'')+
+      '</span><span class="tlm-chev">›</span></button>'+
+      (g.cards.length?'<div class="tlm-chars">'+g.cards.map(charRow).join('')+'</div>':'')+'</div></div>';
+  });
+  html+='</div></div>';
+  container.innerHTML=html;
+}
+function tlmRefresh(){if(mTab()==='overview')renderOverview();}
+// Re-space beats evenly in a new order; each card moves with its beat
+function tlmReorder(newOrder){
+  var beats=tlSortedBeats(),old={};beats.forEach(function(b){old[b.id]=b.x||0;});
+  var owner={};data.timeline.cards.forEach(function(c){var b=tlBeatOfCard(c,beats);owner[c.id]=b?b.id:null;});
+  newOrder.forEach(function(b,i){b.x=80+i*460;});
+  data.timeline.cards.forEach(function(c){var bid=owner[c.id];if(!bid)return;var b=data.timeline.beats.find(function(x){return x.id===bid;});c.x=(c.x||0)-old[bid]+b.x;});
+  persist();
+}
+function tlmAddBeat(){
+  ensureTimeline();var mx=data.timeline.beats.reduce(function(m,b){return Math.max(m,b.x||0);},-380);
+  var b={id:genId(),name:'',x:mx+460,theme:'',tags:[]};data.timeline.beats.push(b);persist();tlmRefresh();tlmBeat(b.id,true);
+}
+function tlmAddChar(){
+  var list=getAllSheetsFlat();if(!list.length){showToast('Create a character first.');return;}
+  var beats=tlSortedBeats();
+  mSheet('Add a character',
+    '<div class="m-field"><span class="m-lbl">Character</span><select class="m-select" id="tlmPickChar">'+list.map(function(s){return'<option value="'+s.fid+'::'+s.sid+'">'+esc(s.sheet.charName||s.sheet.name||'Unnamed')+' — '+esc(s.folderName)+'</option>';}).join('')+'</select></div>'+
+    '<div class="m-field"><span class="m-lbl">Story beat</span><select class="m-select" id="tlmPickBeat">'+(beats.length?beats.map(function(b,i){return'<option value="'+b.id+'"'+(i===beats.length-1?' selected':'')+'>'+(ARC_NUMS[i]||i+1)+'. '+esc(b.name||'Untitled beat')+'</option>';}).join(''):'<option value="">No beats yet</option>')+'</select></div>'+
+    '<button class="m-btn primary" onclick="tlmAddCharGo()">Add to timeline</button>');
+}
+function tlmAddCharGo(){
+  var k=document.getElementById('tlmPickChar').value.split('::'),bid=document.getElementById('tlmPickBeat').value;
+  var b=data.timeline.beats.find(function(x){return x.id===bid;});
+  var inBeat=data.timeline.cards.filter(function(c){return b&&tlBeatOfCard(c,tlSortedBeats())===b;}).length;
+  data.timeline.cards.push({id:genId(),fid:k[0],sid:k[1],x:(b?b.x:80)+40+(inBeat%2)*150,y:100+inBeat*200,notes:'',label:''});
+  persist();mSheetClose();tlmRefresh();
+}
+function tlmBeat(id,isNew){
+  var b=data.timeline.beats.find(function(x){return x.id===id;});if(!b)return;
+  var beats=tlSortedBeats(),i=beats.indexOf(b);
+  var tags=b.tags||[];
+  var opts='<option value="">Tag a character, faction or location…</option>';
+  var chars=getAllSheetsFlat().filter(function(s){return tags.indexOf('char::'+s.fid+'::'+s.sid)===-1;});
+  if(chars.length)opts+='<optgroup label="Characters">'+chars.map(function(s){return'<option value="char::'+s.fid+'::'+s.sid+'">'+esc(s.sheet.charName||s.sheet.name||'?')+'</option>';}).join('')+'</optgroup>';
+  var facs=getFactionList().filter(function(f){return tags.indexOf('faction::'+f.id)===-1;});
+  if(facs.length)opts+='<optgroup label="Factions">'+facs.map(function(f){return'<option value="faction::'+f.id+'">'+esc(f.name)+'</option>';}).join('')+'</optgroup>';
+  var locs=Object.keys((data.world&&data.world.locations)||{}).filter(function(l){return tags.indexOf('location::'+l)===-1;});
+  if(locs.length)opts+='<optgroup label="Locations">'+locs.map(function(l){return'<option value="location::'+l+'">'+esc(data.world.locations[l].name||'?')+'</option>';}).join('')+'</optgroup>';
+  mSheet(isNew?'New story beat':'Story beat '+(ARC_NUMS[i]||i+1),
+    '<div class="m-field"><span class="m-lbl">Beat name</span><input class="m-input" id="tlmBeatName" value="'+esc(b.name||'')+'" placeholder="e.g. The Drowning" oninput="tlmSetBeat(\''+id+'\',\'name\',this.value)"/></div>'+
+    '<div class="m-field"><span class="m-lbl">Theme &amp; notes</span><textarea class="m-ta" placeholder="What is happening thematically at this point in the story?" oninput="tlmSetBeat(\''+id+'\',\'theme\',this.value)">'+esc(b.theme||'')+'</textarea></div>'+
+    '<div class="m-field"><span class="m-lbl">Tagged</span><div class="m-chips">'+(tags.length?tags.map(function(t){return'<span class="m-chip">'+esc(tlTagLabel(t))+'<button onclick="tlmUntag(\''+id+'\',\''+t+'\')" aria-label="Remove tag">✕</button></span>';}).join(''):'<span class="pw-none">Nothing tagged yet.</span>')+'</div>'+
+      '<div class="msheet-row"><select class="m-select" id="tlmTagSel">'+opts+'</select><button class="m-btn" onclick="tlmTag(\''+id+'\')">Tag</button></div></div>'+
+    '<div class="msheet-row"><button class="m-btn" '+(i<=0?'disabled':'')+' onclick="tlmMoveBeat(\''+id+'\',-1)">↑ Earlier</button><button class="m-btn" '+(i>=beats.length-1?'disabled':'')+' onclick="tlmMoveBeat(\''+id+'\',1)">↓ Later</button><span style="flex:1"></span><button class="m-btn danger" id="tlmDelBeat" onclick="tlmDeleteBeat(\''+id+'\')">Delete beat</button></div>',
+    tlmRefresh);
+  if(isNew)setTimeout(function(){var n=document.getElementById('tlmBeatName');if(n)n.focus();},60);
+}
+function tlmSetBeat(id,k,v){var b=data.timeline.beats.find(function(x){return x.id===id;});if(!b)return;b[k]=v;clearTimeout(window._tlmT);window._tlmT=setTimeout(persist,250);}
+function tlmTag(id){var v=document.getElementById('tlmTagSel').value;if(!v)return;var b=data.timeline.beats.find(function(x){return x.id===id;});if(!b.tags)b.tags=[];if(b.tags.indexOf(v)===-1)b.tags.push(v);persist();tlmBeat(id);}
+function tlmUntag(id,t){var b=data.timeline.beats.find(function(x){return x.id===id;});b.tags=(b.tags||[]).filter(function(x){return x!==t;});persist();tlmBeat(id);}
+function tlmMoveBeat(id,dir){
+  var beats=tlSortedBeats(),i=beats.findIndex(function(b){return b.id===id;}),j=i+dir;if(j<0||j>=beats.length)return;
+  var order=beats.slice();var t=order[i];order[i]=order[j];order[j]=t;tlmReorder(order);tlmBeat(id);
+}
+var _tlmDelArm=null;
+function tlmDeleteBeat(id){
+  var btn=document.getElementById('tlmDelBeat');
+  if(_tlmDelArm!==id){_tlmDelArm=id;if(btn)btn.textContent='Tap again to delete';setTimeout(function(){_tlmDelArm=null;},3000);return;}
+  _tlmDelArm=null;
+  // characters under it move to the beat before it (or stay put if it was first)
+  var beats=tlSortedBeats(),i=beats.findIndex(function(b){return b.id===id;}),prev=beats[i-1],b=beats[i];
+  data.timeline.cards.forEach(function(c){if(tlBeatOfCard(c,beats)===b&&prev)c.x=prev.x+40+((c.x||0)-b.x)%300;});
+  data.timeline.beats=data.timeline.beats.filter(function(x){return x.id!==id;});
+  persist();mSheetClose();
+}
+function tlmCard(id){
+  var c=data.timeline.cards.find(function(x){return x.id===id;});if(!c)return;
+  var beats=tlSortedBeats(),cur=tlBeatOfCard(c,beats),s=tlSheetOf(c);
+  mSheet(tlCardName(c),
+    (s?'<div class="m-field"><span class="m-lbl">Character</span><div style="font-size:15px;color:var(--text2)">'+esc((s.role?s.role[0].toUpperCase()+s.role.slice(1):'')+(s.wound&&s.wound.want?' · wants: '+s.wound.want:''))+'</div></div>':'')+
+    '<div class="m-field"><span class="m-lbl">Story beat</span><select class="m-select" onchange="tlmMoveCard(\''+id+'\',this.value)">'+beats.map(function(b,i){return'<option value="'+b.id+'"'+(b===cur?' selected':'')+'>'+(ARC_NUMS[i]||i+1)+'. '+esc(b.name||'Untitled beat')+'</option>';}).join('')+'</select></div>'+
+    '<div class="m-field"><span class="m-lbl">Notes at this point in the story</span><textarea class="m-ta" placeholder="Where are they, what do they want right now, what changes?" oninput="tlmSetCard(\''+id+'\',this.value)">'+esc(c.notes||'')+'</textarea></div>'+
+    '<div class="msheet-row">'+(c.fid&&c.sid?'<button class="m-btn" onclick="mSheetClose();goToSheet(\''+c.fid+'\',\''+c.sid+'\')">Open sheet</button>':'')+'<span style="flex:1"></span><button class="m-btn danger" onclick="tlmRemoveCard(\''+id+'\')">Remove from timeline</button></div>',
+    tlmRefresh);
+}
+function tlmSetCard(id,v){var c=data.timeline.cards.find(function(x){return x.id===id;});if(!c)return;c.notes=v;clearTimeout(window._tlmT);window._tlmT=setTimeout(persist,250);}
+function tlmMoveCard(id,bid){var c=data.timeline.cards.find(function(x){return x.id===id;}),b=data.timeline.beats.find(function(x){return x.id===bid;});if(!c||!b)return;c.x=b.x+40;persist();}
+function tlmRemoveCard(id){data.timeline.cards=data.timeline.cards.filter(function(c){return c.id!==id;});persist();mSheetClose();}
+
+
 
 /* ══════════════════════════════════════════════════════
    STATE
@@ -2534,7 +3054,7 @@ function startRenameSheet(fid,sid,e){if(e)e.stopPropagation();const el=document.
 /* ══════════════════════════════════════════════════════
    DELETE
 ══════════════════════════════════════════════════════ */
-function promptDelete(type,fid,sid,e){if(e)e.stopPropagation();const name=type==='folder'?data.folders[fid]?.name:data.folders[fid]?.sheets?.[sid]?.name;document.getElementById('deleteModalTitle').textContent=`Remove ${type}?`;document.getElementById('deleteModalBody').textContent=`"${name||'this item'}" will be permanently deleted. This cannot be undone.`;deleteCallback=()=>{if(type==='folder'){delete data.folders[fid];if(currentFid===fid){currentFid=null;currentSid=null;document.getElementById('emptyState').style.display='flex';document.getElementById('sheetContent').style.display='none';}}else{delete data.folders[fid].sheets[sid];if(currentFid===fid&&currentSid===sid){currentFid=null;currentSid=null;document.getElementById('emptyState').style.display='flex';document.getElementById('sheetContent').style.display='none';}}persist();renderTree();};openModal('deleteModal');}
+function promptDelete(type,fid,sid,e){if(e)e.stopPropagation();const name=type==='folder'?data.folders[fid]?.name:data.folders[fid]?.sheets?.[sid]?.name;document.getElementById('deleteModalTitle').textContent=`Remove ${type}?`;document.getElementById('deleteModalBody').textContent=`"${name||'this item'}" will be permanently deleted. This cannot be undone.`;deleteCallback=()=>{if(type==='folder'){delete data.folders[fid];if(currentFid===fid){currentFid=null;currentSid=null;document.getElementById('emptyState').style.display='flex';document.getElementById('sheetContent').style.display='none';}}else{delete data.folders[fid].sheets[sid];if(currentFid===fid&&currentSid===sid){currentFid=null;currentSid=null;document.getElementById('emptyState').style.display='flex';document.getElementById('sheetContent').style.display='none';}}persist();renderTree();if(typeof mShowList==='function'&&isPhone()&&!currentSid)mShowList('sheets');};openModal('deleteModal');}
 function confirmDelete(){closeModal('deleteModal');if(deleteCallback)deleteCallback();deleteCallback=null;}
 function openModal(id){document.getElementById(id).classList.add('open');}
 function closeModal(id){document.getElementById(id).classList.remove('open');}
@@ -2641,8 +3161,8 @@ function buildSheet(sheet,fid){
       <button class="portrait-toggle" onclick="togglePortrait()">${portraitHidden?'▼ Show portrait':'▲ Hide portrait'}</button>
     </div>
     <div style="font-family:var(--font-ui);font-size:8px;letter-spacing:0.14em;text-transform:uppercase;color:var(--text3);margin-bottom:3px;">Sheet title — e.g. Kai · Pre-Timeskip</div>
-    <input class="char-name-input" id="f-sheetname" value="${esc(sheet.name)}" placeholder="e.g. Protagonist · Pre-Timeskip, Zuko · Book 1..." oninput="onSheetNameInput(this.value)"/>
-    <input class="sheet-sub-name" id="f-name" value="${esc(sheet.charName||'')}" placeholder="Character name..."/>
+    <textarea class="char-name-input" id="f-sheetname" rows="1" placeholder="e.g. Protagonist · Pre-Timeskip, Zuko · Book 1..." oninput="onSheetNameInput(this.value)">${esc(sheet.name)}</textarea>
+    <textarea class="sheet-sub-name" id="f-name" rows="1" placeholder="Character name...">${esc(sheet.charName||'')}</textarea>
     <div class="role-row">${roleHTML}</div>
   </div>
   <div class="portrait-panel${portraitHidden?' hidden':''}" id="portraitPanel">
@@ -2668,8 +3188,6 @@ ${sectionWrap('identity','Identity',`
   <div class="field full"><span class="field-lbl">Name &amp; pronunciation notes</span><input id="f-nameNotes" value="${esc(id.nameNotes||'')}" placeholder="Pronunciation, nicknames, what different characters call them, aliases..."/></div>
 </div>
 <div style="margin-top:14px;">
-  <div class="field-lbl" style="margin-bottom:6px;">Factions &amp; Groups</div>
-  <div id="factionTagsContainer" style="margin-bottom:8px;">${factionTagsHTML}</div>
   <div id="factionControlsRow"></div>
 </div>`,sheet)}
 
@@ -2981,6 +3499,7 @@ function renderOverview(){
   // Story Overview is always timeline — full height
   scrollArea.style.cssText='flex:1;overflow:hidden;display:flex;flex-direction:column;padding:0;';
   content.style.cssText='flex:1;overflow:hidden;display:flex;flex-direction:column;';
+  if(isPhone()){renderTimelineMobile(content);return;}
   renderTimeline(content);
 }
 function getAllSheetsFlat(){
@@ -3226,7 +3745,8 @@ function renderTlBeats(){
     lbl.appendChild(pop);
 
     // drag to reposition
-    grab.onmousedown=function(e){
+    grab.style.touchAction='none';
+    grab.onpointerdown=function(e){
       e.stopPropagation();e.preventDefault();
       closeBeatPopups();
       var startClient=e.clientX;var startX=x;
@@ -3236,8 +3756,8 @@ function renderTlBeats(){
         beat.x=nx;persist();
         lbl.style.left=(nx-6)+'px';line.style.left=nx+'px';zoneLbl.style.left=(nx+8)+'px';
       };
-      var up=function(){document.removeEventListener('mousemove',move);document.removeEventListener('mouseup',up);};
-      document.addEventListener('mousemove',move);document.addEventListener('mouseup',up);
+      var up=function(){document.removeEventListener('pointermove',move);document.removeEventListener('pointerup',up);};
+      document.addEventListener('pointermove',move);document.addEventListener('pointerup',up);
     };
 
     bar.appendChild(lbl);
@@ -3291,7 +3811,8 @@ function buildTlCard(card){
 
 function bindTlDrag(){
   var canvas=document.getElementById('tlCanvas');if(!canvas)return;
-  canvas.addEventListener('mousedown',function(e){
+  if(canvas._tlBound)return;canvas._tlBound=true;
+  canvas.addEventListener('pointerdown',function(e){
     var card=e.target.closest('.tl-card');
     if(!card||e.target.tagName==='BUTTON'||e.target.tagName==='IMG')return;
     e.preventDefault();
@@ -3309,13 +3830,13 @@ function bindTlDrag(){
       card.style.left=nx+'px';card.style.top=ny+'px';
     };
     var up=function(){
-      document.removeEventListener('mousemove',move);document.removeEventListener('mouseup',up);
+      document.removeEventListener('pointermove',move);document.removeEventListener('pointerup',up);
       card.classList.remove('dragging');
       var cd=null;for(var i=0;i<data.timeline.cards.length;i++){if(data.timeline.cards[i].id===tlDragCard){cd=data.timeline.cards[i];break;}}
       if(cd){cd.x=parseInt(card.style.left);cd.y=parseInt(card.style.top);persist();}
       tlDragCard=null;
     };
-    document.addEventListener('mousemove',move);document.addEventListener('mouseup',up);
+    document.addEventListener('pointermove',move);document.addEventListener('pointerup',up);
   });
 }
 
@@ -3345,7 +3866,7 @@ function openTlSheetPicker(){
 }
 function pickSheet(key){closeModal('sheetPickerModal');if(sheetPickerCallback)sheetPickerCallback(key);sheetPickerCallback=null;}
 function removeTlCard(id){ensureTimeline();data.timeline.cards=data.timeline.cards.filter(function(c){return c.id!==id;});persist();var el=document.querySelector('.tl-card[data-card-id="'+id+'"]');if(el)el.remove();}
-function goToSheet(fid,sid){collectSheet();if(!openFolders)openFolders={};openFolders[fid]=true;loadSheet(fid,sid);renderTree();switchTab('sheets');}
+function goToSheet(fid,sid){collectSheet();openFolders.add(fid);loadSheet(fid,sid);renderTree();switchTab('sheets');}
 
 function openTlNotes(e,cardId){
   ensureTimeline();
@@ -4275,8 +4796,8 @@ function openProject(id){
   // Load first sheet if available
   var fids=Object.keys(data.folders||{});
   if(fids.length){
-    if(!openFolders)openFolders={};
-    openFolders[fids[0]]=true;
+    
+    openFolders.add(fids[0]);
     var sids=Object.keys(data.folders[fids[0]].sheets||{});
     if(sids.length)loadSheet(fids[0],sids[0]);
     renderTree();
@@ -4357,6 +4878,7 @@ function deleteProject(id){
     localStorage.removeItem(projKey(id));
     var newIdx=idx.filter(function(p){return p.id!==id;});
     saveIndex(newIdx);
+    if(typeof _onProjectDeleted==='function')_onProjectDeleted(id);
     if(currentProjectId===id){
       currentProjectId=null;
       // If no project open, stay on project screen
@@ -4437,8 +4959,8 @@ if(localStorage.getItem('arcwright-v101-ob'))document.getElementById('onboardOve
 renderTree();renderFactionFilter();
 var _fids=Object.keys(data.folders);
 if(_fids.length){
-  if(!openFolders)openFolders={};
-  openFolders[_fids[0]]=true;
+  
+  openFolders.add(_fids[0]);
   var _sids=Object.keys(data.folders[_fids[0]].sheets||{});
   if(_sids.length)loadSheet(_fids[0],_sids[0]);
   renderTree();
@@ -4500,6 +5022,7 @@ if(_qn)_qn.value=(data.quickNotes&&data.quickNotes.scratch)||'';
     <button class="tb-btn" id="themeBtnMobile" onclick="openThemePicker()">Themes</button>
   </div>
   <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:4px;">
+    <button class="tb-btn" onclick="toggleMobileMenu();openProjectScreen();">All worlds</button>
     <button class="tb-btn" onclick="exportCurrentProject();toggleMobileMenu();">Export project</button>
     <button class="tb-btn" onclick="triggerImport();toggleMobileMenu();">Import</button>
     <button class="tb-btn" onclick="toggleQn();toggleMobileMenu();">QuickNotes</button>
@@ -4510,6 +5033,25 @@ if(_qn)_qn.value=(data.quickNotes&&data.quickNotes.scratch)||'';
     <a href="https://d3-appsandinteractive.itch.io/" target="_blank" rel="noopener">itch.io</a>
     <a href="https://d3appsandinteractive.gumroad.com/" target="_blank" rel="noopener">Gumroad</a>
     <a href="https://github.com/D3-InteractiveAndApps" target="_blank" rel="noopener">GitHub</a>
+  </div>
+</div>
+
+<!-- FULL-ENTRY EDITOR -->
+<div class="fe-bg" id="feBg" onclick="if(event.target===this)feClose()">
+  <div class="fe" role="dialog" aria-modal="true" aria-labelledby="feTitle">
+    <div class="fe-head"><div class="fe-title" id="feTitle"></div><button class="fe-done" onclick="feClose()">Done</button></div>
+    <textarea id="feTa" oninput="feSync();feCount()"></textarea>
+    <div class="fe-foot" id="feCount"></div>
+  </div>
+</div>
+<button class="fe-btn" id="feBtn" onmousedown="event.preventDefault()" onclick="if(_feHover)feOpen(_feHover)" aria-label="Open in full editor" title="Open in full editor"><svg viewBox="0 0 24 24"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg></button>
+
+<!-- BOTTOM SHEET -->
+<div class="msheet-bg" id="mSheetBg" onclick="if(event.target===this)mSheetClose()">
+  <div class="msheet" role="dialog" aria-modal="true" aria-labelledby="mSheetTitle">
+    <div class="msheet-grab"></div>
+    <div class="msheet-head"><div class="msheet-title" id="mSheetTitle"></div><button class="fe-done" onclick="mSheetClose()">Done</button></div>
+    <div class="msheet-body" id="mSheetBody"></div>
   </div>
 </div>
 
@@ -4585,7 +5127,7 @@ var _syncPending = false;
     _sb.auth.onAuthStateChange(function(event, session){
       _sbUser = session ? session.user : null;
       _updateSyncUI();
-      if(_sbUser && event === 'SIGNED_IN') _syncDown();
+      if(_sbUser && (event === 'SIGNED_IN' || event === 'INITIAL_SESSION')) _syncDown();
       if(_sbUser && _syncPending){ _syncPending=false; _syncAllUp(); }
     });
     _sb.auth.getSession().then(function(r){
@@ -4623,20 +5165,56 @@ async function _pushProject(id){
     var raw=localStorage.getItem('arcwright-proj-'+id);
     var idx=JSON.parse(localStorage.getItem('arcwright-projects')||'[]');
     var meta=idx.find(function(x){return x.id===id;})||{id:id,name:'Untitled World',genre:'',chars:0,created:Date.now(),modified:Date.now()};
-    await _sb.from('arcwright_projects').upsert({
+    if(_tombstones()[id])return; // deleted on this device: never re-upload
+    var r1=await _sb.from('arcwright_projects').upsert({
       id:id, user_id:_sbUser.id,
-      name:meta.name||'Untitled World', genre:meta.genre||'',
+      name:meta.name||'Untitled World', genre:meta.desc||meta.genre||'',
       chars:meta.chars||0,
       modified_at:new Date(meta.modified||Date.now()).toISOString()
     },{onConflict:'id,user_id'});
+    if(r1.error)throw r1.error;
     if(raw){
-      await _sb.from('arcwright_data').upsert({
+      var r2=await _sb.from('arcwright_data').upsert({
         project_id:id, user_id:_sbUser.id,
         payload:JSON.parse(raw),
         modified_at:new Date().toISOString()
       },{onConflict:'project_id,user_id'});
+      if(r2.error)throw r2.error;
     }
+    _markSynced(id,true);
   }catch(e){console.warn('push failed',e);}finally{_setSyncing(false);}
+}
+
+/* ── Deletions ─────────────────────────────────────────────────────
+   tombstones: projects deleted on this device, waiting to be removed from the cloud
+   synced set: projects this device knows are in the cloud, so a project that
+   disappears from the cloud was deleted on another device and goes here too */
+function _tombstones(){try{return JSON.parse(localStorage.getItem('arcwright-deleted')||'{}');}catch(e){return{};}}
+function _saveTombstones(t){try{localStorage.setItem('arcwright-deleted',JSON.stringify(t));}catch(e){}}
+function _syncedKey(){return 'arcwright-synced-'+(_sbUser?_sbUser.id:'');}
+function _syncedSet(){try{return JSON.parse(localStorage.getItem(_syncedKey())||'{}');}catch(e){return{};}}
+function _markSynced(id,on){var s=_syncedSet();if(on)s[id]=1;else delete s[id];try{localStorage.setItem(_syncedKey(),JSON.stringify(s));}catch(e){}}
+function _onProjectDeleted(id){
+  var t=_tombstones();t[id]=Date.now();_saveTombstones(t);
+  _cleanupOrphanImages();
+  _pushDeletes();
+}
+async function _pushDeletes(){
+  if(!_sb||!_sbUser||!navigator.onLine)return;
+  var t=_tombstones(),ids=Object.keys(t);
+  for(var i=0;i<ids.length;i++){
+    var id=ids[i];
+    var a=await _sb.from('arcwright_data').delete().eq('project_id',id).eq('user_id',_sbUser.id);
+    var b=await _sb.from('arcwright_projects').delete().eq('id',id).eq('user_id',_sbUser.id);
+    if(!a.error&&!b.error){delete t[id];_markSynced(id,false);}
+  }
+  _saveTombstones(t);
+}
+function _cleanupOrphanImages(){
+  try{
+    var used={};_allImageIds().forEach(function(k){used[k]=1;});
+    mediaDb().then(function(db){var q=db.transaction('images').objectStore('images').getAllKeys();q.onsuccess=function(){(q.result||[]).forEach(function(k){if(!used[k]){mediaDel(k);_mediaRemove(k);}});};});
+  }catch(e){}
 }
 
 /* ── Map images ↔ Supabase Storage (bucket: arcwright-media, folder per user) ── */
@@ -4677,16 +5255,26 @@ async function _syncAllUp(){
 }
 
 /* ── Download all from cloud (merges by modified_at) ─────────────── */
+var _reloadOpen=false;
 async function _syncDown(){
   if(!_sb||!_sbUser)return;
   try{
     _setSyncing(true);
     var r=await _sb.from('arcwright_projects').select('*').eq('user_id',_sbUser.id);
     if(r.error)throw r.error;
-    var remote=r.data||[];
+    await _pushDeletes();
+    var dead=_tombstones();
+    var remote=(r.data||[]).filter(function(rp){return!dead[rp.id];});
     var localIdx=JSON.parse(localStorage.getItem('arcwright-projects')||'[]');
+    // gone from the cloud but this device had synced it → deleted on another device
+    var remoteIds={};remote.forEach(function(rp){remoteIds[rp.id]=1;});
+    var synced=_syncedSet(),removedOpen=false;
+    localIdx=localIdx.filter(function(p){
+      if(synced[p.id]&&!remoteIds[p.id]){localStorage.removeItem('arcwright-proj-'+p.id);_markSynced(p.id,false);if(p.id===currentProjectId)removedOpen=true;return false;}
+      return true;
+    });
     for(var i=0;i<remote.length;i++){
-      var rp=remote[i];
+      var rp=remote[i];_markSynced(rp.id,true);
       var local=localIdx.find(function(x){return x.id===rp.id;});
       var remoteTs=new Date(rp.modified_at).getTime();
       var localTs=local?local.modified:0;
@@ -4697,13 +5285,17 @@ async function _syncDown(){
           localStorage.setItem('arcwright-proj-'+rp.id,JSON.stringify(dr.data.payload));
         }
         if(!local){
-          localIdx.push({id:rp.id,name:rp.name,genre:rp.genre,chars:rp.chars,created:new Date(rp.created_at).getTime(),modified:remoteTs});
+          localIdx.push({id:rp.id,name:rp.name,desc:rp.genre||'',chars:rp.chars,created:new Date(rp.created_at).getTime(),modified:remoteTs});
         } else {
-          local.name=rp.name;local.genre=rp.genre;local.chars=rp.chars;local.modified=remoteTs;
+          local.name=rp.name;local.desc=rp.genre||local.desc||'';local.chars=rp.chars;local.modified=remoteTs;
         }
+        // the open world changed on another device: reload it if nothing is being typed
+        if(rp.id===currentProjectId&&local&&!document.querySelector('input:focus,textarea:focus'))_reloadOpen=true;
       }
     }
     localStorage.setItem('arcwright-projects',JSON.stringify(localIdx));
+    if(removedOpen){currentProjectId=null;openProjectScreen&&document.getElementById('projScreen').classList.remove('hidden');showToast('This world was deleted on another device.');}
+    else if(_reloadOpen&&currentProjectId){_reloadOpen=false;var _id=currentProjectId;var sf=currentFid,ss=currentSid;resetData();load();applySettings();renderTree();if(sf&&ss&&data.folders[sf]&&data.folders[sf].sheets[ss])loadSheet(sf,ss);}
     // fetch map images this device doesn't have yet, so maps work offline later
     _allImageIds().forEach(function(id){mediaGet(id).then(function(b){if(!b)_mediaPull(id);});});
     // refresh project screen if it's open
@@ -4711,6 +5303,9 @@ async function _syncDown(){
     if(_ps&&!_ps.classList.contains('hidden'))renderProjGrid();
   }catch(e){console.warn('sync down failed',e);}finally{_setSyncing(false);}
 }
+
+window.addEventListener('online',function(){if(_sbUser){_pushDeletes().then(_syncAllUp).then(_syncDown);}});
+document.addEventListener('visibilitychange',function(){if(document.visibilityState==='visible'&&_sbUser&&navigator.onLine){var t=Date.now();if(!window._lastPull||t-window._lastPull>20000){window._lastPull=t;_syncDown();}}});
 
 /* ── Hook into persist() ──────────────────────────────────────────── */
 var _origPersist=persist;
