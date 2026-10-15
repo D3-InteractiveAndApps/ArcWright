@@ -56,7 +56,7 @@
   --dot-empty:#5a5650;--dot-filled:#f0ece4;
 }
 html,body{height:100%;}
-body{font-family:var(--font-body);background:var(--bg);color:var(--text);display:flex;flex-direction:column;height:100vh;overflow:hidden;transition:background 0.2s,color 0.2s;}
+body{font-family:var(--font-body);background:var(--bg);color:var(--text);display:flex;flex-direction:column;height:100vh;height:100dvh;overflow:hidden;transition:background 0.2s,color 0.2s;}
 
 /* ══════════════════════════════════════════════
    TOPBAR
@@ -659,9 +659,11 @@ body{font-family:var(--font-body);background:var(--bg);color:var(--text);display
 /* ══════════════════════════════════════════════
    ONBOARDING
 ══════════════════════════════════════════════ */
-.onboard-overlay{position:fixed;inset:0;background:var(--bg);z-index:600;display:flex;align-items:center;justify-content:center;padding:2rem;}
+.onboard-overlay{position:fixed;inset:0;background:var(--bg);z-index:600;display:flex;align-items:flex-start;justify-content:flex-start;padding:2rem;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;}
 .onboard-overlay.hidden{display:none;}
-.onboard-card{max-width:600px;width:100%;}
+.onboard-card{max-width:600px;width:100%;margin:auto;}/* auto margins centre it when it fits and let it scroll from the top when it does not */
+.onboard-x{position:fixed;top:calc(12px + env(safe-area-inset-top,0px));right:calc(12px + env(safe-area-inset-right,0px));z-index:601;font-family:var(--font-ui);font-size:9px;letter-spacing:0.14em;text-transform:uppercase;background:var(--bg2);border:0.5px solid var(--border2);color:var(--text2);padding:8px 14px;border-radius:20px;cursor:pointer;}
+.onboard-overlay.hidden .onboard-x{display:none;}
 .onboard-wordmark{font-family:'Cormorant Garamond',Georgia,serif;font-size:28px;font-weight:700;letter-spacing:0.02em;color:var(--text);margin-bottom:0.4rem;line-height:1;}
 .onboard-wordmark .ow-gold{color:var(--gold);}
 .onboard-wordmark-sub{font-family:var(--font-ui);font-size:9px;font-weight:400;letter-spacing:0.22em;text-transform:uppercase;color:var(--text3);margin-bottom:2rem;}
@@ -838,6 +840,7 @@ body{font-family:var(--font-body);background:var(--bg);color:var(--text);display
   .world-two-col{grid-template-columns:1fr !important;}
   .faction-two-col{grid-template-columns:1fr !important;}
   .onboard-features{grid-template-columns:1fr !important;}
+  .onboard-overlay{padding:calc(56px + env(safe-area-inset-top,0px)) 16px calc(24px + env(safe-area-inset-bottom,0px)) !important;}
 
   /* Project grid — single column */
   .proj-grid{grid-template-columns:1fr !important;}
@@ -879,6 +882,8 @@ body{font-family:var(--font-body);background:var(--bg);color:var(--text);display
   .faction-cast-grid{grid-template-columns:repeat(auto-fill, minmax(80px,1fr)) !important;}
 }
 
+.proj-screen-body,.sheet-area,.faction-list,.faction-detail-area,.world-list,.world-detail-area,.tp-body,.qn-body,.map-panel,#overviewScrollArea{-webkit-overflow-scrolling:touch;overscroll-behavior:contain;min-height:0;}
+.app-body,.main-view,.content-area,.view-pane,.faction-tab-layout,.world-tab-layout,.world-body{min-height:0;}
 /* elements toggled with the hidden attribute must stay hidden even when a class sets display */
 [hidden]{display:none !important;}
 /* ── MAPS ── */
@@ -1109,6 +1114,7 @@ body{font-family:var(--font-body);background:var(--bg);color:var(--text);display
 
 <!-- ONBOARDING -->
 <div class="onboard-overlay" id="onboardOverlay">
+  <button class="onboard-x" onclick="dismissOnboard()">Skip</button>
   <div class="onboard-card">
     <div class="onboard-wordmark">Arc<span class="ow-gold">Wright</span></div>
     <div class="onboard-wordmark-sub">World-building studio for writers &amp; game masters &nbsp;·&nbsp; v111</div>

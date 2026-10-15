@@ -1,6 +1,6 @@
 // ArcWright Service Worker
 // Bump VERSION on every deploy so installed apps fetch fresh files
-const VERSION = 'arcwright-v111-0';
+const VERSION = 'arcwright-v111-1';
 
 const PRECACHE = [
   './',
