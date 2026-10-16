@@ -1141,7 +1141,7 @@ body.m-tab-manuscript .sidebar{display:none !important;}
 .ms-page{max-width:700px;margin:0 auto;padding:48px 40px 40vh;}
 .ms-title{display:block;width:100%;border:none;outline:none;resize:none;overflow:hidden;background:transparent;color:var(--text);font-family:var(--font-ui);font-size:22px;font-weight:600;letter-spacing:0.02em;line-height:1.3;margin-bottom:22px;padding:0;}
 .ms-title::placeholder{color:var(--text3);font-weight:400;}
-.ms-text{display:block;width:100%;border:none;outline:none;resize:none;overflow:hidden;background:transparent;color:var(--text);font-family:var(--font-body);font-size:19px;line-height:1.85;padding:0;min-height:50vh;caret-color:var(--gold);}
+.ms-text{display:block;width:100%;border:none;outline:none;resize:none;background:transparent;color:var(--text);font-family:var(--font-body);font-size:19px;line-height:1.85;padding:0;min-height:50vh;caret-color:var(--gold);}
 .ms-text::placeholder{color:var(--text3);font-style:italic;}
 .ms-info{width:290px;flex-shrink:0;border-left:0.5px solid var(--border);background:var(--bg);overflow-y:auto;padding:14px 18px 28px;-webkit-overflow-scrolling:touch;}
 .ms-info.closed{display:none;}
@@ -1182,7 +1182,10 @@ body.ms-focus .content-area{padding-bottom:0 !important;}
   .ms-sc-syn{font-size:13px;}
   .ms-sc-words,.ms-ch-words{font-size:11px;}
   .ms-add-sc{font-size:11px;padding:10px 20px 12px 36px;}
-  .ms-bar{padding:8px 12px;gap:6px;}
+  .ms-bar{padding:8px 12px;gap:6px;flex-wrap:nowrap;}
+  .ms-bar .ms-saved{display:none;}
+  .ms-bar .ms-wc{font-size:11px;white-space:nowrap;}
+  .ms-bar .map-tool{padding:8px 10px;font-size:10px;letter-spacing:0.06em;white-space:nowrap;flex-shrink:0;}
   .ms-crumb{display:none;}
   .ms-page{padding:22px 18px 45vh;}
   .ms-title{font-size:21px !important;margin-bottom:14px;}
@@ -1193,6 +1196,95 @@ body.ms-focus .content-area{padding-bottom:0 !important;}
   body.ms-focus .ms-scroll{padding-top:env(safe-area-inset-top,0px);}
 }
 
+/* ── v114: editor formatting, health, find, history, search ── */
+.ms-text{white-space:pre-wrap;word-wrap:break-word;min-height:50vh;cursor:text;}
+.ms-text p{margin:0 0 0.9em;}
+.ms-text em{font-style:italic;}
+.ms-text strong{font-weight:700;}
+.ms-text.is-empty::before{content:attr(data-placeholder);color:var(--text3);font-style:italic;pointer-events:none;}
+.ms-text:focus{outline:none;}
+.ms-fmt{display:flex;gap:4px;margin-left:6px;}
+.ms-fb{width:32px;height:30px;border-radius:8px;border:0.5px solid var(--border2);background:var(--bg);color:var(--text2);font-family:Georgia,serif;font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+.ms-fb:hover{background:var(--bg2);color:var(--text);}
+.ms-binder-top{display:flex;align-items:center;gap:8px;}
+.ms-icon{width:32px;height:32px;border-radius:8px;border:none;background:none;color:var(--text3);cursor:pointer;display:flex;align-items:center;justify-content:center;}
+.ms-icon:hover{background:var(--bg2);color:var(--text);}
+.ms-icon svg,.tb-search svg{width:17px;height:17px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;}
+.ms-health-btn{display:flex;align-items:center;gap:8px;margin-top:4px;padding:8px 10px;border-radius:9px;border:0.5px solid var(--border2);background:var(--bg2);color:var(--text2);font-family:var(--font-ui);font-size:10px;letter-spacing:0.08em;text-transform:uppercase;cursor:pointer;text-align:left;}
+.ms-health-btn:hover{color:var(--text);border-color:var(--gold);}
+.ms-health-btn span:nth-child(2){flex:1;}
+.ms-health-ico{color:var(--gold);}
+.ms-health-n{font-variant-numeric:tabular-nums;min-width:20px;height:20px;border-radius:10px;background:var(--bg3);display:flex;align-items:center;justify-content:center;padding:0 6px;font-size:10px;}
+.ms-health-btn.warn .ms-health-n{background:var(--gold);color:var(--bg);}
+.ms-binder-foot{display:flex;gap:6px;}
+.ms-binder-foot .sb-btn:first-child{flex:2;}
+.ms-binder-foot .sb-btn:last-child{flex:1;}
+.ms-craft{border-top:0.5px solid var(--border);border-bottom:0.5px solid var(--border);padding:10px 0 4px;margin:4px 0 14px;}
+.ms-craft summary{font-family:var(--font-ui);font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--text2);cursor:pointer;padding:4px 0 8px;}
+.ms-craft-hint{font-size:13px;color:var(--text3);font-style:italic;line-height:1.5;margin:0 0 10px;}
+.hl-sum{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:13px;color:var(--text2);padding-bottom:10px;border-bottom:0.5px solid var(--border);}
+.hl-sum b{color:var(--text);font-variant-numeric:tabular-nums;}
+.hl-row{display:flex;align-items:flex-start;gap:11px;width:100%;padding:12px 2px;background:none;border:none;border-bottom:0.5px solid var(--border);text-align:left;color:inherit;cursor:pointer;}
+.hl-row:hover{background:var(--bg2);}
+.hl-dot{width:9px;height:9px;border-radius:50%;background:var(--text3);flex-shrink:0;margin-top:6px;}
+.hl-row.warn .hl-dot{background:var(--gold);}
+.hl-main{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px;}
+.hl-t{font-size:15px;color:var(--text);line-height:1.35;}
+.hl-d{font-size:13px;color:var(--text3);line-height:1.45;}
+.hl-row .tlm-chev{font-family:var(--font-ui);font-size:10px;letter-spacing:0.06em;text-transform:uppercase;color:var(--gold);padding-top:3px;}
+.fr-results{max-height:46vh;overflow-y:auto;}
+.fr-row{display:flex;flex-direction:column;gap:3px;width:100%;padding:9px 2px;background:none;border:none;border-bottom:0.5px solid var(--border);text-align:left;color:inherit;cursor:pointer;}
+.fr-row:hover{background:var(--bg2);}
+.fr-where{font-family:var(--font-ui);font-size:10px;letter-spacing:0.06em;color:var(--text2);}
+.fr-where b{color:var(--gold);margin-left:4px;}
+.fr-snip{font-size:14px;color:var(--text2);line-height:1.45;}
+mark{background:color-mix(in srgb,var(--gold) 35%,transparent);color:inherit;border-radius:2px;padding:0 1px;}
+.hist-prev{max-height:52vh;overflow-y:auto;font-family:var(--font-body);font-size:16px;line-height:1.7;color:var(--text);padding:12px 14px;border:0.5px solid var(--border);border-radius:10px;background:var(--bg2);}
+.hist-prev p{margin:0 0 0.8em;}
+.hist-prev h3{font-family:var(--font-ui);font-size:15px;margin:0 0 10px;}
+.bk-status{display:flex;flex-direction:column;gap:8px;padding:12px;border-radius:10px;background:var(--bg2);border:0.5px solid var(--border);}
+.bk-status>div{display:flex;justify-content:space-between;gap:10px;font-size:13px;color:var(--text2);}
+.bk-status .m-btn{align-self:flex-start;padding:7px 14px;}
+/* world search */
+.tb-search{display:flex;align-items:center;gap:6px;}
+.gs-bg{display:none;position:fixed;inset:0;z-index:1150;background:rgba(0,0,0,0.45);align-items:flex-start;justify-content:center;padding:10vh 20px 20px;}
+.gs-bg.open{display:flex;}
+.gs{width:min(640px,100%);max-height:76vh;display:flex;flex-direction:column;background:var(--bg);border:0.5px solid var(--border2);border-radius:14px;overflow:hidden;box-shadow:0 24px 64px rgba(0,0,0,0.35);}
+.gs-head{display:flex;align-items:center;gap:10px;padding:12px 16px;border-bottom:0.5px solid var(--border);}
+.gs-head svg{width:18px;height:18px;stroke:var(--text3);fill:none;stroke-width:1.8;flex-shrink:0;}
+#gsInp::-webkit-search-cancel-button,#gsInp::-webkit-search-decoration{-webkit-appearance:none;appearance:none;display:none;}
+#gsInp{flex:1;border:none;outline:none;background:transparent;color:var(--text);font-family:var(--font-body);font-size:18px;padding:6px 0;}
+.gs-res{overflow-y:auto;padding:6px 16px 16px;}
+.gs-hint{padding:18px 0;}
+.gs-group{margin-top:10px;}
+.gs-row{display:flex;gap:11px;align-items:flex-start;width:100%;padding:9px 6px;background:none;border:none;border-radius:8px;text-align:left;color:inherit;cursor:pointer;}
+.gs-row:hover,.gs-row:focus-visible{background:var(--bg2);outline:none;}
+.gs-ico{color:var(--gold);width:16px;text-align:center;flex-shrink:0;padding-top:2px;}
+.gs-main{display:flex;flex-direction:column;gap:2px;min-width:0;}
+.gs-t{font-size:15px;color:var(--text);}
+.gs-s{font-size:13px;color:var(--text3);line-height:1.4;}
+.m-search{display:none;}
+.proj-sample{grid-column:1/-1;display:flex;align-items:center;gap:14px;padding:1rem 1.25rem;border-radius:12px;border:0.5px dashed var(--border2);background:transparent;cursor:pointer;text-align:left;color:inherit;}
+.proj-sample:hover{border-color:var(--gold);background:var(--bg2);}
+.proj-sample-ico{font-size:22px;color:var(--gold);}
+.proj-sample-t{font-family:var(--font-ui);font-size:12px;font-weight:600;letter-spacing:0.06em;color:var(--text);display:block;}
+.proj-sample-s{font-size:14px;color:var(--text3);display:block;margin-top:2px;}
+@media (max-width:768px){
+  .m-search{display:flex;align-items:center;justify-content:center;width:40px;height:40px;border:none;background:none;color:var(--text2);margin-left:auto;cursor:pointer;}
+  .m-search svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;}
+  .m-search+.sync-btn,.m-search~.sync-btn{margin-left:0 !important;}
+  .tb-search{display:none !important;}
+  .gs-bg{padding:0;align-items:stretch;}
+  .gs{width:100%;max-height:none;border-radius:0;border:none;padding-top:env(safe-area-inset-top,0px);}
+  #gsInp{font-size:17px !important;}
+  .ms-fmt{margin-left:0;}
+  .ms-fb{width:38px;height:36px;}
+}
+
+@media (max-width:360px){
+  .ms-bar .ms-wc{display:none;}
+  .ms-bar .map-tool{padding:8px 8px;}
+}
 /* elements toggled with the hidden attribute must stay hidden even when a class sets display */
 [hidden]{display:none !important;}
 /* ── MAPS ── */
@@ -1391,7 +1483,7 @@ body.ms-focus .content-area{padding-bottom:0 !important;}
 <!-- PROJECT SCREEN -->
 <div class="proj-screen" id="projScreen"><!-- visible by default -->
   <div class="proj-screen-head">
-    <div class="proj-screen-brand" style="font-family:var(--font-brand);font-size:22px;font-weight:700;letter-spacing:0.02em;color:var(--text);">Arc<span style="color:var(--gold,#b8923a);">Wright</span> <span style="font-family:var(--font-ui);font-size:10px;font-weight:300;letter-spacing:0.14em;opacity:0.5;vertical-align:middle;">v113</span></div>
+    <div class="proj-screen-brand" style="font-family:var(--font-brand);font-size:22px;font-weight:700;letter-spacing:0.02em;color:var(--text);">Arc<span style="color:var(--gold,#b8923a);">Wright</span> <span style="font-family:var(--font-ui);font-size:10px;font-weight:300;letter-spacing:0.14em;opacity:0.5;vertical-align:middle;">v114</span></div>
     <button class="proj-acct" id="projAcctBtn" onclick="openAccountModal()"><span class="sync-dot offline" id="projSyncDot"></span><span id="projAcctLbl">Sign in to sync</span></button>
     <div class="proj-screen-title">Your Projects</div>
     <p class="proj-screen-sub">Each project is its own world — characters, factions, locations, lore, and story. Select one to open it.</p>
@@ -1405,6 +1497,8 @@ body.ms-focus .content-area{padding-bottom:0 !important;}
       <a href="https://d3appsandinteractive.gumroad.com/" target="_blank" rel="noopener">Gumroad</a>
       <a href="https://github.com/D3-InteractiveAndApps" target="_blank" rel="noopener">GitHub</a>
       <button class="aw-link-btn" onclick="openThemePicker()">Themes</button>
+      <button class="aw-link-btn" onclick="histBackupsSheet()">Backups</button>
+      <a href="https://d3-appsandinteractive.itch.io/arcwright" target="_blank" rel="noopener">Send feedback</a>
     </div>
   </div>
 </div>
@@ -1427,7 +1521,7 @@ body.ms-focus .content-area{padding-bottom:0 !important;}
   <button class="onboard-x" onclick="dismissOnboard()">Skip</button>
   <div class="onboard-card">
     <div class="onboard-wordmark">Arc<span class="ow-gold">Wright</span></div>
-    <div class="onboard-wordmark-sub">World-building studio for writers &amp; game masters &nbsp;·&nbsp; v113</div>
+    <div class="onboard-wordmark-sub">World-building studio for writers &amp; game masters &nbsp;·&nbsp; v114</div>
     <div class="onboard-rule"><span class="onboard-rule-glyph">✦ ✦ ✦</span></div>
     <div class="onboard-title">Build worlds.<br/><em>Write them.</em></div>
     <div class="onboard-body">Every character, faction, power, map, and story beat in one place. Works offline, installs to your phone, and syncs across your devices when you sign in.</div>
@@ -1450,7 +1544,7 @@ body.ms-focus .content-area{padding-bottom:0 !important;}
       </div>
       <div class="onboard-feature">
         <div class="onboard-feature-title">Manuscript</div>
-        <div class="onboard-feature-body">Write your story chapter by chapter. Each scene knows its point of view, location and story beat, and every name you write links back to your world.</div>
+        <div class="onboard-feature-body">Write your story chapter by chapter, with italics, version history and a focus mode. Each scene knows its point of view, location and story beat, and Story health notices what an editor would.</div>
       </div>
       <div class="onboard-feature">
         <div class="onboard-feature-title">Powers &amp; Abilities</div>
@@ -1538,7 +1632,7 @@ body.ms-focus .content-area{padding-bottom:0 !important;}
   <button class="m-back" id="mBack" onclick="mBack()" aria-label="Back"><svg viewBox="0 0 24 24"><polyline points="15 5 8 12 15 19"/></svg><span id="mBackLbl">Worlds</span></button>
   <div class="m-title" id="mTitle"></div>
   <button class="menu-btn" id="menuBtn" onclick="toggleDrawer()" aria-label="Toggle character list"><svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
-  <div class="topbar-brand">Arc<span class="brand-gold">Wright</span> <span class="topbar-ver">v113</span></div>
+  <div class="topbar-brand">Arc<span class="brand-gold">Wright</span> <span class="topbar-ver">v114</span></div>
   <button class="proj-back-btn" onclick="openProjectScreen()" title="Back to projects">◂ Projects</button>
   <span class="proj-current-lbl" id="projCurrentLbl"></span>
   <div class="tab-div"></div>
@@ -1566,9 +1660,11 @@ body.ms-focus .content-area{padding-bottom:0 !important;}
   <button class="tb-btn" onclick="triggerImport()">Import cast</button>
   <input type="file" id="importFile" accept=".json" style="display:none" onchange="importProjectFile(event)"/>
   <div class="tab-divider"></div>
+  <button class="tb-btn tb-search" onclick="gsOpen()" title="Search this world (Ctrl+K)"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></svg>Search</button>
   <button class="tb-btn" id="themeBtn" onclick="openThemePicker()">Themes</button>
   <button class="tb-btn" id="qnBtn" onclick="toggleQn()">QuickNotes</button>
   <button class="tb-btn" onclick="showOnboard()">Guide</button>
+  <button class="m-search" onclick="gsOpen()" aria-label="Search this world"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></svg></button>
   <button class="sync-btn" id="syncBtn" onclick="openAccountModal()" title="Sync & account">
     <span class="sync-dot offline" id="syncDot"></span>
     <span id="syncLabel">Sync</span>
@@ -2395,7 +2491,7 @@ renderWorldDetail=function(){
    AUTO-GROWING TEXTAREAS
    Long entries show in full instead of being cut off at a fixed height.
 ══════════════════════════════════════════════════════ */
-var GROW_SKIP='#qnScratch,#feTa,.qn-add-input,.qn-textarea,.m-ta,#acctModalBg textarea,#msText,#msTitle';
+var GROW_SKIP='#qnScratch,#feTa,.qn-add-input,.qn-textarea,.m-ta,#acctModalBg textarea,#msTitle';
 function autoGrow(ta){
   if(!ta||ta.tagName!=='TEXTAREA'||ta.matches(GROW_SKIP)||!ta.offsetParent)return;
   ta.classList.add('aw-grow');
@@ -2565,7 +2661,7 @@ document.addEventListener('input',function(e){if(isPhone()&&e.target.matches&&e.
   var _loadSheet=loadSheet;
   loadSheet=function(fid,sid){_loadSheet(fid,sid);if(isPhone()&&!window._mQuiet)mOpenDetail('sheets');mUpdateBar();queueGrow();};
   var _openProject=openProject;
-  openProject=function(id){window._mQuiet=true;try{_openProject(id);}finally{window._mQuiet=false;}msSceneId=null;var _ml=document.getElementById('msLayout');if(_ml)_ml.classList.remove('m-detail');if(isPhone()){Object.keys(data.folders||{}).forEach(function(f){openFolders.add(f);});renderTree();}document.body.classList.add('m-tab-sheets');mShowList('sheets');['factions','world','powers'].forEach(function(t){var l=mLayout(t);if(l)l.classList.remove('m-detail');});mUpdateBar();};
+  openProject=function(id){if(typeof histDailyBackup==='function')histDailyBackup(id);if(typeof histPersist==='function')histPersist();window._mQuiet=true;try{_openProject(id);}finally{window._mQuiet=false;}msSceneId=null;var _ml=document.getElementById('msLayout');if(_ml)_ml.classList.remove('m-detail');if(isPhone()){Object.keys(data.folders||{}).forEach(function(f){openFolders.add(f);});renderTree();}document.body.classList.add('m-tab-sheets');mShowList('sheets');['factions','world','powers'].forEach(function(t){var l=mLayout(t);if(l)l.classList.remove('m-detail');});mUpdateBar();};
   var _openPower=openPower;openPower=function(id){_openPower(id);mOpenDetail('powers');};
   var _newPower=newPower;newPower=function(k,p){_newPower(k,p);mOpenDetail('powers');};
   var _openMap=openMap;openMap=function(id,pin){_openMap(id,pin);mOpenDetail('world');};
@@ -2735,16 +2831,61 @@ function tlmRemoveCard(id){data.timeline.cards=data.timeline.cards.filter(functi
 
 /* ══════════════════════════════════════════════════════
    MANUSCRIPT
-   data.manuscript = { chapters:[{id,title,scenes:[{id,title,text,synopsis,pov,locId,beatId,status,notes}]}],
-                       goal:<daily words>, log:{'YYYY-MM-DD':<total words at the start of that day>} }
+   data.manuscript = {
+     chapters:[{id,title,scenes:[{id,title,html,text,synopsis,pov,locId,beatId,status,notes,
+                                  goal,conflict,outcome,outcomeText,change,mod}]}],
+     goal:<daily words>, log:{'YYYY-MM-DD':<total words at start of day>}, structMod:<ms> }
+   html holds the formatted prose (p / em / strong / br only); text is its plain-text copy
+   for word counts, mentions, search and health checks.
 ══════════════════════════════════════════════════════ */
 var msChapterId=null,msSceneId=null,_msSaveT=null,_msMentT=null,msInfoOpen=true;
 var MS_STATUS=[['draft','Draft','#b8923a'],['revised','Revised','#2471a3'],['final','Final','#239b56']];
+var MS_OUTCOMES=[['','Not decided'],['yes','Yes — they get what they want'],['yes-but','Yes, but… — at a cost'],['no','No — they fail'],['no-and','No, and… — things get worse']];
+
+/* ── formatted text helpers ── */
+function msEscText(t){return String(t||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function msPlainToHtml(t){t=String(t||'').replace(/\r/g,'');if(!t.trim())return'';return t.split(/\n\s*\n|\n/).map(function(p){return'<p>'+msEscText(p)+'</p>';}).join('');}
+// Keep only paragraphs, line breaks, italics and bold. Everything pasted or typed is folded into that.
+function msSanitize(html){
+  var doc=new DOMParser().parseFromString('<body>'+(html||'')+'</body>','text/html');
+  var out=[],cur=null;
+  function flush(){if(cur!==null){var t=cur.replace(/^(\s|<br>)+|(\s|<br>)+$/g,'');out.push('<p>'+t+'</p>');cur=null;}}
+  function inline(node,em,strong){
+    var s='';
+    node.childNodes.forEach(function(n){
+      if(n.nodeType===3){var t=msEscText(n.nodeValue.replace(/\s+/g,' '));if(t){if(strong)t='<strong>'+t+'</strong>';if(em)t='<em>'+t+'</em>';s+=t;}return;}
+      if(n.nodeType!==1)return;
+      var tag=n.tagName,st=n.getAttribute('style')||'';
+      var e2=em||tag==='EM'||tag==='I'||/font-style\s*:\s*italic/i.test(st);
+      var b2=strong||tag==='STRONG'||tag==='B'||/font-weight\s*:\s*(bold|[6-9]00)/i.test(st);
+      if(tag==='BR'){s+='<br>';return;}
+      if(/^(P|DIV|H[1-6]|LI|BLOCKQUOTE|SECTION|ARTICLE|PRE|TR)$/.test(tag)){s+='\u0000'+inline(n,e2,b2)+'\u0000';return;}
+      if(/^(SCRIPT|STYLE|META|TITLE|HEAD|O:P)$/.test(tag))return;
+      s+=inline(n,e2,b2);
+    });
+    return s;
+  }
+  var flat=inline(doc.body,false,false);
+  flat.split('\u0000').forEach(function(seg){
+    var t=seg.replace(/<\/em><em>/g,'').replace(/<\/strong><strong>/g,'');
+    if(t.replace(/<br>|\s/g,'')==='')return;
+    cur=t;flush();
+  });
+  return out.join('');
+}
+function msHtmlToText(html){
+  if(!html)return'';
+  return html.replace(/<\/p>\s*<p>/g,'\n\n').replace(/<br>/g,'\n').replace(/<[^>]+>/g,'').replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&amp;/g,'&').replace(/&nbsp;/g,' ').trim();
+}
 function getMs(){
   if(!data.manuscript||!Array.isArray(data.manuscript.chapters))data.manuscript={chapters:[],goal:0,log:{}};
-  if(!data.manuscript.log)data.manuscript.log={};
-  return data.manuscript;
+  var ms=data.manuscript;if(!ms.log)ms.log={};
+  // scenes written before formatting existed: plain text → paragraphs
+  ms.chapters.forEach(function(c){c.scenes.forEach(function(s){if(s.html==null){s.html=msPlainToHtml(s.text||'');}if(s.text==null)s.text=msHtmlToText(s.html);});});
+  return ms;
 }
+function msTouch(s){if(s)s.mod=Date.now();}
+function msStruct(){getMs().structMod=Date.now();}
 function msWords(t){var m=(t||'').match(/\S+/g);return m?m.length:0;}
 function msChapterWords(c){return c.scenes.reduce(function(n,s){return n+msWords(s.text);},0);}
 function msTotalWords(){return getMs().chapters.reduce(function(n,c){return n+msChapterWords(c);},0);}
@@ -2754,24 +2895,23 @@ function msFind(sid){var ms=getMs();for(var i=0;i<ms.chapters.length;i++){var c=
 function msFmt(n){return n.toLocaleString();}
 function msChapterLabel(c,i){return c.title||('Chapter '+(i+1));}
 function msSceneLabel(s,j){return s.title||('Scene '+(j+1));}
+function msNewSceneObj(){return{id:genId(),title:'',html:'',text:'',status:'draft',mod:Date.now()};}
 
-function msNewChapter(){
-  var ms=getMs(),c={id:genId(),title:'',scenes:[]};ms.chapters.push(c);
-  var s={id:genId(),title:'',text:'',status:'draft'};c.scenes.push(s);
-  persist();msOpen(s.id);
-}
+function msNewChapter(){var ms=getMs(),c={id:genId(),title:'',scenes:[msNewSceneObj()]};ms.chapters.push(c);msStruct();persist();msOpen(c.scenes[0].id);}
 function msNewScene(cid){
   var ms=getMs(),c=ms.chapters.find(function(x){return x.id===cid;})||ms.chapters[ms.chapters.length-1];
   if(!c){msNewChapter();return;}
-  var s={id:genId(),title:'',text:'',status:'draft'};c.scenes.push(s);persist();msOpen(s.id);
+  var s=msNewSceneObj();c.scenes.push(s);msStruct();persist();
   if(typeof mSheetClose==='function'&&document.getElementById('mSheetBg').classList.contains('open'))mSheetClose();
+  msOpen(s.id);
 }
 function msOpen(sid){
   var f=msFind(sid);if(!f)return;
+  if(msSceneId&&msSceneId!==sid){var prev=msFind(msSceneId);if(prev)histSnapScene(prev.s,'Switched scene',true);}
   msSceneId=sid;msChapterId=f.c.id;
   renderManuscript();
   if(typeof mOpenDetail==='function')mOpenDetail('manuscript');
-  setTimeout(function(){var t=document.getElementById(f.s.text?'msText':(f.s.title?'msText':'msTitle'));if(t&&!isPhone())t.focus();},30);
+  setTimeout(function(){var t=document.getElementById(f.s.text||f.s.title?'msText':'msTitle');if(t&&!isPhone())t.focus();},30);
 }
 function renderManuscript(){
   var host=document.getElementById('msLayout');if(!host)return;
@@ -2779,16 +2919,21 @@ function renderManuscript(){
   if(!ms.chapters.length){
     host.innerHTML='<div class="faction-empty pw-empty ms-empty"><div class="pw-empty-glyph">✎</div><div class="pw-empty-title">Manuscript</div>'+
       '<p class="pw-empty-sub">Write your story here, chapter by chapter and scene by scene. Each scene can name its point-of-view character, where it happens and which story beat it belongs to, and anyone you mention links back to their sheet.</p>'+
-      '<div class="pw-empty-btns"><button class="pw-btn primary" onclick="msNewChapter()">Start writing</button></div></div>';
+      '<div class="pw-empty-btns"><button class="pw-btn primary" onclick="msNewChapter()">Start writing</button><button class="pw-btn" onclick="msImportPick()">Import from Word</button></div>'+
+      '<input type="file" id="msImportFile" accept=".docx,.txt,.md,.markdown,text/plain" hidden onchange="msImportFile(this)"/></div>';
     host.classList.remove('m-detail');return;
   }
   if(!msFind(msSceneId)){var c0=ms.chapters.find(function(c){return c.scenes.length;});msSceneId=c0?c0.scenes[0].id:null;}
-  if(!msSceneId){ms.chapters[0].scenes.push({id:genId(),title:'',text:'',status:'draft'});msSceneId=ms.chapters[0].scenes[0].id;persist();}
+  if(!msSceneId){ms.chapters[0].scenes.push(msNewSceneObj());msSceneId=ms.chapters[0].scenes[0].id;persist();}
   var cur=msFind(msSceneId);msChapterId=cur.c.id;
   var goal=+ms.goal||0,today=msTodayWords(),pct=goal?Math.min(100,Math.round(today/goal*100)):0;
+  var health=msHealth(),warn=health.filter(function(h){return h.level==='warn';}).length;
   // binder
-  var b='<aside class="ms-binder"><div class="ms-binder-head"><div class="faction-sidebar-lbl" style="margin:0">Manuscript</div><div class="ms-total"><span id="msTotal">'+msFmt(msTotalWords())+'</span> words</div>'+
-    '<button class="ms-goal" onclick="msGoalSheet()" title="Daily word goal"><span class="ms-goal-bar"><i id="msGoalFill" style="width:'+pct+'%"></i></span><span id="msGoalTxt">'+(goal?msFmt(today)+' / '+msFmt(goal)+' today':msFmt(today)+' words today · set a goal')+'</span></button></div><div class="ms-tree">';
+  var b='<aside class="ms-binder"><div class="ms-binder-head"><div class="ms-binder-top"><div class="faction-sidebar-lbl" style="margin:0;flex:1">Manuscript</div>'+
+    '<button class="ms-icon" onclick="msFindSheet()" title="Find and replace (Ctrl+F in the editor)" aria-label="Find and replace"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></svg></button></div>'+
+    '<div class="ms-total"><span id="msTotal">'+msFmt(msTotalWords())+'</span> words</div>'+
+    '<button class="ms-goal" onclick="msGoalSheet()" title="Daily word goal"><span class="ms-goal-bar"><i id="msGoalFill" style="width:'+pct+'%"></i></span><span id="msGoalTxt">'+(goal?msFmt(today)+' / '+msFmt(goal)+' today':msFmt(today)+' words today · set a goal')+'</span></button>'+
+    '<button class="ms-health-btn'+(warn?' warn':'')+'" onclick="msHealthSheet()"><span class="ms-health-ico">✦</span><span>Story health</span><span class="ms-health-n">'+(health.length?health.length:'✓')+'</span></button></div><div class="ms-tree">';
   ms.chapters.forEach(function(c,i){
     b+='<div class="ms-ch'+(c.id===msChapterId?' cur':'')+'"><div class="ms-ch-row"><span class="ms-ch-name">'+esc(msChapterLabel(c,i))+'</span><span class="ms-ch-words" id="msChW-'+c.id+'">'+msFmt(msChapterWords(c))+'</span><button class="ms-more" onclick="msChapterSheet(\''+c.id+'\')" aria-label="Chapter options">⋯</button></div>';
     c.scenes.forEach(function(s,j){
@@ -2797,48 +2942,79 @@ function renderManuscript(){
     });
     b+='<button class="ms-add-sc" onclick="msNewScene(\''+c.id+'\')">+ Scene</button></div>';
   });
-  b+='</div><div class="faction-sidebar-footer"><button class="sb-btn" onclick="msNewChapter()">+ New chapter</button></div></aside>';
+  b+='</div><div class="faction-sidebar-footer ms-binder-foot"><button class="sb-btn" onclick="msNewChapter()">+ New chapter</button><button class="sb-btn" onclick="msDeletedSheet()" title="Restore deleted scenes">Deleted</button></div></aside>';
   // editor
   var s=cur.s,ci=cur.ci,si=cur.si;
-  var e='<main class="ms-main"><div class="ms-bar"><span class="ms-crumb">'+esc(msChapterLabel(cur.c,ci))+'</span><span class="ms-bar-sp"></span>'+
+  var e='<main class="ms-main"><div class="ms-bar"><span class="ms-crumb">'+esc(msChapterLabel(cur.c,ci))+'</span>'+
+    '<span class="ms-fmt"><button class="ms-fb" onmousedown="event.preventDefault()" onclick="msFormat(\'bold\')" title="Bold (Ctrl+B)" aria-label="Bold"><b>B</b></button><button class="ms-fb" onmousedown="event.preventDefault()" onclick="msFormat(\'italic\')" title="Italic (Ctrl+I)" aria-label="Italic"><i>I</i></button></span>'+
+    '<span class="ms-bar-sp"></span>'+
     '<span class="ms-wc" id="msWc">'+msFmt(msWords(s.text))+' words</span><span class="ms-saved" id="msSaved">Saved</span>'+
     '<button class="map-tool" onclick="msToggleInfo()" id="msInfoBtn">Details</button><button class="map-tool ms-focus-btn" onclick="msFocus()">Focus</button><button class="map-tool" onclick="msExportSheet()">Export</button></div>'+
     '<div class="ms-scroll" id="msScroll"><div class="ms-page">'+
-    '<textarea class="ms-title" id="msTitle" rows="1" placeholder="'+esc('Scene '+(si+1))+' title (optional)" oninput="msSet(\'title\',this.value)">'+esc(s.title||'')+'</textarea>'+
-    '<textarea class="ms-text" id="msText" placeholder="Start writing…" oninput="msTyping(this)">'+esc(s.text||'')+'</textarea>'+
+    '<textarea class="ms-title" id="msTitle" rows="1" data-line placeholder="'+esc('Scene '+(si+1))+' title (optional)" oninput="msSet(\'title\',this.value)">'+esc(s.title||'')+'</textarea>'+
+    '<div class="ms-text'+(s.text?'':' is-empty')+'" id="msText" contenteditable="true" role="textbox" aria-multiline="true" aria-label="Scene text" spellcheck="true" data-placeholder="Start writing…" oninput="msTyping(this)" onpaste="msPaste(event)" onkeydown="msKey(event)" onfocus="msEdFocus()" onblur="msEdBlur()">'+(s.html||'')+'</div>'+
     '</div></div></main>';
   // details
   var sheets=getAllSheetsFlat(),locs=(data.world&&data.world.locations)||{},beats=(typeof tlSortedBeats==='function')?tlSortedBeats():[];
   var sel=function(k,opts,none){return '<select class="pw-meta-sel ms-sel" onchange="msSet(\''+k+'\',this.value)"><option value="">'+none+'</option>'+opts.map(function(o){return'<option value="'+o[0]+'"'+(s[k]===o[0]?' selected':'')+'>'+esc(o[1])+'</option>';}).join('')+'</select>';};
+  var ta=function(k,ph,line){return'<textarea '+(line?'data-line rows="1"':'rows="3"')+' placeholder="'+esc(ph)+'" oninput="msSet(\''+k+'\',this.value)">'+esc(s[k]||'')+'</textarea>';};
   var d='<aside class="ms-info'+(msInfoOpen?'':' closed')+'" id="msInfo"><div class="ms-info-head"><span class="faction-section-lbl" style="margin:0;flex:1">Scene details</span><button class="tp-close" onclick="msToggleInfo()" aria-label="Close details">✕</button></div>'+
-    '<div class="faction-field"><div class="faction-field-lbl">Synopsis</div><textarea data-line rows="1" placeholder="One line: what happens, and what changes?" oninput="msSet(\'synopsis\',this.value);var n=document.getElementById(\'msScN-'+s.id+'\');">'+esc(s.synopsis||'')+'</textarea></div>'+
+    '<div class="faction-field"><div class="faction-field-lbl">Synopsis</div>'+ta('synopsis','One line: what happens, and what changes?',1)+'</div>'+
     '<div class="faction-field"><div class="faction-field-lbl">Point of view</div>'+sel('pov',sheets.map(function(x){return[x.fid+'::'+x.sid,x.sheet.charName||x.sheet.name||'Unnamed'];}),'No POV character')+'</div>'+
     '<div class="faction-field"><div class="faction-field-lbl">Location</div>'+sel('locId',Object.keys(locs).map(function(k){return[k,locs[k].name||'Untitled'];}),'No location')+'</div>'+
     '<div class="faction-field"><div class="faction-field-lbl">Story beat</div>'+sel('beatId',beats.map(function(x,i){return[x.id,(ARC_NUMS[i]||i+1)+'. '+(x.name||'Untitled beat')];}),'Not on the timeline')+'</div>'+
     '<div class="faction-field"><div class="faction-field-lbl">Status</div><div class="ms-status">'+MS_STATUS.map(function(x){return'<button class="ms-st'+((s.status||'draft')===x[0]?' on':'')+'" style="--c:'+x[2]+'" onclick="msSet(\'status\',\''+x[0]+'\');renderManuscript()">'+x[1]+'</button>';}).join('')+'</div></div>'+
     '<div class="faction-field"><div class="faction-field-lbl">In this scene</div><div class="ms-ment" id="msMent"></div></div>'+
-    '<div class="faction-field"><div class="faction-field-lbl">Notes</div><textarea rows="3" placeholder="What this scene needs to do, things to fix later…" oninput="msSet(\'notes\',this.value)">'+esc(s.notes||'')+'</textarea></div>'+
+    '<details class="ms-craft"'+(s.goal||s.conflict||s.outcome||s.change?' open':'')+'><summary>Scene craft</summary><p class="ms-craft-hint">Every scene turns on what the point-of-view character wants and what stops them.</p>'+
+      '<div class="faction-field"><div class="faction-field-lbl">Goal — what do they want in this scene?</div>'+ta('goal','e.g. Get the Gate closed before the tide turns',1)+'</div>'+
+      '<div class="faction-field"><div class="faction-field-lbl">Conflict — what stands in the way?</div>'+ta('conflict','e.g. Zen has already broken the lock',1)+'</div>'+
+      '<div class="faction-field"><div class="faction-field-lbl">Outcome</div><select class="pw-meta-sel ms-sel" onchange="msSet(\'outcome\',this.value)">'+MS_OUTCOMES.map(function(o){return'<option value="'+o[0]+'"'+((s.outcome||'')===o[0]?' selected':'')+'>'+o[1]+'</option>';}).join('')+'</select></div>'+
+      '<div class="faction-field"><div class="faction-field-lbl">What changes by the end?</div>'+ta('change','e.g. Kai learns he can’t hold the sea alone',1)+'</div></details>'+
+    '<div class="faction-field"><div class="faction-field-lbl">Notes</div>'+ta('notes','What this scene needs to do, things to fix later…')+'</div>'+
+    '<div class="ms-info-actions"><button class="pw-btn" onclick="histSceneSheet()">Version history</button></div>'+
     '<div class="ms-info-actions"><button class="pw-btn" onclick="msMoveScene(-1)"'+(ci===0&&si===0?' disabled':'')+'>↑ Earlier</button><button class="pw-btn" onclick="msMoveScene(1)">↓ Later</button><button class="pw-btn danger" id="msDelScene" onclick="msDeleteScene()">Delete scene</button></div></aside>';
   var wasDetail=host.classList.contains('m-detail');
   host.innerHTML=b+e+d;
   if(wasDetail)host.classList.add('m-detail');
-  document.body.classList.toggle('ms-info-shown',msInfoOpen);
-  msGrowAll();msMentions();
+  msGrow(document.getElementById('msTitle'));msMentions();
 }
-/* editor growth that keeps the page from jumping */
-function msGrow(ta){
-  var sc=document.getElementById('msScroll');if(!ta||!sc)return;var st=sc.scrollTop;
-  ta.style.height='auto';ta.style.height=(ta.scrollHeight+2)+'px';sc.scrollTop=st;
-}
-function msGrowAll(){msGrow(document.getElementById('msTitle'));msGrow(document.getElementById('msText'));}
+/* title growth that keeps the page from jumping */
+function msGrow(ta){var sc=document.getElementById('msScroll');if(!ta||!sc)return;var st=sc.scrollTop;ta.style.height='auto';ta.style.height=(ta.scrollHeight+2)+'px';sc.scrollTop=st;}
+function msGrowAll(){msGrow(document.getElementById('msTitle'));}
 function msSet(k,v){
-  var f=msFind(msSceneId);if(!f)return;f.s[k]=v;
+  var f=msFind(msSceneId);if(!f)return;f.s[k]=v;msTouch(f.s);
   if(k==='title'){var n=document.getElementById('msScN-'+f.s.id);if(n)n.textContent=msSceneLabel(f.s,f.si);msGrow(document.getElementById('msTitle'));if(typeof mUpdateBar==='function')mUpdateBar();}
   msQueueSave();
 }
-function msTyping(ta){
-  var f=msFind(msSceneId);if(!f)return;f.s.text=ta.value;msGrow(ta);
-  var w=msWords(ta.value);
+/* the editor */
+function msEdFocus(){try{document.execCommand('defaultParagraphSeparator',false,'p');}catch(e){}}
+function msEdBlur(){var f=msFind(msSceneId);if(f){msCommit();histSnapScene(f.s,'Autosave',false);}}
+function msFormat(cmd){var ed=document.getElementById('msText');if(!ed)return;if(document.activeElement!==ed)ed.focus();document.execCommand(cmd,false,null);msTyping(ed);}
+function msKey(e){
+  var mod=e.metaKey||e.ctrlKey;
+  if(mod&&(e.key==='f'||e.key==='F')){e.preventDefault();msFindSheet();}
+  if(mod&&e.shiftKey&&(e.key==='s'||e.key==='S')){e.preventDefault();histSnapScene(msFind(msSceneId).s,'Saved by you',true);showToast('Version saved.');}
+}
+function msPaste(e){
+  var cd=e.clipboardData;if(!cd)return;e.preventDefault();
+  var h=cd.getData('text/html'),t=cd.getData('text/plain');
+  var clean=h?msSanitize(h):msPlainToHtml(t);
+  // a single pasted paragraph goes inline instead of splitting the current one
+  var one=clean.match(/^<p>([\s\S]*)<\/p>$/);if(one&&one[1].indexOf('</p>')===-1)clean=one[1];
+  document.execCommand('insertHTML',false,clean||msEscText(t));
+  msTyping(document.getElementById('msText'));
+}
+function msCommit(){
+  var ed=document.getElementById('msText'),f=msFind(msSceneId);if(!ed||!f)return;
+  var html=msSanitize(ed.innerHTML);
+  if(html!==f.s.html){f.s.html=html;f.s.text=msHtmlToText(html);msTouch(f.s);}
+}
+function msTyping(ed){
+  var f=msFind(msSceneId);if(!f)return;
+  f.s.text=(ed.innerText||'').replace(/\n{3,}/g,'\n\n').trim();msTouch(f.s);
+  ed.classList.toggle('is-empty',!f.s.text);
+  clearTimeout(window._msHtmlT);window._msHtmlT=setTimeout(msCommit,400);
+  var w=msWords(f.s.text);
   document.getElementById('msWc').textContent=msFmt(w)+' words';
   var sw=document.getElementById('msScW-'+f.s.id);if(sw)sw.textContent=msFmt(w);
   var cw=document.getElementById('msChW-'+f.c.id);if(cw)cw.textContent=msFmt(msChapterWords(f.c));
@@ -2850,34 +3026,38 @@ function msTyping(ta){
 }
 function msQueueSave(){
   var sv=document.getElementById('msSaved');if(sv)sv.classList.add('pending');
-  clearTimeout(_msSaveT);_msSaveT=setTimeout(function(){persist();var s2=document.getElementById('msSaved');if(s2)s2.classList.remove('pending');},600);
+  clearTimeout(_msSaveT);_msSaveT=setTimeout(function(){
+    msCommit();persist();
+    var f=msFind(msSceneId);if(f)histSnapScene(f.s,'Autosave',false);
+    var s2=document.getElementById('msSaved');if(s2)s2.classList.remove('pending');
+  },600);
 }
-/* everyone and everywhere the scene mentions, from the world's own names */
+document.addEventListener('visibilitychange',function(){if(document.visibilityState==='hidden'&&msSceneId){msCommit();persist();var f=msFind(msSceneId);if(f)histSnapScene(f.s,'Autosave',true);}});
+/* names the scene mentions, drawn from the world itself */
 function msEntities(){
   var out=[];
   getAllSheetsFlat().forEach(function(x){
     var full=x.sheet.charName||x.sheet.name;if(!full)return;
     var names=[full.split(',')[0].trim()];var first=names[0].split(/\s+/)[0];
     if(first.length>=3&&first!==names[0])names.push(first);
-    out.push({type:'char',id:x.fid+'::'+x.sid,label:names[0],names:names});
+    out.push({type:'char',id:x.fid+'::'+x.sid,label:names[0],names:names,sheet:x.sheet});
   });
   var W=(data.world||{});
   Object.keys(W.locations||{}).forEach(function(k){var n=W.locations[k].name;if(n)out.push({type:'loc',id:k,label:n,names:[n]});});
   Object.keys(W.lore||{}).forEach(function(k){var n=W.lore[k].name;if(n)out.push({type:'lore',id:k,label:n,names:[n]});});
   getFactionList().forEach(function(f){if(f.name)out.push({type:'fac',id:f.id,label:f.name,names:[f.name]});});
   var P=getPowers();Object.keys(P).forEach(function(k){var n=P[k].name;if(n)out.push({type:'pow',id:k,label:n,names:[n]});});
+  out.forEach(function(e){e.re=e.names.map(function(n){return new RegExp('(^|[^\\p{L}\\p{N}])'+n.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+'(?=$|[^\\p{L}\\p{N}])','iu');});});
   return out;
 }
+function msMentionsIn(text,ents){return ents.filter(function(e){return e.re.some(function(r){return r.test(text);});});}
 function msMentions(){
   var box=document.getElementById('msMent'),f=msFind(msSceneId);if(!box||!f)return;
-  var t=(f.s.title||'')+'\n'+(f.s.text||'');
-  var hits=msEntities().filter(function(e){return e.names.some(function(n){
-    var re=new RegExp('(^|[^\\p{L}\\p{N}])'+n.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+'(?=$|[^\\p{L}\\p{N}])','iu');return re.test(t);});});
+  var hits=msMentionsIn((f.s.title||'')+'\n'+(f.s.text||''),msEntities());
   var ICON={char:'●',loc:'▧',lore:'❦',fac:'⚑',pow:'◈'};
   box.innerHTML=hits.length?hits.map(function(h){return'<button class="ms-chip" onclick="msPeek(\''+h.type+'\',\''+h.id+'\')"><span class="ms-chip-i">'+ICON[h.type]+'</span>'+esc(h.label)+'</button>';}).join(''):
     '<span class="pw-none">Name a character, place, faction or power in the text and it shows up here.</span>';
 }
-/* quick look without leaving the page */
 function msPeek(type,id){
   var title='',rows=[],open='';
   var row=function(l,v){if(v)rows.push('<div class="m-field"><span class="m-lbl">'+l+'</span><div class="ms-peek-v">'+esc(v)+'</div></div>');};
@@ -2889,12 +3069,13 @@ function msPeek(type,id){
     Object.keys(e.fields||{}).slice(0,6).forEach(function(k){row(k.replace(/([A-Z])/g,' $1').replace(/^./,function(c){return c.toUpperCase();}),e.fields[k]);});
     open='<button class="m-btn" onclick="mSheetClose();msGoWorld(\''+st+'\',\''+id+'\')">Open '+(type==='loc'?'location':'lore entry')+'</button>';}
   else if(type==='fac'){var fa=data.factions[id];if(!fa)return;title=fa.name;var dd=fa.details||{};Object.keys(dd).slice(0,6).forEach(function(k){row(k.replace(/^./,function(c){return c.toUpperCase();}),dd[k]);});
-    open='<button class="m-btn" onclick="mSheetClose();currentFactionId=\''+id+'\';switchTab(\'factions\');if(typeof mOpenDetail===\'function\')mOpenDetail(\'factions\')">Open faction</button>';}
+    open='<button class="m-btn" onclick="mSheetClose();msGoFaction(\''+id+'\')">Open faction</button>';}
   else if(type==='pow'){var pw=getPowers()[id];if(!pw)return;title=powerName(pw);row('What it does',pw.summary);row('Limits',pw.limits);row('Cost',pw.cost);
     open='<button class="m-btn" onclick="mSheetClose();openPower(\''+id+'\')">Open power</button>';}
   mSheet(title,(rows.length?rows.join(''):'<span class="pw-none">Nothing written about this yet.</span>')+'<div class="msheet-row">'+open+'</div>');
 }
 function msGoWorld(st,id){collectSheet();switchTab('world');currentWorldSection=st;currentWorldId=id;renderWorldTab();if(typeof mOpenDetail==='function')mOpenDetail('world');}
+function msGoFaction(id){collectSheet();currentFactionId=id;switchTab('factions');if(typeof mOpenDetail==='function')mOpenDetail('factions');}
 function msToggleInfo(){
   if(isPhone()){var i=document.getElementById('msInfo');if(i)i.classList.toggle('m-open');return;}
   msInfoOpen=!msInfoOpen;var el=document.getElementById('msInfo');if(el)el.classList.toggle('closed',!msInfoOpen);
@@ -2906,25 +3087,24 @@ function msFocus(){
   var t=document.getElementById('msText');if(t&&on)t.focus();
   setTimeout(msGrowAll,30);
 }
-document.addEventListener('keydown',function(e){if(e.key==='Escape'&&document.body.classList.contains('ms-focus'))msFocus();});
+document.addEventListener('keydown',function(e){if(e.key==='Escape'&&document.body.classList.contains('ms-focus')&&!document.querySelector('.msheet-bg.open'))msFocus();});
 function msMoveScene(dir){
   var ms=getMs(),f=msFind(msSceneId);if(!f)return;
-  var flat=[];ms.chapters.forEach(function(c){c.scenes.forEach(function(s){flat.push({c:c,s:s});});});
-  var i=flat.findIndex(function(x){return x.s.id===f.s.id;});
   if(dir<0&&f.si>0){f.c.scenes.splice(f.si,1);f.c.scenes.splice(f.si-1,0,f.s);}
   else if(dir>0&&f.si<f.c.scenes.length-1){f.c.scenes.splice(f.si,1);f.c.scenes.splice(f.si+1,0,f.s);}
-  else if(dir<0&&f.ci>0){f.c.scenes.splice(f.si,1);ms.chapters[f.ci-1].scenes.push(f.s);}   // to the end of the previous chapter
-  else if(dir>0&&f.ci<ms.chapters.length-1){f.c.scenes.splice(f.si,1);ms.chapters[f.ci+1].scenes.unshift(f.s);} // to the start of the next
+  else if(dir<0&&f.ci>0){f.c.scenes.splice(f.si,1);ms.chapters[f.ci-1].scenes.push(f.s);}
+  else if(dir>0&&f.ci<ms.chapters.length-1){f.c.scenes.splice(f.si,1);ms.chapters[f.ci+1].scenes.unshift(f.s);}
   else return;
-  persist();renderManuscript();
+  msStruct();persist();renderManuscript();
 }
 var _msDelArm=false;
 function msDeleteScene(){
   var b=document.getElementById('msDelScene');
   if(!_msDelArm){_msDelArm=true;if(b){b.textContent='Tap again to delete';b.classList.add('armed');}setTimeout(function(){_msDelArm=false;var b2=document.getElementById('msDelScene');if(b2){b2.textContent='Delete scene';b2.classList.remove('armed');}},3000);return;}
-  _msDelArm=false;var f=msFind(msSceneId);if(!f)return;
+  _msDelArm=false;msCommit();var f=msFind(msSceneId);if(!f)return;
+  histSnapScene(f.s,'Deleted',true,{chapterId:f.c.id,index:f.si});
   f.c.scenes.splice(f.si,1);msSceneId=(f.c.scenes[f.si]||f.c.scenes[f.si-1]||{}).id||null;
-  persist();renderManuscript();showToast('Scene deleted.');
+  msStruct();persist();renderManuscript();showToast('Scene deleted. Restore it from Deleted at the bottom of the chapter list.');
 }
 function msChapterSheet(cid){
   var ms=getMs(),i=ms.chapters.findIndex(function(c){return c.id===cid;}),c=ms.chapters[i];if(!c)return;
@@ -2934,14 +3114,16 @@ function msChapterSheet(cid){
     '<div class="msheet-row"><button class="m-btn" '+(i===0?'disabled':'')+' onclick="msMoveChapter(\''+cid+'\',-1)">↑ Earlier</button><button class="m-btn" '+(i===ms.chapters.length-1?'disabled':'')+' onclick="msMoveChapter(\''+cid+'\',1)">↓ Later</button><span style="flex:1"></span><button class="m-btn danger" id="msDelCh" onclick="msDeleteChapter(\''+cid+'\')">Delete chapter</button></div>',
     renderManuscript);
 }
-function msSetChapter(cid,v){var c=getMs().chapters.find(function(x){return x.id===cid;});if(!c)return;c.title=v;msQueueSave();}
-function msMoveChapter(cid,dir){var ch=getMs().chapters,i=ch.findIndex(function(c){return c.id===cid;}),j=i+dir;if(j<0||j>=ch.length)return;var t=ch[i];ch[i]=ch[j];ch[j]=t;persist();msChapterSheet(cid);}
+function msSetChapter(cid,v){var c=getMs().chapters.find(function(x){return x.id===cid;});if(!c)return;c.title=v;msStruct();msQueueSave();}
+function msMoveChapter(cid,dir){var ch=getMs().chapters,i=ch.findIndex(function(c){return c.id===cid;}),j=i+dir;if(j<0||j>=ch.length)return;var t=ch[i];ch[i]=ch[j];ch[j]=t;msStruct();persist();msChapterSheet(cid);}
 var _msDelChArm=null;
 function msDeleteChapter(cid){
   var b=document.getElementById('msDelCh'),ch=getMs().chapters,c=ch.find(function(x){return x.id===cid;});
   var w=c?msChapterWords(c):0;
   if(_msDelChArm!==cid){_msDelChArm=cid;if(b)b.textContent=w?'Delete '+msFmt(w)+' words? Tap again':'Tap again to delete';setTimeout(function(){_msDelChArm=null;},3500);return;}
-  _msDelChArm=null;getMs().chapters=ch.filter(function(x){return x.id!==cid;});persist();mSheetClose();showToast('Chapter deleted.');
+  _msDelChArm=null;
+  c.scenes.forEach(function(s,k){histSnapScene(s,'Deleted with "'+(c.title||'its chapter')+'"',true,{chapterId:null,index:k,chapterTitle:c.title||''});});
+  getMs().chapters=ch.filter(function(x){return x.id!==cid;});msStruct();persist();mSheetClose();showToast('Chapter deleted. Its scenes can be restored from Deleted.');
 }
 function msGoalSheet(){
   var ms=getMs();
@@ -2949,30 +3131,615 @@ function msGoalSheet(){
     '<p class="pw-none" style="font-style:normal">Today: '+msFmt(msTodayWords())+' words. The count resets each morning.</p>'+
     '<div class="msheet-row"><button class="m-btn primary" onclick="getMs().goal=Math.max(0,parseInt(document.getElementById(\'msGoalInp\').value)||0);persist();mSheetClose()">Save goal</button></div>',renderManuscript);
 }
-/* export */
-function msExportSheet(){
-  mSheet('Export manuscript','<p class="pw-none" style="font-style:normal">Chapters become headings and scenes are separated by a centred #. '+msFmt(msTotalWords())+' words.</p>'+
-    '<div class="msheet-row"><button class="m-btn primary" onclick="msExport(\'doc\')">Word document</button><button class="m-btn" onclick="msExport(\'txt\')">Plain text</button></div>');
+
+/* ══ FIND & REPLACE ══ */
+var _frState={find:'',repl:'',cs:false,ww:false};
+function msFindSheet(){
+  msCommit();
+  mSheet('Find and replace',
+    '<div class="m-field"><span class="m-lbl">Find</span><input class="m-input" id="frFind" value="'+esc(_frState.find)+'" placeholder="Word or phrase" oninput="_frState.find=this.value;frRun()"/></div>'+
+    '<div class="m-field"><span class="m-lbl">Replace with</span><input class="m-input" id="frRepl" value="'+esc(_frState.repl)+'" placeholder="Leave empty to just search" oninput="_frState.repl=this.value;frRun()"/></div>'+
+    '<div class="msheet-row"><label class="acct-check"><input type="checkbox" id="frCs"'+(_frState.cs?' checked':'')+' onchange="_frState.cs=this.checked;frRun()"/> Match case</label><label class="acct-check"><input type="checkbox" id="frWw"'+(_frState.ww?' checked':'')+' onchange="_frState.ww=this.checked;frRun()"/> Whole words</label></div>'+
+    '<div id="frRename"></div><div id="frResults" class="fr-results"></div>'+
+    '<div class="msheet-row"><button class="m-btn primary" id="frGo" onclick="frReplaceAll()" disabled>Replace all</button></div>');
+  setTimeout(function(){var i=document.getElementById('frFind');if(i){i.focus();i.select();}frRun();},40);
 }
+function frRegex(){
+  var f=_frState.find;if(!f)return null;
+  var src=f.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
+  if(_frState.ww)src='(?<![\\p{L}\\p{N}])'+src+'(?![\\p{L}\\p{N}])';
+  return new RegExp(src,'gu'+(_frState.cs?'':'i'));
+}
+function frRun(){
+  var box=document.getElementById('frResults'),go=document.getElementById('frGo'),rn=document.getElementById('frRename');if(!box)return;
+  var re=frRegex();rn.innerHTML='';
+  if(!re){box.innerHTML='';go.disabled=true;return;}
+  var total=0,rows=[];
+  getMs().chapters.forEach(function(c,ci){c.scenes.forEach(function(s,si){
+    var t=s.text||'',m=t.match(re);if(!m)return;total+=m.length;
+    re.lastIndex=0;var first=re.exec(t);re.lastIndex=0;
+    var a=Math.max(0,first.index-40),snip=(a?'…':'')+t.slice(a,first.index)+'\u0001'+first[0]+'\u0002'+t.slice(first.index+first[0].length,first.index+first[0].length+50)+'…';
+    rows.push('<button class="fr-row" onclick="mSheetClose();msOpen(\''+s.id+'\')"><span class="fr-where">'+esc(msChapterLabel(c,ci)+' · '+msSceneLabel(s,si))+' <b>'+m.length+'</b></span><span class="fr-snip">'+esc(snip).replace('\u0001','<mark>').replace('\u0002','</mark>')+'</span></button>');
+  });});
+  box.innerHTML=total?'<div class="m-lbl" style="margin-bottom:6px">'+total+' match'+(total===1?'':'es')+' in '+rows.length+' scene'+(rows.length===1?'':'s')+'</div>'+rows.join(''):'<span class="pw-none">No matches in the manuscript.</span>';
+  go.disabled=!total||!_frState.repl;
+  // renaming a character? offer to update the sheet too
+  var hit=total&&_frState.repl&&getAllSheetsFlat().find(function(x){var n=(x.sheet.charName||'').split(',')[0].trim();return n&&(_frState.cs?n===_frState.find:n.toLowerCase()===_frState.find.toLowerCase());});
+  if(hit)rn.innerHTML='<label class="acct-check"><input type="checkbox" id="frSheet" checked/> Also rename '+esc(hit.sheet.charName)+'’s character sheet</label><input type="hidden" id="frSheetKey" value="'+hit.fid+'::'+hit.sid+'"/>';
+}
+function frReplaceAll(){
+  var re=frRegex(),repl=_frState.repl;if(!re||!repl)return;
+  var n=0,scenes=0;
+  getMs().chapters.forEach(function(c){c.scenes.forEach(function(s){
+    if(!re.test(s.text||'')){re.lastIndex=0;return;}re.lastIndex=0;
+    histSnapScene(s,'Before replacing “'+_frState.find+'”',true);
+    var doc=new DOMParser().parseFromString('<body>'+(s.html||'')+'</body>','text/html');
+    var w=doc.createTreeWalker(doc.body,NodeFilter.SHOW_TEXT),node,k=0;
+    while((node=w.nextNode())){var v=node.nodeValue;var nv=v.replace(re,function(){k++;return repl;});if(nv!==v)node.nodeValue=nv;}
+    if(k){s.html=msSanitize(doc.body.innerHTML);s.text=msHtmlToText(s.html);msTouch(s);n+=k;scenes++;}
+  });});
+  var sh=document.getElementById('frSheet');
+  if(sh&&sh.checked){var key=document.getElementById('frSheetKey').value.split('::');editSheet(key[0],key[1],function(x){x.charName=(x.charName||'').replace(re,repl);if(x.name)x.name=x.name.replace(re,repl);});}
+  persist();mSheetClose();renderManuscript();showToast('Replaced '+n+' time'+(n===1?'':'s')+' in '+scenes+' scene'+(scenes===1?'':'s')+'. Earlier versions are in each scene’s history.');
+}
+
+/* ══ STORY HEALTH ══
+   Notes an editor would make, drawn from how the world and the manuscript connect. */
+function msHealth(){
+  var ms=data.manuscript&&Array.isArray(data.manuscript.chapters)?data.manuscript:{chapters:[]};
+  var flat=[];ms.chapters.forEach(function(c,ci){(c.scenes||[]).forEach(function(s,si){flat.push({c:c,ci:ci,s:s,si:si,text:(s.title||'')+'\n'+(s.text||'')});});});
+  var out=[];var written=flat.filter(function(x){return msWords(x.s.text)>0;});
+  if(written.length<2)return out;
+  var ents=msEntities(),chars=ents.filter(function(e){return e.type==='char';});
+  var nCh=ms.chapters.length;
+  // where each character appears (named in the text, or holding the POV)
+  var app={};chars.forEach(function(e){app[e.id]=[];});
+  flat.forEach(function(x,i){
+    msMentionsIn(x.text,chars).forEach(function(e){app[e.id].push(i);});
+    if(x.s.pov&&app[x.s.pov]&&app[x.s.pov].indexOf(i)===-1)app[x.s.pov].push(i);
+  });
+  var lastWritten=written.length?flat.indexOf(written[written.length-1]):-1;
+  chars.forEach(function(e){
+    var idx=app[e.id];if(!idx.length)return;
+    var chs=idx.map(function(i){return flat[i].ci;}),last=Math.max.apply(null,chs),lastWrittenCh=flat[lastWritten].ci;
+    if(lastWrittenCh-last>=4)out.push({level:'warn',title:e.label+' disappears after '+msChapterLabel(ms.chapters[last],last),detail:'Not on the page for '+(lastWrittenCh-last)+' chapters. Check whether readers will miss them.',go:{scene:flat[idx[idx.length-1]].s.id}});
+    else{var sorted=chs.slice().sort(function(a,b){return a-b;});for(var k=1;k<sorted.length;k++)if(sorted[k]-sorted[k-1]>=5){out.push({level:'info',title:e.label+' is gone from '+msChapterLabel(ms.chapters[sorted[k-1]],sorted[k-1])+' to '+msChapterLabel(ms.chapters[sorted[k]],sorted[k]),detail:'A gap of '+(sorted[k]-sorted[k-1])+' chapters.',go:{scene:flat[idx[0]].s.id}});break;}}
+    // a character the story leans on, with an empty core
+    var sh=e.sheet,w=sh.wound||{},missing=['want','need','wound'].filter(function(k){return!(w[k]&&w[k].trim());});
+    if(idx.length>=3&&missing.length)out.push({level:'warn',title:e.label+' is in '+idx.length+' scenes but has no '+missing.join(', ')+' written',detail:'The more a character is on the page, the more their sheet should know.',go:{sheet:e.id}});
+  });
+  var never=chars.filter(function(e){return!app[e.id].length;});
+  if(never.length&&written.length>=3)out.push({level:'info',title:never.length+' character'+(never.length===1?' hasn’t':'s haven’t')+' appeared yet',detail:never.slice(0,6).map(function(e){return e.label;}).join(', ')+(never.length>6?'…':''),go:null});
+  // POV streaks
+  var povs={};flat.forEach(function(x){if(x.s.pov)povs[x.s.pov]=1;});
+  if(Object.keys(povs).length>=2){var run=1;for(var i=1;i<flat.length;i++){if(flat[i].s.pov&&flat[i].s.pov===flat[i-1].s.pov){run++;if(run===6){var e=chars.find(function(c){return c.id===flat[i].s.pov;});out.push({level:'info',title:'Six scenes in a row from '+(e?e.label:'one character')+'’s point of view',detail:'Starting at '+msChapterLabel(flat[i-5].c,flat[i-5].ci)+'. Fine if intended; other POV characters may feel absent.',go:{scene:flat[i-5].s.id}});}}else run=1;}}
+  // timeline order
+  var beats=(typeof tlSortedBeats==='function')?tlSortedBeats():[],bIdx={};beats.forEach(function(b,i){bIdx[b.id]=i;});
+  var prev=null;flat.forEach(function(x){if(!x.s.beatId||bIdx[x.s.beatId]==null)return;var bi=bIdx[x.s.beatId];
+    if(prev&&bi<prev.bi)out.push({level:'info',title:'“'+msSceneLabel(x.s,x.si)+'” goes back to beat '+(ARC_NUMS[bi]||bi+1),detail:'It comes after a scene set at beat '+(ARC_NUMS[prev.bi]||prev.bi+1)+'. Is it a flashback?',go:{scene:x.s.id}});
+    prev={bi:bi};});
+  if(beats.length&&flat.some(function(x){return x.s.beatId;})){var used={};flat.forEach(function(x){if(x.s.beatId)used[x.s.beatId]=1;});var empty=beats.filter(function(b){return!used[b.id];});
+    if(empty.length)out.push({level:'info',title:empty.length+' story beat'+(empty.length===1?' has':'s have')+' no scenes yet',detail:empty.map(function(b){return b.name||'Untitled beat';}).join(', '),go:{tab:'overview'}});}
+  // world elements leaned on but never written down
+  ents.filter(function(e){return e.type!=='char';}).forEach(function(e){
+    var n=flat.filter(function(x){return e.re.some(function(r){return r.test(x.text);});}).length;if(n<3)return;
+    var empty=false;
+    if(e.type==='loc'||e.type==='lore'){var en=data.world[e.type==='loc'?'locations':'lore'][e.id];empty=!Object.values(en.fields||{}).some(function(v){return v&&String(v).trim();});}
+    if(e.type==='fac'){var fa=data.factions[e.id];empty=!Object.values(fa.details||{}).some(function(v){return v&&String(v).trim();});}
+    if(e.type==='pow'){var pw=getPowers()[e.id];empty=!['summary','mechanics','limits','cost'].some(function(k){return pw[k]&&pw[k].trim();});}
+    if(empty)out.push({level:'info',title:e.label+' is in '+n+' scenes but has nothing written about it',detail:'Pin down the details before they drift.',go:{entity:e.type+'|'+e.id}});
+  });
+  // pacing
+  var cw=ms.chapters.map(function(c){return c.scenes.reduce(function(a,s){return a+msWords(s.text);},0);}),filled=cw.filter(function(w){return w>0;}).sort(function(a,b){return a-b;});
+  if(filled.length>=4){var med=filled[Math.floor(filled.length/2)];cw.forEach(function(w,i){if(!w)return;
+    if(w>med*2.2)out.push({level:'info',title:msChapterLabel(ms.chapters[i],i)+' runs long',detail:msFmt(w)+' words against a typical '+msFmt(med)+'. Could it split?',go:{scene:ms.chapters[i].scenes[0].id}});
+    if(w<med*0.35)out.push({level:'info',title:msChapterLabel(ms.chapters[i],i)+' is short',detail:msFmt(w)+' words against a typical '+msFmt(med)+'.',go:{scene:ms.chapters[i].scenes[0].id}});});}
+  // scene craft + metadata gaps
+  var noTurn=written.filter(function(x){return msWords(x.s.text)>=300&&!x.s.outcome&&!(x.s.change&&x.s.change.trim());});
+  if(noTurn.length)out.push({level:'info',title:noTurn.length+' scene'+(noTurn.length===1?' has':'s have')+' no outcome or change noted',detail:'Scene craft in the details panel: what turns in each scene?',go:{scene:noTurn[0].s.id}});
+  var noPov=written.filter(function(x){return!x.s.pov;});
+  if(noPov.length&&Object.keys(povs).length)out.push({level:'info',title:noPov.length+' scene'+(noPov.length===1?' has':'s have')+' no point-of-view character',detail:'Set it in each scene’s details so health checks can follow your characters.',go:{scene:noPov[0].s.id}});
+  return out.sort(function(a,b){return(a.level==='warn'?0:1)-(b.level==='warn'?0:1);});
+}
+function msHealthSheet(){
+  msCommit();var h=msHealth(),ms=getMs();
+  var st={draft:0,revised:0,final:0};ms.chapters.forEach(function(c){c.scenes.forEach(function(s){st[s.status||'draft']++;});});
+  var head='<div class="hl-sum"><span><b>'+msFmt(msTotalWords())+'</b> words</span><span><b>'+ms.chapters.length+'</b> chapters</span><span>'+st.draft+' draft · '+st.revised+' revised · '+st.final+' final</span></div>';
+  var body=h.length?h.map(function(x,i){return'<button class="hl-row '+x.level+'" onclick="msHealthGo('+i+')"><span class="hl-dot"></span><span class="hl-main"><span class="hl-t">'+esc(x.title)+'</span><span class="hl-d">'+esc(x.detail)+'</span></span>'+(x.go?'<span class="tlm-chev">›</span>':'')+'</button>';}).join(''):
+    '<div class="pw-none" style="padding:10px 0">Nothing to flag. Keep writing; checks appear as the manuscript grows.</div>';
+  window._hlItems=h;
+  mSheet('Story health',head+body+'<p class="ms-craft-hint" style="margin-top:6px">These are prompts, not rules. Characters, places and powers are matched by the names in your world.</p>');
+}
+function msHealthGo(i){
+  var x=(window._hlItems||[])[i];if(!x||!x.go)return;mSheetClose();var g=x.go;
+  if(g.scene){switchTab('manuscript');msOpen(g.scene);}
+  else if(g.sheet){var p=g.sheet.split('::');goToSheet(p[0],p[1]);}
+  else if(g.tab){switchTab(g.tab);}
+  else if(g.entity){var p2=g.entity.split('|');if(p2[0]==='loc')msGoWorld('locations',p2[1]);else if(p2[0]==='lore')msGoWorld('lore',p2[1]);else if(p2[0]==='fac')msGoFaction(p2[1]);else if(p2[0]==='pow')openPower(p2[1]);}
+}
+
+/* ══ EXPORT ══ */
+function msExportSheet(){
+  msCommit();
+  mSheet('Import & export','<p class="pw-none" style="font-style:normal">Chapters become headings and scenes are separated by a centred #. '+msFmt(msTotalWords())+' words.</p>'+
+    '<div class="msheet-row"><button class="m-btn primary" onclick="msExport(\'docx\')">Word (.docx)</button><button class="m-btn" onclick="msExport(\'txt\')">Plain text</button></div>'+
+    '<div class="m-field" style="margin-top:6px"><span class="m-lbl">Import</span><p class="pw-none" style="font-style:normal;margin:0">Bring in a Word document, Markdown or plain text. Headings become chapters, and #, *** or a blank heading become scene breaks. Imported chapters are added after your current ones.</p></div>'+
+    '<div class="msheet-row"><button class="m-btn" onclick="msImportPick()">Import a file…</button></div><input type="file" id="msImportFile" accept=".docx,.txt,.md,.markdown,text/plain" hidden onchange="msImportFile(this)"/>');
+}
+function msProjName(){return(loadIndex().find(function(p){return p.id===currentProjectId;})||{}).name||'Manuscript';}
+function msDownload(blob,name){var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(a.href);a.remove();},800);}
 function msExport(kind){
-  var ms=getMs(),proj=(loadIndex().find(function(p){return p.id===currentProjectId;})||{}).name||'Manuscript';
-  var fname=proj.replace(/[^a-z0-9]+/gi,'_').replace(/^_|_$/g,'')||'manuscript';
-  var blob;
+  msCommit();var ms=getMs(),proj=msProjName(),fname=proj.replace(/[^a-z0-9]+/gi,'_').replace(/^_|_$/g,'')||'manuscript';
   if(kind==='txt'){
-    var t=proj.toUpperCase()+'\n\n';
-    ms.chapters.forEach(function(c,i){t+='\n\n'+msChapterLabel(c,i).toUpperCase()+'\n\n';t+=c.scenes.map(function(s){return(s.text||'').trim();}).filter(Boolean).join('\n\n#\n\n');});
-    blob=new Blob([t.trim()+'\n'],{type:'text/plain'});fname+='.txt';
-  } else {
-    var h='<html><head><meta charset="utf-8"><title>'+esc(proj)+'</title><style>body{font-family:"Times New Roman",serif;font-size:12pt;line-height:2;max-width:6.5in;margin:1in auto;}h1{text-align:center;font-size:14pt;font-weight:normal;text-transform:uppercase;margin:3em 0 2em;page-break-before:always}h1:first-of-type{page-break-before:avoid}p{text-indent:0.5in;margin:0}p.first{text-indent:0}.brk{text-align:center;margin:1em 0}.title{text-align:center;font-size:18pt;margin-top:3in}</style></head><body><div class="title">'+esc(proj)+'</div>';
-    ms.chapters.forEach(function(c,i){
-      h+='<h1>'+esc(msChapterLabel(c,i))+'</h1>';
-      var parts=c.scenes.map(function(s){return(s.text||'').trim();}).filter(Boolean);
-      h+=parts.map(function(t){return t.split(/\n+/).map(function(p,k){return'<p'+(k===0?' class="first"':'')+'>'+esc(p)+'</p>';}).join('');}).join('<p class="brk">#</p>');
+    var t=proj.toUpperCase()+'\n';
+    ms.chapters.forEach(function(c,i){t+='\n\n'+msChapterLabel(c,i).toUpperCase()+'\n\n';t+=c.scenes.map(function(s){return msHtmlToText((s.html||'').replace(/<\/?em>/g,'_').replace(/<\/?strong>/g,'**'));}).filter(function(x){return x.trim();}).join('\n\n#\n\n');});
+    msDownload(new Blob([t.trim()+'\n'],{type:'text/plain'}),fname+'.txt');
+  } else msDownload(docxBuild(proj,ms),fname+'.docx');
+  if(document.getElementById('mSheetBg').classList.contains('open'))mSheetClose();
+}
+/* minimal .docx writer: standard manuscript format, italics and bold kept */
+function docxEsc(t){return String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function docxRuns(html){
+  var out='',doc=new DOMParser().parseFromString('<body>'+html+'</body>','text/html');
+  (function walk(n,i,b){n.childNodes.forEach(function(c){
+    if(c.nodeType===3){if(c.nodeValue)out+='<w:r>'+(i||b?'<w:rPr>'+(b?'<w:b/>':'')+(i?'<w:i/>':'')+'</w:rPr>':'')+'<w:t xml:space="preserve">'+docxEsc(c.nodeValue)+'</w:t></w:r>';return;}
+    if(c.nodeType!==1)return;if(c.tagName==='BR'){out+='<w:r><w:br/></w:r>';return;}
+    walk(c,i||c.tagName==='EM',b||c.tagName==='STRONG');});})(doc.body,false,false);
+  return out;
+}
+function docxBuild(title,ms){
+  var P=function(style,inner,extra){return'<w:p><w:pPr>'+(style?'<w:pStyle w:val="'+style+'"/>':'')+(extra||'')+'</w:pPr>'+inner+'</w:p>';};
+  var body=P('Title','<w:r><w:t>'+docxEsc(title)+'</w:t></w:r>');
+  ms.chapters.forEach(function(c,i){
+    body+=P('Heading1','<w:r><w:t>'+docxEsc(msChapterLabel(c,i))+'</w:t></w:r>');
+    var scenes=c.scenes.filter(function(s){return(s.text||'').trim();});
+    scenes.forEach(function(s,k){
+      if(k)body+=P('SceneBreak','<w:r><w:t>#</w:t></w:r>');
+      var paras=(s.html||'').match(/<p>[\s\S]*?<\/p>/g)||[];
+      paras.forEach(function(p,j){body+=P(j===0?'FirstPara':'',docxRuns(p.slice(3,-4)));});
     });
-    blob=new Blob([h+'</body></html>'],{type:'application/msword'});fname+='.doc';
+  });
+  var docXml='<?xml version="1.0" encoding="UTF-8" standalone="yes"?><w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:body>'+body+'<w:sectPr><w:pgSz w:w="12240" w:h="15840"/><w:pgMar w:top="1440" w:right="1440" w:bottom="1440" w:left="1440" w:header="720" w:footer="720" w:gutter="0"/></w:sectPr></w:body></w:document>';
+  var styles='<?xml version="1.0" encoding="UTF-8" standalone="yes"?><w:styles xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">'+
+    '<w:docDefaults><w:rPrDefault><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/><w:sz w:val="24"/></w:rPr></w:rPrDefault><w:pPrDefault><w:pPr><w:spacing w:after="0" w:line="480" w:lineRule="auto"/></w:pPr></w:pPrDefault></w:docDefaults>'+
+    '<w:style w:type="paragraph" w:default="1" w:styleId="Normal"><w:name w:val="Normal"/><w:pPr><w:ind w:firstLine="720"/></w:pPr></w:style>'+
+    '<w:style w:type="paragraph" w:styleId="FirstPara"><w:name w:val="First Paragraph"/><w:basedOn w:val="Normal"/><w:pPr><w:ind w:firstLine="0"/></w:pPr></w:style>'+
+    '<w:style w:type="paragraph" w:styleId="Title"><w:name w:val="Title"/><w:basedOn w:val="Normal"/><w:pPr><w:jc w:val="center"/><w:spacing w:before="4320"/><w:ind w:firstLine="0"/></w:pPr><w:rPr><w:sz w:val="32"/></w:rPr></w:style>'+
+    '<w:style w:type="paragraph" w:styleId="Heading1"><w:name w:val="heading 1"/><w:basedOn w:val="Normal"/><w:pPr><w:pageBreakBefore/><w:jc w:val="center"/><w:spacing w:before="2880" w:after="480"/><w:ind w:firstLine="0"/><w:outlineLvl w:val="0"/></w:pPr><w:rPr><w:caps/></w:rPr></w:style>'+
+    '<w:style w:type="paragraph" w:styleId="SceneBreak"><w:name w:val="Scene Break"/><w:basedOn w:val="Normal"/><w:pPr><w:jc w:val="center"/><w:ind w:firstLine="0"/></w:pPr></w:style></w:styles>';
+  var files=[
+    ['[Content_Types].xml','<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/><Override PartName="/word/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.styles+xml"/></Types>'],
+    ['_rels/.rels','<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="word/document.xml"/></Relationships>'],
+    ['word/_rels/document.xml.rels','<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/></Relationships>'],
+    ['word/document.xml',docXml],['word/styles.xml',styles]];
+  return new Blob([zipStore(files)],{type:'application/vnd.openxmlformats-officedocument.wordprocessingml.document'});
+}
+var _crcT=null;
+function crc32(u8){if(!_crcT){_crcT=new Uint32Array(256);for(var n=0;n<256;n++){var c=n;for(var k=0;k<8;k++)c=c&1?0xEDB88320^(c>>>1):c>>>1;_crcT[n]=c>>>0;}}var crc=0xFFFFFFFF;for(var i=0;i<u8.length;i++)crc=_crcT[(crc^u8[i])&0xFF]^(crc>>>8);return(crc^0xFFFFFFFF)>>>0;}
+function zipStore(files){
+  var enc=new TextEncoder(),parts=[],cen=[],off=0;
+  files.forEach(function(f){
+    var name=enc.encode(f[0]),body=enc.encode(f[1]),crc=crc32(body);
+    var h=new DataView(new ArrayBuffer(30));h.setUint32(0,0x04034b50,true);h.setUint16(4,20,true);h.setUint16(6,0x0800,true);h.setUint16(8,0,true);h.setUint32(14,crc,true);h.setUint32(18,body.length,true);h.setUint32(22,body.length,true);h.setUint16(26,name.length,true);
+    parts.push(new Uint8Array(h.buffer),name,body);
+    var c=new DataView(new ArrayBuffer(46));c.setUint32(0,0x02014b50,true);c.setUint16(4,20,true);c.setUint16(6,20,true);c.setUint16(8,0x0800,true);c.setUint32(16,crc,true);c.setUint32(20,body.length,true);c.setUint32(24,body.length,true);c.setUint16(28,name.length,true);c.setUint32(42,off,true);
+    cen.push(new Uint8Array(c.buffer),name);off+=30+name.length+body.length;
+  });
+  var cs=cen.reduce(function(a,b){return a+b.length;},0),e=new DataView(new ArrayBuffer(22));
+  e.setUint32(0,0x06054b50,true);e.setUint16(8,files.length,true);e.setUint16(10,files.length,true);e.setUint32(12,cs,true);e.setUint32(16,off,true);
+  var all=parts.concat(cen,[new Uint8Array(e.buffer)]),len=all.reduce(function(a,b){return a+b.length;},0),out=new Uint8Array(len),p=0;
+  all.forEach(function(a){out.set(a,p);p+=a.length;});return out;
+}
+
+/* ══ IMPORT ══ */
+function msImportPick(){var i=document.getElementById('msImportFile');if(i)i.click();}
+function msImportFile(input){
+  var f=input.files&&input.files[0];if(!f)return;input.value='';
+  var isDocx=/\.docx$/i.test(f.name);
+  (isDocx?docxRead(f):f.text().then(msParsePlain)).then(function(chapters){
+    if(!chapters.length||!chapters.some(function(c){return c.scenes.some(function(s){return s.text;});})){showToast('Nothing to import in that file.');return;}
+    histSnapWorld(currentProjectId,'Before importing '+f.name);
+    var ms=getMs();chapters.forEach(function(c){ms.chapters.push(c);});msStruct();persist();
+    if(document.getElementById('mSheetBg').classList.contains('open'))mSheetClose();
+    msSceneId=chapters[0].scenes[0].id;switchTab('manuscript');renderManuscript();if(typeof mShowList==='function'&&isPhone())mShowList('manuscript');
+    var w=chapters.reduce(function(a,c){return a+c.scenes.reduce(function(b,s){return b+msWords(s.text);},0);},0);
+    showToast('Imported '+chapters.length+' chapter'+(chapters.length===1?'':'s')+', '+msFmt(w)+' words.');
+  }).catch(function(e){console.warn(e);showToast('Could not read that file. Save it as .docx or .txt and try again.');});
+}
+function msChaptersFromBlocks(blocks,fallbackTitle){
+  // blocks: [{kind:'h'|'break'|'p', html, text}]
+  var chapters=[],cur=null,scene=null;
+  function newCh(t){cur={id:genId(),title:t||'',scenes:[]};chapters.push(cur);scene=null;}
+  function newSc(){scene=msNewSceneObj();cur.scenes.push(scene);}
+  blocks.forEach(function(b){
+    if(b.kind==='h'){newCh(b.text);return;}
+    if(!cur)newCh(fallbackTitle);
+    if(b.kind==='break'){if(scene&&scene.html)newSc();return;}
+    if(!scene)newSc();
+    scene.html+='<p>'+b.html+'</p>';
+  });
+  chapters.forEach(function(c){c.scenes=c.scenes.filter(function(s){return s.html;});c.scenes.forEach(function(s){s.text=msHtmlToText(s.html);});if(!c.scenes.length)c.scenes.push(msNewSceneObj());});
+  return chapters;
+}
+function msParsePlain(txt){
+  txt=txt.replace(/\r/g,'');
+  var md=function(t){return msEscText(t).replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>').replace(/(^|[^*\w])[*_](?!\s)(.+?)(?<!\s)[*_](?![*\w])/g,'$1<em>$2</em>');};
+  var blocks=[];
+  txt.split(/\n\s*\n/).forEach(function(par){
+    var lines=par.split('\n');
+    lines.forEach(function(line,li){
+      var t=line.trim();if(!t)return;
+      var h=t.match(/^#{1,3}\s+(.+)$/);
+      if(h){blocks.push({kind:'h',text:h[1].trim()});return;}
+      if(/^(#|\*\s*\*\s*\*|\*\*\*|~+|-{3,})$/.test(t)){blocks.push({kind:'break'});return;}
+      if(/^(chapter|prologue|epilogue|part)\b.{0,60}$/i.test(t)&&lines.length===1){blocks.push({kind:'h',text:t});return;}
+      blocks.push({kind:'p',html:md(t)});
+    });
+  });
+  return Promise.resolve(msChaptersFromBlocks(blocks,'Imported'));
+}
+async function unzipEntry(buf,want){
+  var dv=new DataView(buf),u8=new Uint8Array(buf),i=u8.length-22;
+  while(i>=0&&dv.getUint32(i,true)!==0x06054b50)i--;if(i<0)throw new Error('not a zip');
+  var n=dv.getUint16(i+10,true),p=dv.getUint32(i+16,true),dec=new TextDecoder();
+  for(var k=0;k<n;k++){
+    var method=dv.getUint16(p+10,true),csize=dv.getUint32(p+20,true),nlen=dv.getUint16(p+28,true),xlen=dv.getUint16(p+30,true),clen=dv.getUint16(p+32,true),loff=dv.getUint32(p+42,true);
+    var name=dec.decode(u8.subarray(p+46,p+46+nlen));p+=46+nlen+xlen+clen;
+    if(name!==want)continue;
+    var ds=loff+30+dv.getUint16(loff+26,true)+dv.getUint16(loff+28,true),raw=u8.subarray(ds,ds+csize);
+    if(method===0)return dec.decode(raw);
+    var stream=new Blob([raw]).stream().pipeThrough(new DecompressionStream('deflate-raw'));
+    return await new Response(stream).text();
   }
-  var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=fname;document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(a.href);a.remove();},500);
-  mSheetClose();
+  throw new Error('missing '+want);
+}
+async function docxRead(file){
+  var xml=await unzipEntry(await file.arrayBuffer(),'word/document.xml');
+  var doc=new DOMParser().parseFromString(xml,'application/xml'),W='http://schemas.openxmlformats.org/wordprocessingml/2006/main';
+  var blocks=[];
+  Array.prototype.forEach.call(doc.getElementsByTagNameNS(W,'p'),function(p){
+    var st=p.getElementsByTagNameNS(W,'pStyle')[0],style=st?st.getAttributeNS(W,'val')||st.getAttribute('w:val')||'':'';
+    var html='',text='';
+    Array.prototype.forEach.call(p.getElementsByTagNameNS(W,'r'),function(r){
+      var rp=r.getElementsByTagNameNS(W,'rPr')[0];
+      var on=function(tag){var el=rp&&rp.getElementsByTagNameNS(W,tag)[0];if(!el)return false;var v=el.getAttributeNS(W,'val')||el.getAttribute('w:val');return v!=='0'&&v!=='false';};
+      var it=on('i'),bo=on('b'),t='';
+      Array.prototype.forEach.call(r.childNodes,function(c){if(c.localName==='t')t+=c.textContent;else if(c.localName==='tab')t+=' ';else if(c.localName==='br')t+='\n';});
+      if(!t)return;text+=t;var h=msEscText(t).replace(/\n/g,'<br>');if(bo)h='<strong>'+h+'</strong>';if(it)h='<em>'+h+'</em>';html+=h;
+    });
+    html=html.replace(/<\/em><em>/g,'').replace(/<\/strong><strong>/g,'');
+    var tt=text.trim();
+    if(/^(Heading1|Heading2|Title|heading1|Heading 1)$/i.test(style.replace(/\s/g,''))||/^heading ?1$/i.test(style)){if(tt)blocks.push({kind:'h',text:tt});return;}
+    if(!tt){return;}
+    if(/^(#|\*\s*\*\s*\*|\*\*\*|~+)$/.test(tt)){blocks.push({kind:'break'});return;}
+    blocks.push({kind:'p',html:html});
+  });
+  return msChaptersFromBlocks(blocks,file.name.replace(/\.docx$/i,''));
+}
+
+/* ══════════════════════════════════════════════════════
+   VERSION HISTORY & BACKUPS (IndexedDB, on this device)
+   scenes: a snapshot of a scene every few minutes while writing, before any
+           replace/restore/sync change, and when deleted. Up to 60 per scene.
+   worlds: a full copy of a world once a day, before sync replaces it, before an
+           import, and when a world is deleted. Kept 14 per world, deletions 30 days.
+   Nothing here is ever overwritten in place: restoring always saves the current
+   state first, and a restored world opens as a copy.
+══════════════════════════════════════════════════════ */
+var _histDb=null,_histLast={};
+function histDb(){
+  if(_histDb)return _histDb;
+  _histDb=new Promise(function(res,rej){
+    var r=indexedDB.open('arcwright-history',1);
+    r.onupgradeneeded=function(){var db=r.result;
+      var s=db.createObjectStore('scenes',{keyPath:'k',autoIncrement:true});s.createIndex('sid','sid');s.createIndex('pid','pid');
+      var w=db.createObjectStore('worlds',{keyPath:'k',autoIncrement:true});w.createIndex('pid','pid');};
+    r.onsuccess=function(){res(r.result);};r.onerror=function(){rej(r.error);};
+  });
+  return _histDb;
+}
+function histAll(store,index,key){return histDb().then(function(db){return new Promise(function(res){var q=db.transaction(store).objectStore(store).index(index).getAll(key);q.onsuccess=function(){res(q.result||[]);};q.onerror=function(){res([]);};});});}
+function histAllStore(store){return histDb().then(function(db){return new Promise(function(res){var q=db.transaction(store).objectStore(store).getAll();q.onsuccess=function(){res(q.result||[]);};q.onerror=function(){res([]);};});});}
+function histPut(store,rec){return histDb().then(function(db){return new Promise(function(res){var t=db.transaction(store,'readwrite');t.objectStore(store).add(rec);t.oncomplete=function(){res();};t.onerror=function(){res();};});}).catch(function(){});}
+function histDel(store,keys){if(!keys.length)return Promise.resolve();return histDb().then(function(db){return new Promise(function(res){var t=db.transaction(store,'readwrite'),os=t.objectStore(store);keys.forEach(function(k){os.delete(k);});t.oncomplete=function(){res();};t.onerror=function(){res();};});});}
+function histAgo(t){var s=(Date.now()-t)/1000;if(s<60)return'Just now';if(s<3600)return Math.round(s/60)+' min ago';if(s<86400)return Math.round(s/3600)+' hr ago';
+  var d=new Date(t);return d.toLocaleDateString(undefined,{month:'short',day:'numeric'})+', '+d.toLocaleTimeString(undefined,{hour:'numeric',minute:'2-digit'});}
+
+/* scene snapshots */
+function histSnapScene(s,reason,force,extra){
+  if(!s||!currentProjectId)return Promise.resolve();
+  var sig=(s.html||'')+'\u0001'+(s.title||''),last=_histLast[s.id];
+  if(last&&last.sig===sig&&reason!=='Deleted'&&!/^Deleted/.test(reason))return Promise.resolve();      // nothing changed
+  if(!force&&last&&Date.now()-last.t<5*60*1000)return Promise.resolve();                                  // autosave: at most every 5 minutes
+  if(!(s.html||s.title))return Promise.resolve();
+  _histLast[s.id]={sig:sig,t:Date.now()};
+  var rec={sid:s.id,pid:currentProjectId,t:Date.now(),title:s.title||'',html:s.html||'',words:msWords(s.text||msHtmlToText(s.html)),reason:reason||'Autosave'};
+  if(extra)Object.keys(extra).forEach(function(k){rec[k]=extra[k];});
+  return histPut('scenes',rec).then(function(){return histAll('scenes','sid',s.id);}).then(function(list){
+    if(list.length>60)return histDel('scenes',list.sort(function(a,b){return a.t-b.t;}).slice(0,list.length-60).map(function(r){return r.k;}));
+  });
+}
+function histSceneSheet(){
+  msCommit();var f=msFind(msSceneId);if(!f)return;
+  histAll('scenes','sid',f.s.id).then(function(list){
+    list.sort(function(a,b){return b.t-a.t;});window._histList=list;
+    mSheet('Version history · '+msSceneLabel(f.s,f.si),
+      '<p class="ms-craft-hint">A version is kept every few minutes while you write, and before anything replaces this scene. Press Ctrl+Shift+S to save one yourself.</p>'+
+      '<div class="msheet-row"><button class="m-btn" onclick="histSnapScene(msFind(msSceneId).s,\'Saved by you\',true).then(histSceneSheet)">Save a version now</button></div>'+
+      (list.length?list.map(function(r,i){return'<button class="hl-row" onclick="histPreview('+i+')"><span class="hl-main"><span class="hl-t">'+esc(histAgo(r.t))+' · '+msFmt(r.words)+' words</span><span class="hl-d">'+esc(r.reason)+(r.title?' · '+r.title:'')+'</span></span><span class="tlm-chev">›</span></button>';}).join(''):'<div class="pw-none">No earlier versions yet. They appear as you write.</div>'));
+  });
+}
+function histPreview(i){
+  var r=(window._histList||[])[i];if(!r)return;
+  mSheet(histAgo(r.t)+' · '+msFmt(r.words)+' words','<div class="hist-prev">'+(r.title?'<h3>'+esc(r.title)+'</h3>':'')+(r.html||'<p><em>Empty</em></p>')+'</div>'+
+    '<div class="msheet-row"><button class="m-btn primary" onclick="histRestore('+i+')">Restore this version</button><button class="m-btn" onclick="histSceneSheet()">Back</button></div>');
+}
+function histRestore(i){
+  var r=(window._histList||[])[i],f=msFind(msSceneId);if(!r||!f)return;
+  histSnapScene(f.s,'Before restoring a version',true).then(function(){
+    f.s.html=r.html;f.s.title=r.title;f.s.text=msHtmlToText(r.html);msTouch(f.s);_histLast[f.s.id]=null;
+    persist();mSheetClose();renderManuscript();showToast('Restored. The version you replaced is saved in the history too.');
+  });
+}
+/* deleted scenes, restorable */
+function msDeletedSheet(){
+  var live={};getMs().chapters.forEach(function(c){c.scenes.forEach(function(s){live[s.id]=1;});});
+  histAll('scenes','pid',currentProjectId).then(function(list){
+    var latest={};list.forEach(function(r){if(!latest[r.sid]||r.t>latest[r.sid].t)latest[r.sid]=r;});
+    var dead=Object.values(latest).filter(function(r){return!live[r.sid]&&/^Deleted/.test(r.reason);}).sort(function(a,b){return b.t-a.t;});
+    window._deadList=dead;
+    mSheet('Deleted scenes',dead.length?dead.map(function(r,i){return'<button class="hl-row" onclick="msRestoreDeleted('+i+')"><span class="hl-main"><span class="hl-t">'+esc(r.title||'Untitled scene')+' · '+msFmt(r.words)+' words</span><span class="hl-d">Deleted '+esc(histAgo(r.t).toLowerCase())+'</span></span><span class="tlm-chev">Restore</span></button>';}).join(''):'<div class="pw-none">No deleted scenes in this world.</div>');
+  });
+}
+function msRestoreDeleted(i){
+  var r=(window._deadList||[])[i];if(!r)return;var ms=getMs();
+  var c=ms.chapters.find(function(x){return x.id===r.chapterId;});
+  if(!c){c={id:genId(),title:r.chapterTitle||'Restored scenes',scenes:[]};ms.chapters.push(c);}
+  var s={id:r.sid,title:r.title,html:r.html,text:msHtmlToText(r.html),status:'draft',mod:Date.now()};
+  c.scenes.splice(Math.min(r.index||0,c.scenes.length),0,s);msStruct();persist();mSheetClose();msOpen(s.id);showToast('Scene restored.');
+}
+
+/* world backups */
+function histSnapWorld(pid,reason){
+  pid=pid||currentProjectId;if(!pid)return Promise.resolve();
+  var raw=pid===currentProjectId?JSON.stringify(data):localStorage.getItem(projKey(pid));if(!raw)return Promise.resolve();
+  var meta=loadIndex().find(function(p){return p.id===pid;})||{};
+  return histPut('worlds',{pid:pid,t:Date.now(),name:meta.name||'Untitled world',reason:reason||'Daily backup',size:raw.length,json:raw}).then(function(){
+    try{localStorage.setItem('arcwright-lastbackup',String(Date.now()));}catch(e){}
+    return histAll('worlds','pid',pid);
+  }).then(function(list){
+    if(!list)return;list.sort(function(a,b){return b.t-a.t;});
+    var keep=[],drop=[],kept=0;
+    list.forEach(function(r){var isDel=/deleted/i.test(r.reason);if(isDel){if(Date.now()-r.t<30*86400000)keep.push(r);else drop.push(r);}else if(kept<14){kept++;keep.push(r);}else drop.push(r);});
+    return histDel('worlds',drop.map(function(r){return r.k;}));
+  });
+}
+function histDailyBackup(pid){
+  histAll('worlds','pid',pid).then(function(list){
+    var newest=list.reduce(function(m,r){return Math.max(m,r.t);},0);
+    if(Date.now()-newest>20*3600*1000)histSnapWorld(pid,'Daily backup');
+  });
+}
+function histBackupsSheet(){
+  histAllStore('worlds').then(function(list){
+    list.sort(function(a,b){return b.t-a.t;});window._wbList=list;
+    mSheet('Backups on this device','<p class="ms-craft-hint">ArcWright keeps a copy of each world every day, and before syncing, importing or deleting changes it. Restoring opens the backup as a new world, so nothing you have now is replaced.</p>'+
+      (list.length?list.map(function(r,i){return'<button class="hl-row" onclick="histRestoreWorld('+i+')"><span class="hl-main"><span class="hl-t">'+esc(r.name)+'</span><span class="hl-d">'+esc(histAgo(r.t))+' · '+esc(r.reason)+' · '+Math.max(1,Math.round(r.size/1024))+' KB</span></span><span class="tlm-chev">Restore</span></button>';}).join(''):'<div class="pw-none">No backups yet. The first is made the next time you open a world.</div>'));
+  });
+}
+function histRestoreWorld(i){
+  var r=(window._wbList||[])[i];if(!r)return;
+  var id=genId(),d;try{d=JSON.parse(r.json);}catch(e){showToast('That backup could not be read.');return;}
+  try{localStorage.setItem(projKey(id),r.json);}catch(e){showToast('Not enough storage to restore it here.');return;}
+  var idx=loadIndex();idx.push({id:id,name:r.name+' (restored '+new Date(r.t).toLocaleDateString()+')',desc:'',created:Date.now(),modified:Date.now(),chars:Object.keys(d.folders||{}).length});saveIndex(idx);
+  mSheetClose();renderProjGrid();showToast('Restored as a new world.');
+}
+/* ask the browser not to clear this site's storage (installed apps on iPhone get this) */
+function histPersist(){try{if(navigator.storage&&navigator.storage.persist&&!window._persistAsked){window._persistAsked=true;navigator.storage.persisted().then(function(p){if(!p)navigator.storage.persist();});}}catch(e){}}
+function histStatusHTML(){
+  var b=+localStorage.getItem('arcwright-lastbackup')||0,s=+localStorage.getItem('arcwright-lastsync')||0;
+  return '<div class="bk-status"><div><span class="m-lbl">Backed up on this device</span><span>'+(b?histAgo(b):'Not yet')+'</span></div>'+
+    '<div><span class="m-lbl">Saved to your account</span><span>'+(typeof _sbUser!=='undefined'&&_sbUser?(s?histAgo(s):'Not yet'):'Sign in to keep a copy online')+'</span></div>'+
+    '<button class="m-btn" onclick="histBackupsSheet()">See backups</button></div>';
+}
+
+/* ══════════════════════════════════════════════════════
+   MERGING TWO COPIES OF A WORLD
+   Used when the cloud copy changed on another device since this device last synced.
+   Manuscript: every scene keeps whichever copy was edited last; the chapter/scene
+   structure comes from whichever copy changed its structure last; a scene that only
+   one side has survives if it was written after the other side's structure changed.
+   Everything else comes from the newer copy. The older copy is always saved as a
+   backup first (histSnapWorld), so nothing is lost even when a choice is wrong.
+══════════════════════════════════════════════════════ */
+function mergeWorlds(L,R,localNewer){
+  var clone=function(o){return JSON.parse(JSON.stringify(o));};
+  var B=clone(localNewer?L:R),O=localNewer?R:L;
+  var bm=B.manuscript,om=O&&O.manuscript;
+  if(om&&Array.isArray(om.chapters)&&om.chapters.length){
+    if(!bm||!Array.isArray(bm.chapters)||!bm.chapters.length){B.manuscript=clone(om);}
+    else{
+      var useO=(om.structMod||0)>(bm.structMod||0);
+      var S=useO?clone(om):bm,other=useO?bm:om,sc={};
+      var index=function(m,tag){m.chapters.forEach(function(c){(c.scenes||[]).forEach(function(s){(sc[s.id]=sc[s.id]||{})[tag]={s:s,c:c};});});};
+      index(S,'s');index(other,'o');
+      Object.keys(sc).forEach(function(id){
+        var e=sc[id];
+        if(e.s&&e.o){if((e.o.s.mod||0)>(e.s.s.mod||0)){var keep=e.s.s;Object.keys(keep).forEach(function(k){delete keep[k];});Object.assign(keep,clone(e.o.s));}}
+        else if(!e.s&&e.o&&(e.o.s.mod||0)>(S.structMod||0)){
+          var ch=S.chapters.find(function(c){return c.id===e.o.c.id;});
+          if(!ch){ch={id:e.o.c.id,title:e.o.c.title||'',scenes:[]};S.chapters.push(ch);}
+          ch.scenes.push(clone(e.o.s));
+        }
+      });
+      S.goal=S.goal||other.goal||0;S.log=Object.assign({},other.log||{},S.log||{});
+      S.structMod=Math.max(S.structMod||0,other.structMod||0);
+      B.manuscript=S;
+    }
+  }
+  return B;
+}
+// Bring a merged copy into the world that's open right now without clobbering what's on screen
+function applyMergedToOpen(M){
+  Object.keys(M).forEach(function(k){data[k]=M[k];});
+  try{localStorage.setItem(projKey(),JSON.stringify(data));}catch(e){}
+  if(document.querySelector('input:focus,textarea:focus,[contenteditable]:focus'))return; // re-render later
+  renderTree();
+  var t=(document.querySelector('.view-pane.active')||{id:''}).id.replace('pane-','');
+  if(t==='manuscript')renderManuscript();else if(t==='overview')renderOverview();else if(t==='factions')renderFactionTab();else if(t==='world')renderWorldTab();else if(t==='powers')renderPowersTab();
+  else if(t==='sheets'&&currentFid&&currentSid&&data.folders[currentFid]&&data.folders[currentFid].sheets[currentSid]){var sa=document.getElementById('sheetArea'),st=sa?sa.scrollTop:0;loadSheet(currentFid,currentSid);if(sa)sa.scrollTop=st;}
+}
+
+/* ══════════════════════════════════════════════════════
+   SEARCH THE WHOLE WORLD (Ctrl/Cmd+K, or the magnifier in the top bar)
+══════════════════════════════════════════════════════ */
+var _gsIndex=null,_gsT=null;
+function gsFlat(o){var out=[];(function walk(v){if(v==null)return;if(typeof v==='string'){if(v&&!/^data:/.test(v))out.push(v);return;}if(typeof v==='number'||typeof v==='boolean')return;if(Array.isArray(v)){v.forEach(walk);return;}if(typeof v==='object')Object.keys(v).forEach(function(k){if(!/^(id|fid|sid|powerId|parentId|imageId|portraitImg|color|x|y|mod|created|modified|linkedSheet|pov|locId|beatId|status|kind|category|outcome|role|sectionColors|collapsedSections|traitColors|roleColors)$/.test(k))walk(v[k]);});})(o);return out.join(' \u00B7 ');}
+function gsBuild(){
+  if(currentFid&&currentSid)collectSheet();if(typeof msCommit==='function')msCommit();
+  var I=[];
+  getAllSheetsFlat().forEach(function(x){I.push({type:'Characters',ico:'\u25CF',title:x.sheet.charName||x.sheet.name||'Unnamed',sub:x.folderName,body:gsFlat(x.sheet),go:function(){goToSheet(x.fid,x.sid);}});});
+  getFactionList().forEach(function(f){var fa=data.factions[f.id];I.push({type:'Factions',ico:'\u2691',title:f.name||'Unnamed faction',sub:'Faction',body:gsFlat(fa.details||{}),go:function(){msGoFaction(f.id);}});});
+  var W=data.world||{};
+  ['locations','lore'].forEach(function(st){Object.keys(W[st]||{}).forEach(function(k){var e=W[st][k];I.push({type:st==='locations'?'Locations':'Lore',ico:st==='locations'?'\u25A7':'\u2766',title:e.name||'Untitled',sub:e.category||'',body:gsFlat(e.fields||{}),go:function(){msGoWorld(st,k);}});});});
+  Object.keys(W.maps||{}).forEach(function(k){var m=W.maps[k];I.push({type:'Maps',ico:'\u25A6',title:m.name||'Untitled map',sub:(m.pins||[]).length+' pins',body:gsFlat((m.pins||[]).map(function(p){return[p.label,p.note];})),go:function(){openMap(k);}});});
+  var P=getPowers();Object.keys(P).forEach(function(k){var p=P[k];I.push({type:'Powers',ico:'\u25C8',title:powerName(p),sub:p.kind==='system'?'Power system':'Ability',body:gsFlat(p),go:function(){openPower(k);}});});
+  if(data.manuscript&&Array.isArray(data.manuscript.chapters))data.manuscript.chapters.forEach(function(c,ci){(c.scenes||[]).forEach(function(s,si){I.push({type:'Manuscript',ico:'\u270E',title:msSceneLabel(s,si),sub:msChapterLabel(c,ci),body:[s.synopsis,s.text,s.notes,s.goal,s.conflict,s.change].filter(Boolean).join(' \u00B7 '),go:function(){switchTab('manuscript');msOpen(s.id);}});});});
+  if(data.timeline&&data.timeline.beats)tlSortedBeats().forEach(function(b,i){I.push({type:'Timeline',ico:'\u25B8',title:b.name||'Untitled beat',sub:'Beat '+(ARC_NUMS[i]||i+1),body:b.theme||'',go:function(){switchTab('overview');if(isPhone())tlmBeat(b.id);}});});
+  var q=data.quickNotes||{};if(q.scratch)I.push({type:'QuickNotes',ico:'\u270D',title:'Scratch pad',sub:'QuickNotes',body:q.scratch,go:function(){if(!qnOpen)toggleQn();}});
+  (q.log||[]).forEach(function(n){I.push({type:'QuickNotes',ico:'\u270D',title:(n.text||'').slice(0,60),sub:'Note log',body:n.text||'',go:function(){if(!qnOpen)toggleQn();switchQnTab('log');}});});
+  return I;
+}
+function gsOpen(){
+  if(!currentProjectId){showToast('Open a world to search it.');return;}
+  _gsIndex=gsBuild();
+  document.getElementById('gsBg').classList.add('open');
+  var i=document.getElementById('gsInp');i.value='';gsRun('');setTimeout(function(){i.focus();},30);
+  var mp=document.getElementById('mobileMorePanel');if(mp&&mp.classList.contains('open'))toggleMobileMenu();
+}
+function gsClose(){document.getElementById('gsBg').classList.remove('open');}
+function gsRun(q){
+  var box=document.getElementById('gsRes');q=(q||'').trim();
+  if(!q){box.innerHTML='<div class="pw-none gs-hint">Search characters, factions, places, lore, maps, powers, the manuscript, the timeline and notes.</div>';return;}
+  var terms=q.toLowerCase().split(/\s+/),hits=[];
+  _gsIndex.forEach(function(it){
+    var title=it.title.toLowerCase(),body=it.body.toLowerCase(),all=title+' '+body;
+    if(!terms.every(function(t){return all.indexOf(t)!==-1;}))return;
+    var score=terms.reduce(function(a,t){return a+(title.indexOf(t)===0?6:title.indexOf(t)!==-1?3:1);},0);
+    var pos=body.indexOf(terms[0]),snip='';
+    if(pos!==-1){var a=Math.max(0,pos-50);snip=(a?'\u2026':'')+it.body.slice(a,pos+90)+(pos+90<it.body.length?'\u2026':'');}
+    hits.push({it:it,score:score,snip:snip});
+  });
+  hits.sort(function(a,b){return b.score-a.score;});
+  if(!hits.length){box.innerHTML='<div class="pw-none gs-hint">Nothing matches \u201C'+esc(q)+'\u201D.</div>';return;}
+  var groups={},order=[];hits.slice(0,80).forEach(function(h){if(!groups[h.it.type]){groups[h.it.type]=[];order.push(h.it.type);}groups[h.it.type].push(h);});
+  var mark=function(s){var e=esc(s);terms.forEach(function(t){if(t.length<2)return;e=e.replace(new RegExp('('+t.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+')','gi'),'<mark>$1</mark>');});return e;};
+  window._gsHits=[];
+  box.innerHTML=order.map(function(g){return'<div class="gs-group"><div class="tp-group-lbl">'+esc(g)+'</div>'+groups[g].map(function(h){var i=window._gsHits.push(h)-1;
+    return'<button class="gs-row" onclick="gsGo('+i+')"><span class="gs-ico">'+h.it.ico+'</span><span class="gs-main"><span class="gs-t">'+mark(h.it.title)+'</span><span class="gs-s">'+esc(h.it.sub||'')+(h.snip?' \u00B7 '+mark(h.snip):'')+'</span></span></button>';}).join('')+'</div>';}).join('');
+}
+function gsGo(i){var h=(window._gsHits||[])[i];if(!h)return;gsClose();document.getElementById('projScreen').classList.add('hidden');h.it.go();}
+document.addEventListener('keydown',function(e){
+  if((e.metaKey||e.ctrlKey)&&(e.key==='k'||e.key==='K')){e.preventDefault();gsOpen();}
+  if(e.key==='Escape'&&document.getElementById('gsBg')&&document.getElementById('gsBg').classList.contains('open'))gsClose();
+});
+
+/* ══════════════════════════════════════════════════════
+   SAMPLE WORLD — a small, finished example so new writers see how it all links
+══════════════════════════════════════════════════════ */
+function sampleMapBlob(){
+  return new Promise(function(res){
+    var W=1600,H=1100,cv=document.createElement('canvas');cv.width=W;cv.height=H;var g=cv.getContext('2d');
+    var seed=7;var rnd=function(){seed=(seed*16807)%2147483647;return seed/2147483647;};
+    // sea
+    var sea=g.createRadialGradient(W*0.5,H*0.45,100,W*0.5,H*0.5,W*0.75);sea.addColorStop(0,'#5d7d8f');sea.addColorStop(1,'#2f4a5c');g.fillStyle=sea;g.fillRect(0,0,W,H);
+    for(var w=0;w<220;w++){g.strokeStyle='rgba(255,255,255,'+(0.04+rnd()*0.05)+')';g.lineWidth=1.2;var x=rnd()*W,y=rnd()*H;g.beginPath();g.moveTo(x,y);g.quadraticCurveTo(x+14,y-6,x+28,y);g.stroke();}
+    // land: a jagged coast built from a noisy polygon
+    function island(cx,cy,rx,ry,n,j){var pts=[];for(var i=0;i<n;i++){var a=i/n*Math.PI*2,r=1+(rnd()-0.5)*j+0.18*Math.sin(a*3+cx);pts.push([cx+Math.cos(a)*rx*r,cy+Math.sin(a)*ry*r]);}return pts;}
+    function draw(pts,fill){g.beginPath();pts.forEach(function(p,i){var q=pts[(i+1)%pts.length],mx=(p[0]+q[0])/2,my=(p[1]+q[1])/2;if(!i)g.moveTo(mx,my);else g.quadraticCurveTo(p[0],p[1],mx,my);});g.closePath();g.fillStyle=fill;g.fill();}
+    var main=island(760,560,520,330,48,0.42),east=island(1340,330,170,120,24,0.5),south=island(1220,880,130,80,20,0.5);
+    [main,east,south].forEach(function(p){g.save();g.shadowColor='rgba(10,20,30,0.45)';g.shadowBlur=26;draw(p,'#c9b48a');g.restore();
+      g.save();g.globalAlpha=0.35;g.strokeStyle='#efe3c4';g.lineWidth=6;g.beginPath();p.forEach(function(q,i){if(!i)g.moveTo(q[0],q[1]);else g.lineTo(q[0],q[1]);});g.closePath();g.stroke();g.restore();});
+    // the drowned lowlands
+    g.save();g.globalAlpha=0.55;draw(island(560,640,170,110,22,0.5),'#7f9c8c');g.restore();
+    // forests and mountains
+    for(var t=0;t<70;t++){var fx=520+rnd()*560,fy=330+rnd()*380;g.fillStyle='rgba(74,96,62,0.55)';g.beginPath();g.arc(fx,fy,7+rnd()*6,0,Math.PI*2);g.fill();}
+    for(var m=0;m<26;m++){var mx=860+rnd()*340,my=380+rnd()*240,s=16+rnd()*14;g.fillStyle='#8b7355';g.beginPath();g.moveTo(mx,my-s);g.lineTo(mx-s*0.9,my+s*0.5);g.lineTo(mx+s*0.9,my+s*0.5);g.closePath();g.fill();g.fillStyle='#efe6d3';g.beginPath();g.moveTo(mx,my-s);g.lineTo(mx-s*0.3,my-s*0.5);g.lineTo(mx+s*0.3,my-s*0.5);g.closePath();g.fill();}
+    // labels
+    g.textAlign='center';g.fillStyle='rgba(40,30,20,0.85)';g.font='italic 30px Georgia,serif';g.fillText('The Drowned Lowlands',560,690);
+    g.font='26px Georgia,serif';g.fillStyle='rgba(40,30,20,0.8)';g.fillText('Spine of Aurel',1030,660);
+    g.fillStyle='rgba(240,236,228,0.75)';g.font='italic 34px Georgia,serif';g.fillText('The Sundering Sea',380,150);
+    g.font='bold 54px Georgia,serif';g.fillStyle='rgba(240,236,228,0.18)';g.fillText('TIDEBOUND',W/2,H-60);
+    // compass
+    g.save();g.translate(W-130,H-150);g.strokeStyle='rgba(240,236,228,0.6)';g.lineWidth=2;g.beginPath();g.arc(0,0,52,0,Math.PI*2);g.stroke();
+    g.fillStyle='rgba(240,236,228,0.75)';[0,1,2,3].forEach(function(k){g.save();g.rotate(k*Math.PI/2);g.beginPath();g.moveTo(0,-62);g.lineTo(9,0);g.lineTo(-9,0);g.closePath();g.fill();g.restore();});
+    g.font='bold 18px Georgia,serif';g.fillText('N',0,-70);g.restore();
+    cv.toBlob(function(b){res(b);},'image/jpeg',0.86);
+  });
+}
+function createSampleWorld(){
+  var id=genId(),now=Date.now();
+  var F='sf1',F2='sf2',KAI='ss1',ZEN='ss2',YS='ss3',CADEN='ss4';
+  var P=function(t){return t.split('\n\n').map(function(p){return'<p>'+p.replace(/_(.+?)_/g,'<em>$1</em>')+'</p>';}).join('');};
+  var sc=function(id,title,syn,pov,loc,beat,status,text,craft){var h=P(text);var o={id:id,title:title,synopsis:syn,pov:pov,locId:loc,beatId:beat,status:status,html:h,text:msHtmlToText(h),mod:now};if(craft)Object.assign(o,craft);return o;};
+  var d={
+    folders:{},factions:{
+      fac1:{name:'The Wardens',color:'#2471a3',details:{tagline:'We hold the line the sea forgot.',ideology:'The sea takes what is not defended. Every Warden swears to hold one wall, one gate, one street, for as long as they live.',hierarchy:'A Warden-Captain for each Gate; the Gates answer to no king.'}},
+      fac2:{name:'The Gilded Court',color:'#b8923a',details:{tagline:'Gold floats.',ideology:'The drowned coast is a market, not a tragedy. Whoever owns the dry ground owns the future.'}}},
+    world:{locations:{
+      loc1:{name:'Port Veyl',category:'City & Settlement',fields:{overview:'A harbour city built on stilts and stubbornness, half under water at every spring tide.'},connections:[]},
+      loc2:{name:'The Drowned Gate',category:'Landmark',fields:{overview:'The last sea-gate of the Wardens. Behind it lies everything Port Veyl has left.'},connections:[]}},
+      lore:{lore1:{name:'The Sundering Tide',category:'History',fields:{summary:'Two hundred years ago the sea rose in a single night and never fell again. Nobody agrees on why.'},connections:[]}},maps:{}},
+    powers:{pw1:{kind:'system',name:'Tidecalling',category:'Elemental',summary:'Moving water with breath and will.',mechanics:'A Tidecaller pulls on the sea with their own breath. The more water they move, the less air they have.',limits:'Cannot be done underwater, or while afraid.',cost:'Every use takes a little of the caller’s breath for good.'},
+      pw2:{kind:'ability',name:'Undertow',parentId:'pw1',summary:'Drags a person or boat toward the caller through the water.'},
+      pw3:{kind:'ability',name:'Still Water',parentId:'pw1',summary:'Calms a stretch of sea for as long as the caller can hold their breath.'}},
+    timeline:{beats:[{id:'tb1',name:'Opening',x:80,theme:'Port Veyl holds, barely. Kai believes he can hold it alone.',tags:['location::loc1']},{id:'tb2',name:'The Drowning',x:540,theme:'The Gate falls. Kai’s lie breaks.',tags:[]},{id:'tb3',name:'Exile',x:1000,theme:'',tags:[]},{id:'tb4',name:'Return',x:1460,theme:'',tags:[]}],
+      cards:[{id:'tc1',fid:F,sid:KAI,x:130,y:100,notes:'Still believes being useful keeps people from leaving.'},{id:'tc2',fid:F,sid:ZEN,x:600,y:100,notes:'Opens the Gate for the Court.'}]},
+    quickNotes:{scratch:'Does Mother Ysolde know what Zen did? Decide before Chapter 3.',log:[]},
+    settings:{theme:'high-seas'},
+    manuscript:{goal:500,log:{},structMod:now,chapters:[
+      {id:'sc-c1',title:'Low Tide',scenes:[
+        sc('sc-s1','The Last Warden','Kai holds the Drowned Gate alone through the night tide.','sf1::ss1','loc2','tb1','revised',
+'The tide came in the way it always did in Port Veyl: politely at first, then all at once.\n\nKai Riven stood on the wall of the Drowned Gate with his breath held and his hands open, feeling the sea lean against the stone like a tired animal. Below him the harbour lamps swung on their poles. Somewhere behind him a bell was ringing for the night shift, and nobody was coming.\n\n_Hold it_, he told himself. _Just until the turn._\n\nHe let a little air out between his teeth, and the water at the foot of the wall stilled. Still Water, Mother Ysolde called it, as if naming a thing made it less tiring. Kai’s chest burned. The Wardens had once kept forty callers on this wall. Now they kept one, and the Gilded Court sent a letter every month asking how long that one could last.\n\nLonger than you think, he wrote back. He always wrote back.',
+          {goal:'Hold the Gate until the tide turns',conflict:'He is the only caller left, and his breath is running out',outcome:'yes-but',change:'He learns the wall is failing faster than he is.'}),
+        sc('sc-s2','Gold Floats','Zen Aurel arrives with an offer from the Gilded Court.','sf1::ss1','loc1','tb1','draft',
+'Zen Aurel was waiting on the dock when Kai came down, wearing a coat too clean for Port Veyl.\n\n“You look half drowned,” Zen said.\n\n“That’s the job.”\n\n“It doesn’t have to be.” Zen held out a folded letter sealed in gold wax. “The Court will buy the Gate. They’ll pay every family behind it to move inland. Nobody has to hold anything.”\n\nKai didn’t take the letter. Out past the harbour the sea was already gathering itself for the morning tide. _If I stop_, he thought, _who stays?_',
+          null)]},
+      {id:'sc-c2',title:'The Drowning',scenes:[
+        sc('sc-s3','The Gate Opens','The Gate fails; Kai realises it was opened from the inside.','sf1::ss1','loc2','tb2','draft',
+'The Gate did not break. That was the worst of it.\n\nKai felt it go the way you feel a step that isn’t there: the sea simply stopped pushing back, because something on the other side had let it in. He ran the length of the wall with water at his knees and found the great lock turned, the iron still warm from somebody’s hands.\n\nThe Wardens had sworn to hold one wall for as long as they lived. Nobody had ever told him what to do if the wall was given away.',
+          {goal:'Find out why the Gate failed',conflict:'The water is already in the streets',outcome:'no-and',change:'He knows it was betrayal, not weakness.'})]}
+    ]}
+  };
+  d.folders[F]={name:'The Tideborn',sheets:{}};d.folders[F2]={name:'The Gilded Court',sheets:{}};
+  d.folders[F].sheets[KAI]=Object.assign(blankSheet('Kai · Book One'),{charName:'Kai Riven',role:'hero',factions:['fac1'],
+    identity:{age:'Seventeen',origin:'The tidal flats outside Port Veyl',social:'Fisherman’s son',rank:'Warden, last caller of the Drowned Gate',essence:'A boy who holds back the sea so no one has to leave.',nameNotes:'',species:'Human'},
+    wound:{wound:'His mother left on the last boat inland and never wrote.',want:'To be needed.',need:'To be loved without being useful.',lie:'If I stop helping, everyone leaves.',truth:'People stay for who you are.'},
+    traits:[{name:'Loyal',cat:'pos'},{name:'Self-sacrificing',cat:'ambig'},{name:'Stubborn',cat:'neg'}],
+    abilities:[{name:'Still Water',meaning:'He calms things for other people and never for himself.',rank:4,desc:'',powerId:'pw3'},{name:'Undertow',meaning:'He pulls people toward him.',rank:2,desc:'',powerId:'pw2'}],
+    powerSystems:[{name:'Tidecalling',fightStyle:'Patient. Waits for the tide to tire.',reflect:'',powerId:'pw1'}]});
+  d.folders[F].sheets[ZEN]=Object.assign(blankSheet('Zen'),{charName:'Zen Aurel',role:'rival',factions:['fac2'],wound:{wound:'Grew up behind the Gate and watched it fail his street first.',want:'To get everyone out.',need:'To trust that some things are worth holding.',lie:'Anything can be bought, so nothing is worth keeping.',truth:''}});
+  d.folders[F].sheets[YS]=Object.assign(blankSheet('Mother Ysolde'),{charName:'Mother Ysolde',role:'mentor',factions:['fac1']});
+  d.folders[F2].sheets[CADEN]=Object.assign(blankSheet('Lord Caden'),{charName:'Lord Caden Vale',role:'villain',factions:['fac2']});
+  var idx=loadIndex();idx.unshift({id:id,name:'Tidebound (sample)',desc:'An example world: a drowned coast, a failing gate, a rival with an offer.',created:now,modified:now,chars:4});
+  // the map: drawn here, stored like any uploaded map
+  return sampleMapBlob().then(function(blob){
+    var imgId='img'+genId();
+    return mediaPut(imgId,blob).then(function(){
+      d.world.maps.map1={name:'The Sundering Coast',imageId:imgId,w:1600,h:1100,created:now,pins:[
+        {id:'pin1',x:0.36,y:0.55,label:'',color:'#c0392b',locId:'loc1',mapId:'',note:'Half under water at every spring tide.'},
+        {id:'pin2',x:0.27,y:0.62,label:'',color:'#2471a3',locId:'loc2',mapId:'',note:'The last sea-gate.'}]};
+    });
+  }).catch(function(){}).then(function(){
+    localStorage.setItem(projKey(id),JSON.stringify(d));saveIndex(idx);
+    return id;
+  });
+}
+function openSampleWorld(){
+  var ex=loadIndex().find(function(p){return/\(sample\)$/.test(p.name||'');});
+  if(ex){openProject(ex.id);return;}
+  showToast('Creating the sample world…');
+  createSampleWorld().then(function(id){renderProjGrid();openProject(id);switchTab('manuscript');showToast('This is a sample. Explore, change anything, or delete it from the worlds list.');});
 }
 
 
@@ -5180,6 +5947,11 @@ function renderProjGrid(){
   newCard.appendChild(mkEl('span','proj-new-lbl','New project'));
   newCard.onclick=function(){openProjModal('create',null);};
   grid.appendChild(newCard);
+  if(!idx.some(function(p){return /\(sample\)$/.test(p.name||'');})){
+    var smp=mkEl('button','proj-sample');
+    smp.innerHTML='<span class="proj-sample-ico">\u2726</span><span><span class="proj-sample-t">Explore a sample world</span><span class="proj-sample-s">A drowned coast, a failing gate, three written scenes and a map. See how it all connects.</span></span>';
+    smp.onclick=openSampleWorld;grid.appendChild(smp);
+  }
 }
 
 function openProject(id){
@@ -5277,6 +6049,7 @@ function deleteProject(id){
   document.getElementById('deleteModalTitle').textContent='Delete project?';
   document.getElementById('deleteModalBody').textContent='"'+(proj.name||'this project')+'" and all its data will be permanently deleted. This cannot be undone.';
   deleteCallback=function(){
+    if(typeof histSnapWorld==='function')histSnapWorld(id,'World deleted');
     localStorage.removeItem(projKey(id));
     var newIdx=idx.filter(function(p){return p.id!==id;});
     saveIndex(newIdx);
@@ -5425,6 +6198,8 @@ if(_qn)_qn.value=(data.quickNotes&&data.quickNotes.scratch)||'';
   </div>
   <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:4px;">
     <button class="tb-btn" onclick="toggleMobileMenu();openProjectScreen();">All worlds</button>
+    <button class="tb-btn" onclick="gsOpen()">Search</button>
+    <button class="tb-btn" onclick="toggleMobileMenu();histBackupsSheet();">Backups</button>
     <button class="tb-btn" onclick="exportCurrentProject();toggleMobileMenu();">Export project</button>
     <button class="tb-btn" onclick="triggerImport();toggleMobileMenu();">Import</button>
     <button class="tb-btn" onclick="toggleQn();toggleMobileMenu();">QuickNotes</button>
@@ -5435,6 +6210,15 @@ if(_qn)_qn.value=(data.quickNotes&&data.quickNotes.scratch)||'';
     <a href="https://d3-appsandinteractive.itch.io/" target="_blank" rel="noopener">itch.io</a>
     <a href="https://d3appsandinteractive.gumroad.com/" target="_blank" rel="noopener">Gumroad</a>
     <a href="https://github.com/D3-InteractiveAndApps" target="_blank" rel="noopener">GitHub</a>
+    <a href="https://d3-appsandinteractive.itch.io/arcwright" target="_blank" rel="noopener">Send feedback</a>
+  </div>
+</div>
+
+<!-- WORLD SEARCH -->
+<div class="gs-bg" id="gsBg" onclick="if(event.target===this)gsClose()">
+  <div class="gs" role="dialog" aria-modal="true" aria-label="Search">
+    <div class="gs-head"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></svg><input id="gsInp" type="search" placeholder="Search this world…" autocomplete="off" oninput="clearTimeout(_gsT);var v=this.value;_gsT=setTimeout(function(){gsRun(v);},120)" onkeydown="if(event.key==='Enter'){var b=document.querySelector('#gsRes .gs-row');if(b)b.click();}"/><button class="m-btn gs-close" onclick="gsClose()">Close</button></div>
+    <div class="gs-res" id="gsRes"></div>
   </div>
 </div>
 
@@ -5500,6 +6284,7 @@ if(_qn)_qn.value=(data.quickNotes&&data.quickNotes.scratch)||'';
     <!-- Privacy & your data (both states) -->
     <div class="acct-privacy">
       <button class="acct-privacy-toggle" id="acctPrivacyToggle" onclick="toggleAcctDanger()" aria-expanded="false">Privacy &amp; your data</button>
+      <div id="bkStatus"></div>
       <div class="acct-danger" id="acctDanger" hidden>
         <p class="acct-privacy-txt">ArcWright saves your worlds on this device. If you sign in, it also stores them and your email address in your account so they sync. No ads, no trackers, nothing sold.</p>
         <p class="acct-danger-txt" id="acctDangerTxt"></p>
@@ -5572,11 +6357,30 @@ async function _pushProject(id){
     var idx=JSON.parse(localStorage.getItem('arcwright-projects')||'[]');
     var meta=idx.find(function(x){return x.id===id;})||{id:id,name:'Untitled World',genre:'',chars:0,created:Date.now(),modified:Date.now()};
     if(_tombstones()[id])return; // deleted on this device: never re-upload
+    // changed on another device since we last synced? merge first, back up both sides
+    var baseKey='arcwright-base-'+id,base=+localStorage.getItem(baseKey)||0;
+    var rm=await _sb.from('arcwright_projects').select('modified_at').eq('id',id).eq('user_id',_sbUser.id);
+    var rTs=rm.data&&rm.data[0]?Date.parse(rm.data[0].modified_at):0;
+    if(rTs&&rTs!==base){
+      var rd=await _sb.from('arcwright_data').select('payload').eq('project_id',id).eq('user_id',_sbUser.id);
+      var remoteP=rd.data&&rd.data[0]&&rd.data[0].payload;
+      if(remoteP){
+        var isOpen=id===currentProjectId;
+        if(isOpen){collectSheet();if(typeof msCommit==='function')msCommit();}
+        var localP=isOpen?JSON.parse(JSON.stringify(data)):JSON.parse(raw||'{}');
+        await histSnapWorld(id,'Before merging changes from another device');
+        await histPut('worlds',{pid:id,t:Date.now(),name:meta.name||'Untitled world',reason:'Copy from another device',size:JSON.stringify(remoteP).length,json:JSON.stringify(remoteP)});
+        var merged=mergeWorlds(localP,remoteP,(meta.modified||0)>=rTs);
+        if(isOpen)applyMergedToOpen(merged);else localStorage.setItem('arcwright-proj-'+id,JSON.stringify(merged));
+        raw=JSON.stringify(merged);
+      }
+    }
+    var nowIso=new Date().toISOString();
     var r1=await _sb.from('arcwright_projects').upsert({
       id:id, user_id:_sbUser.id,
       name:meta.name||'Untitled World', genre:meta.desc||meta.genre||'',
       chars:meta.chars||0,
-      modified_at:new Date(meta.modified||Date.now()).toISOString()
+      modified_at:nowIso
     },{onConflict:'id,user_id'});
     if(r1.error)throw r1.error;
     if(raw){
@@ -5588,6 +6392,7 @@ async function _pushProject(id){
       if(r2.error)throw r2.error;
     }
     _markSynced(id,true);
+    try{localStorage.setItem(baseKey,String(Date.parse(nowIso)));localStorage.setItem('arcwright-lastsync',String(Date.now()));}catch(e){}
   }catch(e){console.warn('push failed',e);}finally{_setSyncing(false);}
 }
 
@@ -5602,8 +6407,7 @@ function _syncedSet(){try{return JSON.parse(localStorage.getItem(_syncedKey())||
 function _markSynced(id,on){var s=_syncedSet();if(on)s[id]=1;else delete s[id];try{localStorage.setItem(_syncedKey(),JSON.stringify(s));}catch(e){}}
 function _onProjectDeleted(id){
   var t=_tombstones();t[id]=Date.now();_saveTombstones(t);
-  _cleanupOrphanImages();
-  _pushDeletes();
+  _pushDeletes(); // map images stay on the device so a restored backup still has them
 }
 async function _pushDeletes(){
   if(!_sb||!_sbUser||!navigator.onLine)return;
@@ -5661,7 +6465,7 @@ async function _syncAllUp(){
 }
 
 /* ── Download all from cloud (merges by modified_at) ─────────────── */
-var _reloadOpen=false;
+var _reloadOpen=false,_needPush=false,_pendingPush=[];
 async function _syncDown(){
   if(!_sb||!_sbUser)return;
   try{
@@ -5688,18 +6492,27 @@ async function _syncDown(){
         // remote is newer — pull data
         var dr=await _sb.from('arcwright_data').select('payload,modified_at').eq('project_id',rp.id).eq('user_id',_sbUser.id).single();
         if(!dr.error&&dr.data){
-          localStorage.setItem('arcwright-proj-'+rp.id,JSON.stringify(dr.data.payload));
+          var lraw=localStorage.getItem('arcwright-proj-'+rp.id);
+          if(lraw&&local){
+            await histSnapWorld(rp.id,'Before syncing from another device');
+            var isOpenP=rp.id===currentProjectId;
+            if(isOpenP){collectSheet();if(typeof msCommit==='function')msCommit();}
+            var mergedP=mergeWorlds(isOpenP?JSON.parse(JSON.stringify(data)):JSON.parse(lraw),dr.data.payload,false);
+            if(isOpenP){applyMergedToOpen(mergedP);_reloadOpen=false;}else localStorage.setItem('arcwright-proj-'+rp.id,JSON.stringify(mergedP));
+            if(JSON.stringify(mergedP)!==JSON.stringify(dr.data.payload))_needPush=true;
+          } else localStorage.setItem('arcwright-proj-'+rp.id,JSON.stringify(dr.data.payload));
+          try{localStorage.setItem('arcwright-base-'+rp.id,String(remoteTs));}catch(e){}
         }
         if(!local){
           localIdx.push({id:rp.id,name:rp.name,desc:rp.genre||'',chars:rp.chars,created:new Date(rp.created_at).getTime(),modified:remoteTs});
         } else {
           local.name=rp.name;local.desc=rp.genre||local.desc||'';local.chars=rp.chars;local.modified=remoteTs;
         }
-        // the open world changed on another device: reload it if nothing is being typed
-        if(rp.id===currentProjectId&&local&&!document.querySelector('input:focus,textarea:focus'))_reloadOpen=true;
+        if(_needPush){_needPush=false;_pendingPush.push(rp.id);}
       }
     }
     localStorage.setItem('arcwright-projects',JSON.stringify(localIdx));
+    var pp=_pendingPush.splice(0);for(var pi=0;pi<pp.length;pi++){try{await _pushProject(pp[pi]);}catch(e){}}
     if(removedOpen){currentProjectId=null;openProjectScreen&&document.getElementById('projScreen').classList.remove('hidden');showToast('This world was deleted on another device.');}
     else if(_reloadOpen&&currentProjectId){_reloadOpen=false;var _id=currentProjectId;var sf=currentFid,ss=currentSid;resetData();load();applySettings();renderTree();if(sf&&ss&&data.folders[sf]&&data.folders[sf].sheets[ss])loadSheet(sf,ss);}
     // fetch map images this device doesn't have yet, so maps work offline later
@@ -5715,14 +6528,16 @@ document.addEventListener('visibilitychange',function(){if(document.visibilitySt
 
 /* ── Hook into persist() ──────────────────────────────────────────── */
 var _origPersist=persist;
+var _pushT=null;
 persist=function(){
   _origPersist();
-  if(_sb&&_sbUser&&currentProjectId) _pushProject(currentProjectId);
+  if(_sb&&_sbUser&&currentProjectId){var pid=currentProjectId;clearTimeout(_pushT);_pushT=setTimeout(function(){_pushProject(pid);},1500);}
   else if(!_sbUser) _syncPending=true;
 };
 
 /* ── Account modal ────────────────────────────────────────────────── */
 function openAccountModal(){
+  var bks=document.getElementById('bkStatus');if(bks&&typeof histStatusHTML==='function')bks.innerHTML=histStatusHTML();
   var bg=document.getElementById('acctModalBg');
   bg.classList.add('open');
   if(_sbUser){
