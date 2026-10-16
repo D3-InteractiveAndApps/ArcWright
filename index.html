@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover"/>
 <title>ArcWright</title>
 <link rel="manifest" href="manifest.webmanifest"/>
 <link rel="icon" href="favicon.ico" sizes="any"/>
@@ -969,7 +969,7 @@ textarea.sheet-sub-name{font-family:var(--font-body);font-size:16px;line-height:
 /* ══════════════════════════════════════════════
    PHONE LAYOUT
 ══════════════════════════════════════════════ */
-:root{--nav-h:calc(56px + env(safe-area-inset-bottom,0px));--bar-h:52px;}
+:root{--nav-h:calc(56px + env(safe-area-inset-bottom,0px));--bar-h:calc(52px + env(safe-area-inset-top,0px));}
 .m-back,.m-title{display:none;}
 @media (max-width:768px){
   html{-webkit-text-size-adjust:100%;}
@@ -979,7 +979,8 @@ textarea.sheet-sub-name{font-family:var(--font-body);font-size:16px;line-height:
   textarea.char-name-input{font-size:22px !important;}
 
   /* app bar */
-  .topbar{height:var(--bar-h);padding:0 8px 0 4px !important;gap:4px;position:relative;}
+  .topbar{height:var(--bar-h);padding:env(safe-area-inset-top,0px) calc(8px + env(safe-area-inset-right,0px)) 0 calc(4px + env(safe-area-inset-left,0px)) !important;gap:4px;position:relative;}
+  .m-title{top:calc(env(safe-area-inset-top,0px) + 26px);transform:translate(-50%,-50%) !important;}
   .topbar-brand,.proj-back-btn,.proj-current-lbl,.tb-bg,.menu-btn{display:none !important;}
   .m-back{display:flex;align-items:center;gap:2px;background:none;border:none;color:var(--gold);font-family:var(--font-ui);font-size:12px;letter-spacing:0.04em;padding:10px 8px;cursor:pointer;max-width:38%;flex-shrink:0;min-height:44px;}
   .m-back span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
@@ -988,7 +989,7 @@ textarea.sheet-sub-name{font-family:var(--font-body);font-size:16px;line-height:
   .sync-btn{margin-left:auto;min-height:34px;padding:4px 12px;border-radius:18px;}
 
   /* bottom nav: height includes the home-indicator area instead of squeezing the icons */
-  .bottom-nav{height:var(--nav-h) !important;}
+  .bottom-nav{height:var(--nav-h) !important;padding-left:env(safe-area-inset-left,0px);padding-right:env(safe-area-inset-right,0px);}
   .bnav-item{font-size:9px;gap:4px;}
   .bnav-item svg{width:22px;height:22px;}
   .sheet-area,.view-pane{padding-bottom:0 !important;}
@@ -1018,6 +1019,8 @@ textarea.sheet-sub-name{font-family:var(--font-body);font-size:16px;line-height:
   .field-grid,.two-col,.three-col{gap:12px !important;}
   .sheet{padding:0 !important;max-width:none !important;}
   .likes-grid{grid-template-columns:1fr !important;gap:16px !important;}
+  .ability-top,.power-system-top,.rel-card-top,.rel-card-mid{grid-template-columns:1fr !important;}
+  .ability-remove,.power-system-remove{justify-self:start;}
   #overviewArea{padding:0 !important;}
   .sync-btn{border-radius:18px !important;}
 
@@ -1062,6 +1065,133 @@ textarea.sheet-sub-name{font-family:var(--font-body);font-size:16px;line-height:
 }
 @keyframes mSheetUp{from{transform:translateY(40px);opacity:0.6;}to{transform:none;opacity:1;}}
 @media (prefers-reduced-motion:reduce){.modal,.proj-modal,.acct-modal,.msheet,.fe{animation:none !important;}}
+
+
+/* single-line fields that wrap and grow like the rest */
+textarea[data-line]{display:block;width:100%;resize:none;overflow:hidden;min-height:0 !important;}
+.likes-item textarea{font-family:var(--font-body);font-size:15px;color:var(--text);background:transparent;border:none;border-bottom:0.5px solid var(--border);outline:none;padding:4px 0;width:100%;line-height:1.5;}
+.likes-item textarea::placeholder{color:var(--text3);font-style:italic;}
+/* projects screen account button */
+.proj-screen-head{position:relative;}
+.proj-acct{position:absolute;top:2.5rem;right:3rem;display:flex;align-items:center;gap:8px;font-family:var(--font-ui);font-size:10px;letter-spacing:0.08em;padding:9px 16px;border-radius:20px;border:0.5px solid var(--border2);background:var(--bg2);color:var(--text2);cursor:pointer;max-width:60%;}
+.proj-acct span:last-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.proj-acct:hover{background:var(--bg3);color:var(--text);}
+.proj-sign-hint{grid-column:1/-1;border:0.5px solid var(--border2);border-radius:12px;padding:1.4rem 1.5rem;background:var(--bg2);display:flex;flex-direction:column;align-items:flex-start;gap:8px;}
+.proj-sign-title{font-family:var(--font-ui);font-size:13px;font-weight:600;letter-spacing:0.06em;color:var(--text);}
+.proj-sign-sub{font-size:15px;color:var(--text2);margin-bottom:6px;}
+@media (max-width:768px){
+  .proj-acct{position:static;margin-bottom:16px;max-width:100%;min-height:40px;}
+  /* cast list: readable names and arrows you can hit */
+  .folder-header{padding:12px 10px 12px 8px !important;min-height:54px;gap:10px;margin:0 8px;}
+  .folder-name{font-size:15px !important;letter-spacing:0.03em;}
+  .folder-arrow{font-size:13px !important;width:30px !important;height:30px;display:flex !important;align-items:center;justify-content:center;}
+  .folder-color-pip{width:14px;height:14px;}
+  .folder-actions,.sheet-item-actions{display:flex !important;gap:2px;}
+  .folder-actions .icon-btn,.sheet-item-actions .icon-btn{font-size:16px !important;min-width:36px;min-height:36px;}
+  .folder-sheets{padding-left:14px;}
+  .sheet-item{padding:10px 8px 10px 14px !important;min-height:58px;gap:12px;}
+  .sheet-item-name{font-size:16px !important;}
+  .sheet-item-role{font-size:12px !important;margin-top:2px;}
+  .sheet-item-dot{width:10px !important;height:10px !important;}
+  .folder-sheets .add-btn{font-size:11px !important;min-height:40px;}
+  .sidebar-head-label{font-size:10px;}
+  .sidebar-btn{min-height:44px;font-size:11px;}
+}
+
+/* ══════════════════════════════════════════════
+   MANUSCRIPT
+══════════════════════════════════════════════ */
+.m-seg{display:none;}
+body.m-tab-manuscript .sidebar{display:none !important;}
+.ms-layout{display:flex;flex:1;min-height:0;overflow:hidden;}
+.ms-empty{flex:1;}
+.ms-binder{width:260px;flex-shrink:0;border-right:0.5px solid var(--border);display:flex;flex-direction:column;background:var(--bg);min-height:0;}
+.ms-binder-head{padding:14px 16px 12px;border-bottom:0.5px solid var(--border);display:flex;flex-direction:column;gap:6px;}
+.ms-total{font-family:var(--font-ui);font-size:15px;font-weight:600;color:var(--text);font-variant-numeric:tabular-nums;}
+.ms-goal{display:flex;flex-direction:column;gap:5px;background:none;border:none;padding:2px 0;cursor:pointer;text-align:left;color:var(--text3);font-size:12px;}
+.ms-goal:hover{color:var(--text2);}
+.ms-goal-bar{display:block;height:4px;border-radius:2px;background:var(--bg3);overflow:hidden;}
+.ms-goal-bar i{display:block;height:100%;background:var(--gold);transition:width 0.3s;}
+.ms-tree{flex:1;overflow-y:auto;padding:8px 0 12px;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;}
+.ms-ch{margin-bottom:6px;}
+.ms-ch-row{display:flex;align-items:center;gap:8px;padding:8px 8px 6px 16px;}
+.ms-ch-name{flex:1;min-width:0;font-family:var(--font-ui);font-size:11px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--text2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.ms-ch.cur .ms-ch-name{color:var(--text);}
+.ms-ch-words,.ms-sc-words{font-family:var(--font-ui);font-size:9px;color:var(--text3);font-variant-numeric:tabular-nums;flex-shrink:0;}
+.ms-more{background:none;border:none;color:var(--text3);cursor:pointer;font-size:15px;line-height:1;padding:2px 6px;border-radius:6px;}
+.ms-more:hover{background:var(--bg2);color:var(--text);}
+.ms-sc{display:flex;align-items:flex-start;gap:9px;width:100%;padding:7px 14px 7px 22px;background:none;border:none;border-left:3px solid transparent;cursor:pointer;text-align:left;color:inherit;}
+.ms-sc:hover{background:var(--bg2);}
+.ms-sc.active{background:var(--bg2);border-left-color:var(--gold);}
+.ms-sc-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;margin-top:6px;}
+.ms-sc-main{flex:1;min-width:0;display:flex;flex-direction:column;}
+.ms-sc-name{font-size:14px;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.ms-sc-syn{font-size:12px;color:var(--text3);font-style:italic;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.ms-sc-words{padding-top:4px;}
+.ms-add-sc{background:none;border:none;color:var(--text3);font-family:var(--font-ui);font-size:9px;letter-spacing:0.1em;text-transform:uppercase;padding:5px 22px 8px 32px;cursor:pointer;}
+.ms-add-sc:hover{color:var(--gold);}
+.ms-main{flex:1;min-width:0;display:flex;flex-direction:column;background:var(--bg);}
+.ms-bar{display:flex;align-items:center;gap:8px;padding:10px 18px;border-bottom:0.5px solid var(--border);flex-shrink:0;flex-wrap:wrap;}
+.ms-crumb{font-family:var(--font-ui);font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--text3);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0;}
+.ms-bar-sp{flex:1;}
+.ms-wc{font-family:var(--font-ui);font-size:10px;letter-spacing:0.06em;color:var(--text2);font-variant-numeric:tabular-nums;}
+.ms-saved{font-family:var(--font-ui);font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:var(--text3);opacity:0.7;transition:opacity 0.2s;}
+.ms-saved.pending{opacity:0;}
+.ms-scroll{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;}
+.ms-page{max-width:700px;margin:0 auto;padding:48px 40px 40vh;}
+.ms-title{display:block;width:100%;border:none;outline:none;resize:none;overflow:hidden;background:transparent;color:var(--text);font-family:var(--font-ui);font-size:22px;font-weight:600;letter-spacing:0.02em;line-height:1.3;margin-bottom:22px;padding:0;}
+.ms-title::placeholder{color:var(--text3);font-weight:400;}
+.ms-text{display:block;width:100%;border:none;outline:none;resize:none;overflow:hidden;background:transparent;color:var(--text);font-family:var(--font-body);font-size:19px;line-height:1.85;padding:0;min-height:50vh;caret-color:var(--gold);}
+.ms-text::placeholder{color:var(--text3);font-style:italic;}
+.ms-info{width:290px;flex-shrink:0;border-left:0.5px solid var(--border);background:var(--bg);overflow-y:auto;padding:14px 18px 28px;-webkit-overflow-scrolling:touch;}
+.ms-info.closed{display:none;}
+.ms-info-head{display:flex;align-items:center;gap:10px;margin-bottom:14px;}
+.ms-sel{width:100%;}
+.ms-status{display:flex;gap:6px;flex-wrap:wrap;}
+.ms-st{font-family:var(--font-ui);font-size:9px;letter-spacing:0.1em;text-transform:uppercase;padding:6px 12px;border-radius:16px;border:0.5px solid var(--border2);background:transparent;color:var(--text2);cursor:pointer;}
+.ms-st.on{border-color:var(--c);color:var(--c);background:color-mix(in srgb,var(--c) 12%,transparent);}
+.ms-ment{display:flex;flex-wrap:wrap;gap:6px;}
+.ms-chip{display:inline-flex;align-items:center;gap:6px;font-family:var(--font-ui);font-size:10px;letter-spacing:0.04em;padding:6px 11px;border-radius:16px;border:0.5px solid var(--border2);background:var(--bg2);color:var(--text);cursor:pointer;}
+.ms-chip:hover{border-color:var(--gold);}
+.ms-chip-i{color:var(--gold);font-size:10px;}
+.ms-info-actions{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px;}
+.ms-peek-v{font-size:15px;line-height:1.55;color:var(--text);white-space:pre-wrap;}
+/* focus mode: just the page */
+body.ms-focus .topbar,body.ms-focus .view-tabs,body.ms-focus .ms-binder,body.ms-focus .ms-info,body.ms-focus .bottom-nav,body.ms-focus .m-seg{display:none !important;}
+body.ms-focus .ms-bar{border-bottom-color:transparent;opacity:0.35;transition:opacity 0.2s;}
+body.ms-focus .ms-bar:hover,body.ms-focus .ms-bar:focus-within{opacity:1;}
+body.ms-focus .content-area{padding-bottom:0 !important;}
+.map-tool.on{background:var(--gold);border-color:var(--gold);color:var(--bg);}
+@media (max-width:1100px){.ms-info{position:absolute;right:0;top:0;bottom:0;z-index:20;box-shadow:-8px 0 24px rgba(0,0,0,0.12);} .ms-layout{position:relative;}}
+@media (max-width:768px){
+  .m-seg{display:flex;gap:4px;padding:8px 16px;border-bottom:0.5px solid var(--border);background:var(--bg);flex-shrink:0;}
+  .m-seg button{flex:1;font-family:var(--font-ui);font-size:11px;letter-spacing:0.1em;text-transform:uppercase;padding:10px 6px;border-radius:10px;border:0.5px solid var(--border2);background:transparent;color:var(--text3);cursor:pointer;}
+  .m-seg button.on{background:var(--text);border-color:var(--text);color:var(--bg);}
+  body.m-detail-open .m-seg{display:none;}
+  .ms-layout{flex-direction:column;}
+  .ms-binder{width:100%;flex:1;border-right:none;}
+  .ms-layout:not(.m-detail) .ms-main{display:none;}
+  .ms-layout.m-detail .ms-binder{display:none;}
+  .ms-layout.m-detail .ms-main{flex:1;}
+  .ms-total{font-size:18px;}
+  .ms-ch-row{padding:12px 10px 8px 16px;}
+  .ms-ch-name{font-size:12px;}
+  .ms-more{font-size:20px;min-width:40px;min-height:40px;}
+  .ms-sc{padding:12px 16px 12px 20px;min-height:56px;}
+  .ms-sc-name{font-size:16px;}
+  .ms-sc-syn{font-size:13px;}
+  .ms-sc-words,.ms-ch-words{font-size:11px;}
+  .ms-add-sc{font-size:11px;padding:10px 20px 12px 36px;}
+  .ms-bar{padding:8px 12px;gap:6px;}
+  .ms-crumb{display:none;}
+  .ms-page{padding:22px 18px 45vh;}
+  .ms-title{font-size:21px !important;margin-bottom:14px;}
+  .ms-text{font-size:18px !important;line-height:1.75;}
+  /* details slide up as a sheet */
+  .ms-info,.ms-info.closed{display:block;position:fixed;left:0;right:0;bottom:0;top:auto;width:auto;max-height:78dvh;z-index:1050;border-left:none;border-top:0.5px solid var(--border2);border-radius:18px 18px 0 0;box-shadow:0 -10px 34px rgba(0,0,0,0.25);transform:translateY(105%);transition:transform 0.22s ease-out;padding-bottom:calc(24px + env(safe-area-inset-bottom,0px));}
+  .ms-info.m-open{transform:none;}
+  body.ms-focus .ms-scroll{padding-top:env(safe-area-inset-top,0px);}
+}
 
 /* elements toggled with the hidden attribute must stay hidden even when a class sets display */
 [hidden]{display:none !important;}
@@ -1261,7 +1391,8 @@ textarea.sheet-sub-name{font-family:var(--font-body);font-size:16px;line-height:
 <!-- PROJECT SCREEN -->
 <div class="proj-screen" id="projScreen"><!-- visible by default -->
   <div class="proj-screen-head">
-    <div class="proj-screen-brand" style="font-family:var(--font-brand);font-size:22px;font-weight:700;letter-spacing:0.02em;color:var(--text);">Arc<span style="color:var(--gold,#b8923a);">Wright</span> <span style="font-family:var(--font-ui);font-size:10px;font-weight:300;letter-spacing:0.14em;opacity:0.5;vertical-align:middle;">v112</span></div>
+    <div class="proj-screen-brand" style="font-family:var(--font-brand);font-size:22px;font-weight:700;letter-spacing:0.02em;color:var(--text);">Arc<span style="color:var(--gold,#b8923a);">Wright</span> <span style="font-family:var(--font-ui);font-size:10px;font-weight:300;letter-spacing:0.14em;opacity:0.5;vertical-align:middle;">v113</span></div>
+    <button class="proj-acct" id="projAcctBtn" onclick="openAccountModal()"><span class="sync-dot offline" id="projSyncDot"></span><span id="projAcctLbl">Sign in to sync</span></button>
     <div class="proj-screen-title">Your Projects</div>
     <p class="proj-screen-sub">Each project is its own world — characters, factions, locations, lore, and story. Select one to open it.</p>
     <div class="proj-screen-divider"></div>
@@ -1296,7 +1427,7 @@ textarea.sheet-sub-name{font-family:var(--font-body);font-size:16px;line-height:
   <button class="onboard-x" onclick="dismissOnboard()">Skip</button>
   <div class="onboard-card">
     <div class="onboard-wordmark">Arc<span class="ow-gold">Wright</span></div>
-    <div class="onboard-wordmark-sub">World-building studio for writers &amp; game masters &nbsp;·&nbsp; v112</div>
+    <div class="onboard-wordmark-sub">World-building studio for writers &amp; game masters &nbsp;·&nbsp; v113</div>
     <div class="onboard-rule"><span class="onboard-rule-glyph">✦ ✦ ✦</span></div>
     <div class="onboard-title">Build worlds.<br/><em>Write them.</em></div>
     <div class="onboard-body">Every character, faction, power, map, and story beat in one place. Works offline, installs to your phone, and syncs across your devices when you sign in.</div>
@@ -1316,6 +1447,10 @@ textarea.sheet-sub-name{font-family:var(--font-body);font-size:16px;line-height:
       <div class="onboard-feature">
         <div class="onboard-feature-title">Story Overview</div>
         <div class="onboard-feature-body">A horizontal timeline with freely draggable character cards, beat markers, theme notes, and tagging.</div>
+      </div>
+      <div class="onboard-feature">
+        <div class="onboard-feature-title">Manuscript</div>
+        <div class="onboard-feature-body">Write your story chapter by chapter. Each scene knows its point of view, location and story beat, and every name you write links back to your world.</div>
       </div>
       <div class="onboard-feature">
         <div class="onboard-feature-title">Powers &amp; Abilities</div>
@@ -1403,7 +1538,7 @@ textarea.sheet-sub-name{font-family:var(--font-body);font-size:16px;line-height:
   <button class="m-back" id="mBack" onclick="mBack()" aria-label="Back"><svg viewBox="0 0 24 24"><polyline points="15 5 8 12 15 19"/></svg><span id="mBackLbl">Worlds</span></button>
   <div class="m-title" id="mTitle"></div>
   <button class="menu-btn" id="menuBtn" onclick="toggleDrawer()" aria-label="Toggle character list"><svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
-  <div class="topbar-brand">Arc<span class="brand-gold">Wright</span> <span class="topbar-ver">v112</span></div>
+  <div class="topbar-brand">Arc<span class="brand-gold">Wright</span> <span class="topbar-ver">v113</span></div>
   <button class="proj-back-btn" onclick="openProjectScreen()" title="Back to projects">◂ Projects</button>
   <span class="proj-current-lbl" id="projCurrentLbl"></span>
   <div class="tab-div"></div>
@@ -1464,6 +1599,7 @@ textarea.sheet-sub-name{font-family:var(--font-body);font-size:16px;line-height:
     <div class="content-area">
       <div class="view-tabs">
         <button class="view-tab active" id="tab-sheets" onclick="switchTab('sheets')">Character Sheets</button>
+        <button class="view-tab" id="tab-manuscript" onclick="switchTab('manuscript')">Manuscript</button>
         <button class="view-tab" id="tab-overview" onclick="switchTab('overview')">Story Overview</button>
         <button class="view-tab" id="tab-factions" onclick="switchTab('factions')">Factions</button>
         <button class="view-tab" id="tab-world" onclick="switchTab('world')">World</button>
@@ -1482,8 +1618,15 @@ textarea.sheet-sub-name{font-family:var(--font-body);font-size:16px;line-height:
         </div>
       </div>
 
+      <!-- MANUSCRIPT PANE -->
+      <div class="view-pane" id="pane-manuscript">
+        <div class="m-seg"><button class="on" onclick="switchTab('manuscript')">Manuscript</button><button onclick="switchTab('overview')">Timeline</button></div>
+        <div class="ms-layout" id="msLayout"></div>
+      </div>
+
       <!-- OVERVIEW PANE -->
       <div class="view-pane" id="pane-overview">
+        <div class="m-seg"><button onclick="switchTab('manuscript')">Manuscript</button><button class="on" onclick="switchTab('overview')">Timeline</button></div>
         <div class="overview-area" id="overviewArea" style="display:flex;flex-direction:column;flex:1;overflow:hidden;">
           <div id="overviewScrollArea" style="flex:1;overflow-y:auto;padding:1.5rem;">
             <div id="overviewContent"></div>
@@ -1860,7 +2003,7 @@ function renderPowerDetail(pid){
       var v=esc(p[f.key]||'');
       html+='<div class="faction-field"><div class="faction-field-lbl">'+f.label+'</div>'+(f.type==='textarea'?
         '<textarea rows="3" placeholder="'+esc(f.ph)+'" oninput="setPowerProp(\''+pid+'\',\''+f.key+'\',this.value)">'+v+'</textarea>':
-        '<input value="'+v+'" placeholder="'+esc(f.ph)+'" oninput="setPowerProp(\''+pid+'\',\''+f.key+'\',this.value)"/>')+'</div>';
+        '<textarea data-line rows="1" placeholder="'+esc(f.ph)+'" oninput="setPowerProp(\''+pid+'\',\''+f.key+'\',this.value)">'+v+'</textarea>')+'</div>';
     });
     html+='</div>';
   });
@@ -1946,7 +2089,7 @@ function powerLinkBar(item,kind){
   }
   var ids=sortedPowerIds();
   var opt=function(id){return'<option value="'+id+'">'+(P[id].kind==='system'?'◈ ':'◇ ')+esc(powerName(P[id]))+'</option>';};
-  return '<div class="pw-link">'+(ids.length?'<select class="pw-link-sel" onchange="linkCard(this)"><option value="">Link to the Powers library…</option>'+ids.map(opt).join('')+'</select>':'')+
+  return '<div class="pw-link">'+(ids.length?'<select class="pw-link-sel" onchange="linkCard(this)"><option value="">Link to library…</option>'+ids.map(opt).join('')+'</select>':'')+
     '<button class="pw-link-btn" onclick="saveCardToLibrary(this,\''+kind+'\')">Save to library</button></div>';
 }
 function _cardInfo(el){
@@ -2252,7 +2395,7 @@ renderWorldDetail=function(){
    AUTO-GROWING TEXTAREAS
    Long entries show in full instead of being cut off at a fixed height.
 ══════════════════════════════════════════════════════ */
-var GROW_SKIP='#qnScratch,#feTa,.qn-add-input,.qn-textarea,.m-ta,#acctModalBg textarea';
+var GROW_SKIP='#qnScratch,#feTa,.qn-add-input,.qn-textarea,.m-ta,#acctModalBg textarea,#msText,#msTitle';
 function autoGrow(ta){
   if(!ta||ta.tagName!=='TEXTAREA'||ta.matches(GROW_SKIP)||!ta.offsetParent)return;
   ta.classList.add('aw-grow');
@@ -2266,14 +2409,14 @@ document.addEventListener('input',function(e){if(e.target.tagName==='TEXTAREA')a
 new MutationObserver(function(muts){for(var i=0;i<muts.length;i++){if(muts[i].addedNodes.length){queueGrow();return;}}}).observe(document.documentElement,{childList:true,subtree:true});
 window.addEventListener('resize',queueGrow);
 // sheet titles: Enter finishes instead of adding a line
-document.addEventListener('keydown',function(e){if(e.key==='Enter'&&e.target.matches&&e.target.matches('textarea.char-name-input,textarea.sheet-sub-name')){e.preventDefault();e.target.blur();}},true);
+document.addEventListener('keydown',function(e){if(e.key!=='Enter'||!e.target.matches)return;if(e.target.matches('textarea.char-name-input,textarea.sheet-sub-name')){e.preventDefault();e.target.blur();}else if(e.target.matches('textarea[data-line]'))e.preventDefault();},true);
 
 /* ══════════════════════════════════════════════════════
    FULL-ENTRY EDITOR
    Any text field can open in a large editor so the whole entry is readable.
    Desktop: the ⤢ button on a focused or hovered field. Phone: tap a long field.
 ══════════════════════════════════════════════════════ */
-var FE_SCOPE='#sheetContent,#factionDetailArea,#worldDetailArea,#powerDetailArea,#mapPanel,#overviewContent,#mSheetBody,#qnPanel .qn-add-row';
+var FE_SCOPE='#sheetContent,#factionDetailArea,#worldDetailArea,#powerDetailArea,#mapPanel,#overviewContent,#mSheetBody,#qnPanel .qn-add-row,#msInfo';
 var feTarget=null,_feHover=null,_feHideT=null;
 function feEligible(el){
   if(!el||!el.matches)return false;
@@ -2294,7 +2437,7 @@ function feLabel(el){
 }
 function feOpen(el){
   feTarget=el;feHideBtn();
-  var single=el.tagName==='INPUT'||el.matches('textarea.char-name-input,textarea.sheet-sub-name');
+  var single=el.tagName==='INPUT'||el.matches('textarea.char-name-input,textarea.sheet-sub-name,textarea[data-line]');
   var box=document.querySelector('#feBg .fe');box.classList.toggle('single',single);
   document.getElementById('feTitle').textContent=feLabel(el);
   var ta=document.getElementById('feTa');ta.value=el.value;ta.placeholder=el.placeholder||'';
@@ -2306,7 +2449,7 @@ function feOpen(el){
 function feCount(){var v=document.getElementById('feTa').value.trim();var n=v?v.split(/\s+/).length:0;document.getElementById('feCount').textContent=n+' word'+(n===1?'':'s');}
 function feSync(){
   if(!feTarget)return;var v=document.getElementById('feTa').value;
-  if(feTarget.tagName==='INPUT'||feTarget.matches('textarea.char-name-input,textarea.sheet-sub-name'))v=v.replace(/\s*\n+\s*/g,' ');
+  if(feTarget.tagName==='INPUT'||feTarget.matches('textarea.char-name-input,textarea.sheet-sub-name,textarea[data-line]'))v=v.replace(/\s*\n+\s*/g,' ');
   if(feTarget.value===v)return;
   feTarget.value=v;
   feTarget.dispatchEvent(new Event('input',{bubbles:true}));
@@ -2348,7 +2491,7 @@ document.addEventListener('touchend',function(e){
   if(!_feTouch||!isPhone())return;var t=e.changedTouches[0],s=_feTouch;_feTouch=null;
   if(Math.hypot(t.clientX-s.x,t.clientY-s.y)>8)return;
   var el=s.el;if(!feEligible(el)||document.activeElement===el)return;
-  var long=el.tagName==='TEXTAREA'||el.scrollWidth>el.clientWidth+2;
+  var long=el.tagName==='TEXTAREA'?(!el.hasAttribute('data-line')||el.getBoundingClientRect().height>64):el.scrollWidth>el.clientWidth+2;
   if(!long)return;
   e.preventDefault();feOpen(el);
 },{capture:true});
@@ -2364,6 +2507,7 @@ function mLayout(t){
   if(t==='factions')return document.querySelector('#pane-factions .faction-tab-layout');
   if(t==='powers')return document.querySelector('#pane-powers .faction-tab-layout');
   if(t==='world')return document.querySelector('#pane-world .world-tab-layout');
+  if(t==='manuscript')return document.getElementById('msLayout');
   return null;
 }
 function mInDetail(t){t=t||mTab();if(t==='sheets')return!document.body.classList.contains('m-sheets-list')&&!!currentSid;var l=mLayout(t);return!!(l&&l.classList.contains('m-detail'));}
@@ -2384,7 +2528,7 @@ function mBack(){
   if(t!=='overview'&&mInDetail(t)){collectSheet();persist();mShowList(t);if(t==='sheets')renderTree();if(t==='powers')renderPowerList();if(t==='factions')renderFactionSidebar();return;}
   openProjectScreen();
 }
-var M_TAB_TITLES={sheets:'Cast',overview:'Story',factions:'Factions',world:'World',powers:'Powers'};
+var M_TAB_TITLES={sheets:'Cast',overview:'Timeline',factions:'Factions',world:'World',powers:'Powers',manuscript:'Manuscript'};
 function mUpdateBar(){
   var title=document.getElementById('mTitle'),back=document.getElementById('mBackLbl');if(!title)return;
   var t=mTab(),detail=mInDetail(t),txt=M_TAB_TITLES[t]||'',projName=(document.getElementById('projCurrentLbl')||{}).textContent||'';
@@ -2392,6 +2536,7 @@ function mUpdateBar(){
     if(t==='sheets'){var sh=getCurrentSheet();txt=sh?(sh.charName||sh.name||'Character'):'Character';}
     else if(t==='factions'){var f=data.factions[currentFactionId];txt=f?(f.name||'Faction'):'Faction';}
     else if(t==='powers'){var p=getPowers()[currentPowerId];txt=p?powerName(p):'Power';}
+    else if(t==='manuscript'){var f=msFind(msSceneId);txt=f?msSceneLabel(f.s,f.si):'Scene';}
     else if(t==='world'){
       if(currentWorldSection==='maps'){var m=getMaps()[currentMapId];txt=m?mapName(m):'Map';}
       else{var w=getWorldStore()[currentWorldSection];var e=w&&w[currentWorldId];txt=e?(e.name||'Untitled'):'World';}
@@ -2413,14 +2558,14 @@ document.addEventListener('input',function(e){if(isPhone()&&e.target.matches&&e.
   switchTab=function(tab){
     var prev=mTab();
     _switchTab(tab);
-    ['sheets','overview','factions','world','powers'].forEach(function(x){document.body.classList.toggle('m-tab-'+x,x===tab);});
+    ['sheets','manuscript','overview','factions','world','powers'].forEach(function(x){document.body.classList.toggle('m-tab-'+x,x===tab);});
     if(isPhone()&&prev===tab&&tab!=='overview')mShowList(tab); // tapping the tab you're on goes back to its list
     queueGrow();mUpdateBar();
   };
   var _loadSheet=loadSheet;
   loadSheet=function(fid,sid){_loadSheet(fid,sid);if(isPhone()&&!window._mQuiet)mOpenDetail('sheets');mUpdateBar();queueGrow();};
   var _openProject=openProject;
-  openProject=function(id){window._mQuiet=true;try{_openProject(id);}finally{window._mQuiet=false;}if(isPhone()){Object.keys(data.folders||{}).forEach(function(f){openFolders.add(f);});renderTree();}document.body.classList.add('m-tab-sheets');mShowList('sheets');['factions','world','powers'].forEach(function(t){var l=mLayout(t);if(l)l.classList.remove('m-detail');});mUpdateBar();};
+  openProject=function(id){window._mQuiet=true;try{_openProject(id);}finally{window._mQuiet=false;}msSceneId=null;var _ml=document.getElementById('msLayout');if(_ml)_ml.classList.remove('m-detail');if(isPhone()){Object.keys(data.folders||{}).forEach(function(f){openFolders.add(f);});renderTree();}document.body.classList.add('m-tab-sheets');mShowList('sheets');['factions','world','powers'].forEach(function(t){var l=mLayout(t);if(l)l.classList.remove('m-detail');});mUpdateBar();};
   var _openPower=openPower;openPower=function(id){_openPower(id);mOpenDetail('powers');};
   var _newPower=newPower;newPower=function(k,p){_newPower(k,p);mOpenDetail('powers');};
   var _openMap=openMap;openMap=function(id,pin){_openMap(id,pin);mOpenDetail('world');};
@@ -2550,6 +2695,8 @@ function tlmBeat(id,isNew){
     '<div class="m-field"><span class="m-lbl">Theme &amp; notes</span><textarea class="m-ta" placeholder="What is happening thematically at this point in the story?" oninput="tlmSetBeat(\''+id+'\',\'theme\',this.value)">'+esc(b.theme||'')+'</textarea></div>'+
     '<div class="m-field"><span class="m-lbl">Tagged</span><div class="m-chips">'+(tags.length?tags.map(function(t){return'<span class="m-chip">'+esc(tlTagLabel(t))+'<button onclick="tlmUntag(\''+id+'\',\''+t+'\')" aria-label="Remove tag">✕</button></span>';}).join(''):'<span class="pw-none">Nothing tagged yet.</span>')+'</div>'+
       '<div class="msheet-row"><select class="m-select" id="tlmTagSel">'+opts+'</select><button class="m-btn" onclick="tlmTag(\''+id+'\')">Tag</button></div></div>'+
+    (function(){var sc=[];getMs().chapters.forEach(function(c,ci){c.scenes.forEach(function(x,si){if(x.beatId===id)sc.push('<button class="m-chip" onclick="mSheetClose();switchTab(\'manuscript\');msOpen(\''+x.id+'\')">\u270E '+esc(msChapterLabel(c,ci)+' \u00B7 '+msSceneLabel(x,si))+'</button>');});});
+      return '<div class="m-field"><span class="m-lbl">Scenes</span><div class="m-chips">'+(sc.length?sc.join(''):'<span class="pw-none">No scenes set at this beat yet. Pick this beat in a scene\u2019s details.</span>')+'</div></div>';})()+
     '<div class="msheet-row"><button class="m-btn" '+(i<=0?'disabled':'')+' onclick="tlmMoveBeat(\''+id+'\',-1)">↑ Earlier</button><button class="m-btn" '+(i>=beats.length-1?'disabled':'')+' onclick="tlmMoveBeat(\''+id+'\',1)">↓ Later</button><span style="flex:1"></span><button class="m-btn danger" id="tlmDelBeat" onclick="tlmDeleteBeat(\''+id+'\')">Delete beat</button></div>',
     tlmRefresh);
   if(isNew)setTimeout(function(){var n=document.getElementById('tlmBeatName');if(n)n.focus();},60);
@@ -2586,6 +2733,249 @@ function tlmSetCard(id,v){var c=data.timeline.cards.find(function(x){return x.id
 function tlmMoveCard(id,bid){var c=data.timeline.cards.find(function(x){return x.id===id;}),b=data.timeline.beats.find(function(x){return x.id===bid;});if(!c||!b)return;c.x=b.x+40;persist();}
 function tlmRemoveCard(id){data.timeline.cards=data.timeline.cards.filter(function(c){return c.id!==id;});persist();mSheetClose();}
 
+/* ══════════════════════════════════════════════════════
+   MANUSCRIPT
+   data.manuscript = { chapters:[{id,title,scenes:[{id,title,text,synopsis,pov,locId,beatId,status,notes}]}],
+                       goal:<daily words>, log:{'YYYY-MM-DD':<total words at the start of that day>} }
+══════════════════════════════════════════════════════ */
+var msChapterId=null,msSceneId=null,_msSaveT=null,_msMentT=null,msInfoOpen=true;
+var MS_STATUS=[['draft','Draft','#b8923a'],['revised','Revised','#2471a3'],['final','Final','#239b56']];
+function getMs(){
+  if(!data.manuscript||!Array.isArray(data.manuscript.chapters))data.manuscript={chapters:[],goal:0,log:{}};
+  if(!data.manuscript.log)data.manuscript.log={};
+  return data.manuscript;
+}
+function msWords(t){var m=(t||'').match(/\S+/g);return m?m.length:0;}
+function msChapterWords(c){return c.scenes.reduce(function(n,s){return n+msWords(s.text);},0);}
+function msTotalWords(){return getMs().chapters.reduce(function(n,c){return n+msChapterWords(c);},0);}
+function msToday(){var d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
+function msTodayWords(){var ms=getMs(),k=msToday();if(ms.log[k]==null){ms.log[k]=msTotalWords();}return Math.max(0,msTotalWords()-ms.log[k]);}
+function msFind(sid){var ms=getMs();for(var i=0;i<ms.chapters.length;i++){var c=ms.chapters[i];for(var j=0;j<c.scenes.length;j++)if(c.scenes[j].id===sid)return{c:c,ci:i,s:c.scenes[j],si:j};}return null;}
+function msFmt(n){return n.toLocaleString();}
+function msChapterLabel(c,i){return c.title||('Chapter '+(i+1));}
+function msSceneLabel(s,j){return s.title||('Scene '+(j+1));}
+
+function msNewChapter(){
+  var ms=getMs(),c={id:genId(),title:'',scenes:[]};ms.chapters.push(c);
+  var s={id:genId(),title:'',text:'',status:'draft'};c.scenes.push(s);
+  persist();msOpen(s.id);
+}
+function msNewScene(cid){
+  var ms=getMs(),c=ms.chapters.find(function(x){return x.id===cid;})||ms.chapters[ms.chapters.length-1];
+  if(!c){msNewChapter();return;}
+  var s={id:genId(),title:'',text:'',status:'draft'};c.scenes.push(s);persist();msOpen(s.id);
+  if(typeof mSheetClose==='function'&&document.getElementById('mSheetBg').classList.contains('open'))mSheetClose();
+}
+function msOpen(sid){
+  var f=msFind(sid);if(!f)return;
+  msSceneId=sid;msChapterId=f.c.id;
+  renderManuscript();
+  if(typeof mOpenDetail==='function')mOpenDetail('manuscript');
+  setTimeout(function(){var t=document.getElementById(f.s.text?'msText':(f.s.title?'msText':'msTitle'));if(t&&!isPhone())t.focus();},30);
+}
+function renderManuscript(){
+  var host=document.getElementById('msLayout');if(!host)return;
+  var ms=getMs();msTodayWords();
+  if(!ms.chapters.length){
+    host.innerHTML='<div class="faction-empty pw-empty ms-empty"><div class="pw-empty-glyph">✎</div><div class="pw-empty-title">Manuscript</div>'+
+      '<p class="pw-empty-sub">Write your story here, chapter by chapter and scene by scene. Each scene can name its point-of-view character, where it happens and which story beat it belongs to, and anyone you mention links back to their sheet.</p>'+
+      '<div class="pw-empty-btns"><button class="pw-btn primary" onclick="msNewChapter()">Start writing</button></div></div>';
+    host.classList.remove('m-detail');return;
+  }
+  if(!msFind(msSceneId)){var c0=ms.chapters.find(function(c){return c.scenes.length;});msSceneId=c0?c0.scenes[0].id:null;}
+  if(!msSceneId){ms.chapters[0].scenes.push({id:genId(),title:'',text:'',status:'draft'});msSceneId=ms.chapters[0].scenes[0].id;persist();}
+  var cur=msFind(msSceneId);msChapterId=cur.c.id;
+  var goal=+ms.goal||0,today=msTodayWords(),pct=goal?Math.min(100,Math.round(today/goal*100)):0;
+  // binder
+  var b='<aside class="ms-binder"><div class="ms-binder-head"><div class="faction-sidebar-lbl" style="margin:0">Manuscript</div><div class="ms-total"><span id="msTotal">'+msFmt(msTotalWords())+'</span> words</div>'+
+    '<button class="ms-goal" onclick="msGoalSheet()" title="Daily word goal"><span class="ms-goal-bar"><i id="msGoalFill" style="width:'+pct+'%"></i></span><span id="msGoalTxt">'+(goal?msFmt(today)+' / '+msFmt(goal)+' today':msFmt(today)+' words today · set a goal')+'</span></button></div><div class="ms-tree">';
+  ms.chapters.forEach(function(c,i){
+    b+='<div class="ms-ch'+(c.id===msChapterId?' cur':'')+'"><div class="ms-ch-row"><span class="ms-ch-name">'+esc(msChapterLabel(c,i))+'</span><span class="ms-ch-words" id="msChW-'+c.id+'">'+msFmt(msChapterWords(c))+'</span><button class="ms-more" onclick="msChapterSheet(\''+c.id+'\')" aria-label="Chapter options">⋯</button></div>';
+    c.scenes.forEach(function(s,j){
+      var st=MS_STATUS.find(function(x){return x[0]===(s.status||'draft');})||MS_STATUS[0];
+      b+='<button class="ms-sc'+(s.id===msSceneId?' active':'')+'" onclick="msOpen(\''+s.id+'\')"><span class="ms-sc-dot" style="background:'+st[2]+'" title="'+st[1]+'"></span><span class="ms-sc-main"><span class="ms-sc-name" id="msScN-'+s.id+'">'+esc(msSceneLabel(s,j))+'</span>'+(s.synopsis?'<span class="ms-sc-syn">'+esc(s.synopsis)+'</span>':'')+'</span><span class="ms-sc-words" id="msScW-'+s.id+'">'+msFmt(msWords(s.text))+'</span></button>';
+    });
+    b+='<button class="ms-add-sc" onclick="msNewScene(\''+c.id+'\')">+ Scene</button></div>';
+  });
+  b+='</div><div class="faction-sidebar-footer"><button class="sb-btn" onclick="msNewChapter()">+ New chapter</button></div></aside>';
+  // editor
+  var s=cur.s,ci=cur.ci,si=cur.si;
+  var e='<main class="ms-main"><div class="ms-bar"><span class="ms-crumb">'+esc(msChapterLabel(cur.c,ci))+'</span><span class="ms-bar-sp"></span>'+
+    '<span class="ms-wc" id="msWc">'+msFmt(msWords(s.text))+' words</span><span class="ms-saved" id="msSaved">Saved</span>'+
+    '<button class="map-tool" onclick="msToggleInfo()" id="msInfoBtn">Details</button><button class="map-tool ms-focus-btn" onclick="msFocus()">Focus</button><button class="map-tool" onclick="msExportSheet()">Export</button></div>'+
+    '<div class="ms-scroll" id="msScroll"><div class="ms-page">'+
+    '<textarea class="ms-title" id="msTitle" rows="1" placeholder="'+esc('Scene '+(si+1))+' title (optional)" oninput="msSet(\'title\',this.value)">'+esc(s.title||'')+'</textarea>'+
+    '<textarea class="ms-text" id="msText" placeholder="Start writing…" oninput="msTyping(this)">'+esc(s.text||'')+'</textarea>'+
+    '</div></div></main>';
+  // details
+  var sheets=getAllSheetsFlat(),locs=(data.world&&data.world.locations)||{},beats=(typeof tlSortedBeats==='function')?tlSortedBeats():[];
+  var sel=function(k,opts,none){return '<select class="pw-meta-sel ms-sel" onchange="msSet(\''+k+'\',this.value)"><option value="">'+none+'</option>'+opts.map(function(o){return'<option value="'+o[0]+'"'+(s[k]===o[0]?' selected':'')+'>'+esc(o[1])+'</option>';}).join('')+'</select>';};
+  var d='<aside class="ms-info'+(msInfoOpen?'':' closed')+'" id="msInfo"><div class="ms-info-head"><span class="faction-section-lbl" style="margin:0;flex:1">Scene details</span><button class="tp-close" onclick="msToggleInfo()" aria-label="Close details">✕</button></div>'+
+    '<div class="faction-field"><div class="faction-field-lbl">Synopsis</div><textarea data-line rows="1" placeholder="One line: what happens, and what changes?" oninput="msSet(\'synopsis\',this.value);var n=document.getElementById(\'msScN-'+s.id+'\');">'+esc(s.synopsis||'')+'</textarea></div>'+
+    '<div class="faction-field"><div class="faction-field-lbl">Point of view</div>'+sel('pov',sheets.map(function(x){return[x.fid+'::'+x.sid,x.sheet.charName||x.sheet.name||'Unnamed'];}),'No POV character')+'</div>'+
+    '<div class="faction-field"><div class="faction-field-lbl">Location</div>'+sel('locId',Object.keys(locs).map(function(k){return[k,locs[k].name||'Untitled'];}),'No location')+'</div>'+
+    '<div class="faction-field"><div class="faction-field-lbl">Story beat</div>'+sel('beatId',beats.map(function(x,i){return[x.id,(ARC_NUMS[i]||i+1)+'. '+(x.name||'Untitled beat')];}),'Not on the timeline')+'</div>'+
+    '<div class="faction-field"><div class="faction-field-lbl">Status</div><div class="ms-status">'+MS_STATUS.map(function(x){return'<button class="ms-st'+((s.status||'draft')===x[0]?' on':'')+'" style="--c:'+x[2]+'" onclick="msSet(\'status\',\''+x[0]+'\');renderManuscript()">'+x[1]+'</button>';}).join('')+'</div></div>'+
+    '<div class="faction-field"><div class="faction-field-lbl">In this scene</div><div class="ms-ment" id="msMent"></div></div>'+
+    '<div class="faction-field"><div class="faction-field-lbl">Notes</div><textarea rows="3" placeholder="What this scene needs to do, things to fix later…" oninput="msSet(\'notes\',this.value)">'+esc(s.notes||'')+'</textarea></div>'+
+    '<div class="ms-info-actions"><button class="pw-btn" onclick="msMoveScene(-1)"'+(ci===0&&si===0?' disabled':'')+'>↑ Earlier</button><button class="pw-btn" onclick="msMoveScene(1)">↓ Later</button><button class="pw-btn danger" id="msDelScene" onclick="msDeleteScene()">Delete scene</button></div></aside>';
+  var wasDetail=host.classList.contains('m-detail');
+  host.innerHTML=b+e+d;
+  if(wasDetail)host.classList.add('m-detail');
+  document.body.classList.toggle('ms-info-shown',msInfoOpen);
+  msGrowAll();msMentions();
+}
+/* editor growth that keeps the page from jumping */
+function msGrow(ta){
+  var sc=document.getElementById('msScroll');if(!ta||!sc)return;var st=sc.scrollTop;
+  ta.style.height='auto';ta.style.height=(ta.scrollHeight+2)+'px';sc.scrollTop=st;
+}
+function msGrowAll(){msGrow(document.getElementById('msTitle'));msGrow(document.getElementById('msText'));}
+function msSet(k,v){
+  var f=msFind(msSceneId);if(!f)return;f.s[k]=v;
+  if(k==='title'){var n=document.getElementById('msScN-'+f.s.id);if(n)n.textContent=msSceneLabel(f.s,f.si);msGrow(document.getElementById('msTitle'));if(typeof mUpdateBar==='function')mUpdateBar();}
+  msQueueSave();
+}
+function msTyping(ta){
+  var f=msFind(msSceneId);if(!f)return;f.s.text=ta.value;msGrow(ta);
+  var w=msWords(ta.value);
+  document.getElementById('msWc').textContent=msFmt(w)+' words';
+  var sw=document.getElementById('msScW-'+f.s.id);if(sw)sw.textContent=msFmt(w);
+  var cw=document.getElementById('msChW-'+f.c.id);if(cw)cw.textContent=msFmt(msChapterWords(f.c));
+  var tot=document.getElementById('msTotal');if(tot)tot.textContent=msFmt(msTotalWords());
+  var ms=getMs(),goal=+ms.goal||0,today=msTodayWords();
+  var gt=document.getElementById('msGoalTxt');if(gt)gt.textContent=goal?msFmt(today)+' / '+msFmt(goal)+' today':msFmt(today)+' words today · set a goal';
+  var gf=document.getElementById('msGoalFill');if(gf)gf.style.width=(goal?Math.min(100,Math.round(today/goal*100)):0)+'%';
+  msQueueSave();clearTimeout(_msMentT);_msMentT=setTimeout(msMentions,700);
+}
+function msQueueSave(){
+  var sv=document.getElementById('msSaved');if(sv)sv.classList.add('pending');
+  clearTimeout(_msSaveT);_msSaveT=setTimeout(function(){persist();var s2=document.getElementById('msSaved');if(s2)s2.classList.remove('pending');},600);
+}
+/* everyone and everywhere the scene mentions, from the world's own names */
+function msEntities(){
+  var out=[];
+  getAllSheetsFlat().forEach(function(x){
+    var full=x.sheet.charName||x.sheet.name;if(!full)return;
+    var names=[full.split(',')[0].trim()];var first=names[0].split(/\s+/)[0];
+    if(first.length>=3&&first!==names[0])names.push(first);
+    out.push({type:'char',id:x.fid+'::'+x.sid,label:names[0],names:names});
+  });
+  var W=(data.world||{});
+  Object.keys(W.locations||{}).forEach(function(k){var n=W.locations[k].name;if(n)out.push({type:'loc',id:k,label:n,names:[n]});});
+  Object.keys(W.lore||{}).forEach(function(k){var n=W.lore[k].name;if(n)out.push({type:'lore',id:k,label:n,names:[n]});});
+  getFactionList().forEach(function(f){if(f.name)out.push({type:'fac',id:f.id,label:f.name,names:[f.name]});});
+  var P=getPowers();Object.keys(P).forEach(function(k){var n=P[k].name;if(n)out.push({type:'pow',id:k,label:n,names:[n]});});
+  return out;
+}
+function msMentions(){
+  var box=document.getElementById('msMent'),f=msFind(msSceneId);if(!box||!f)return;
+  var t=(f.s.title||'')+'\n'+(f.s.text||'');
+  var hits=msEntities().filter(function(e){return e.names.some(function(n){
+    var re=new RegExp('(^|[^\\p{L}\\p{N}])'+n.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+'(?=$|[^\\p{L}\\p{N}])','iu');return re.test(t);});});
+  var ICON={char:'●',loc:'▧',lore:'❦',fac:'⚑',pow:'◈'};
+  box.innerHTML=hits.length?hits.map(function(h){return'<button class="ms-chip" onclick="msPeek(\''+h.type+'\',\''+h.id+'\')"><span class="ms-chip-i">'+ICON[h.type]+'</span>'+esc(h.label)+'</button>';}).join(''):
+    '<span class="pw-none">Name a character, place, faction or power in the text and it shows up here.</span>';
+}
+/* quick look without leaving the page */
+function msPeek(type,id){
+  var title='',rows=[],open='';
+  var row=function(l,v){if(v)rows.push('<div class="m-field"><span class="m-lbl">'+l+'</span><div class="ms-peek-v">'+esc(v)+'</div></div>');};
+  if(type==='char'){var p=id.split('::'),s=data.folders[p[0]]&&data.folders[p[0]].sheets[p[1]];if(!s)return;title=s.charName||s.name;
+    var w=s.wound||{},idn=s.identity||{},pe=s.personality||{};
+    row('Role',s.role&&s.role[0].toUpperCase()+s.role.slice(1));row('Essence',idn.essence);row('Wants',w.want);row('Needs',w.need);row('The lie they believe',w.lie);row('Speech',pe.speech);row('Under pressure',pe.pressure);
+    open='<button class="m-btn" onclick="mSheetClose();goToSheet(\''+p[0]+'\',\''+p[1]+'\')">Open character sheet</button>';}
+  else if(type==='loc'||type==='lore'){var st=type==='loc'?'locations':'lore',e=data.world[st][id];if(!e)return;title=e.name;row('Category',e.category);
+    Object.keys(e.fields||{}).slice(0,6).forEach(function(k){row(k.replace(/([A-Z])/g,' $1').replace(/^./,function(c){return c.toUpperCase();}),e.fields[k]);});
+    open='<button class="m-btn" onclick="mSheetClose();msGoWorld(\''+st+'\',\''+id+'\')">Open '+(type==='loc'?'location':'lore entry')+'</button>';}
+  else if(type==='fac'){var fa=data.factions[id];if(!fa)return;title=fa.name;var dd=fa.details||{};Object.keys(dd).slice(0,6).forEach(function(k){row(k.replace(/^./,function(c){return c.toUpperCase();}),dd[k]);});
+    open='<button class="m-btn" onclick="mSheetClose();currentFactionId=\''+id+'\';switchTab(\'factions\');if(typeof mOpenDetail===\'function\')mOpenDetail(\'factions\')">Open faction</button>';}
+  else if(type==='pow'){var pw=getPowers()[id];if(!pw)return;title=powerName(pw);row('What it does',pw.summary);row('Limits',pw.limits);row('Cost',pw.cost);
+    open='<button class="m-btn" onclick="mSheetClose();openPower(\''+id+'\')">Open power</button>';}
+  mSheet(title,(rows.length?rows.join(''):'<span class="pw-none">Nothing written about this yet.</span>')+'<div class="msheet-row">'+open+'</div>');
+}
+function msGoWorld(st,id){collectSheet();switchTab('world');currentWorldSection=st;currentWorldId=id;renderWorldTab();if(typeof mOpenDetail==='function')mOpenDetail('world');}
+function msToggleInfo(){
+  if(isPhone()){var i=document.getElementById('msInfo');if(i)i.classList.toggle('m-open');return;}
+  msInfoOpen=!msInfoOpen;var el=document.getElementById('msInfo');if(el)el.classList.toggle('closed',!msInfoOpen);
+}
+function msFocus(){
+  document.body.classList.toggle('ms-focus');
+  var on=document.body.classList.contains('ms-focus');
+  document.querySelectorAll('.ms-focus-btn').forEach(function(b){b.textContent=on?'Exit focus':'Focus';b.classList.toggle('on',on);});
+  var t=document.getElementById('msText');if(t&&on)t.focus();
+  setTimeout(msGrowAll,30);
+}
+document.addEventListener('keydown',function(e){if(e.key==='Escape'&&document.body.classList.contains('ms-focus'))msFocus();});
+function msMoveScene(dir){
+  var ms=getMs(),f=msFind(msSceneId);if(!f)return;
+  var flat=[];ms.chapters.forEach(function(c){c.scenes.forEach(function(s){flat.push({c:c,s:s});});});
+  var i=flat.findIndex(function(x){return x.s.id===f.s.id;});
+  if(dir<0&&f.si>0){f.c.scenes.splice(f.si,1);f.c.scenes.splice(f.si-1,0,f.s);}
+  else if(dir>0&&f.si<f.c.scenes.length-1){f.c.scenes.splice(f.si,1);f.c.scenes.splice(f.si+1,0,f.s);}
+  else if(dir<0&&f.ci>0){f.c.scenes.splice(f.si,1);ms.chapters[f.ci-1].scenes.push(f.s);}   // to the end of the previous chapter
+  else if(dir>0&&f.ci<ms.chapters.length-1){f.c.scenes.splice(f.si,1);ms.chapters[f.ci+1].scenes.unshift(f.s);} // to the start of the next
+  else return;
+  persist();renderManuscript();
+}
+var _msDelArm=false;
+function msDeleteScene(){
+  var b=document.getElementById('msDelScene');
+  if(!_msDelArm){_msDelArm=true;if(b){b.textContent='Tap again to delete';b.classList.add('armed');}setTimeout(function(){_msDelArm=false;var b2=document.getElementById('msDelScene');if(b2){b2.textContent='Delete scene';b2.classList.remove('armed');}},3000);return;}
+  _msDelArm=false;var f=msFind(msSceneId);if(!f)return;
+  f.c.scenes.splice(f.si,1);msSceneId=(f.c.scenes[f.si]||f.c.scenes[f.si-1]||{}).id||null;
+  persist();renderManuscript();showToast('Scene deleted.');
+}
+function msChapterSheet(cid){
+  var ms=getMs(),i=ms.chapters.findIndex(function(c){return c.id===cid;}),c=ms.chapters[i];if(!c)return;
+  mSheet(msChapterLabel(c,i),
+    '<div class="m-field"><span class="m-lbl">Chapter title</span><input class="m-input" id="msChTitle" value="'+esc(c.title||'')+'" placeholder="'+esc('Chapter '+(i+1))+'" oninput="msSetChapter(\''+cid+'\',this.value)"/></div>'+
+    '<div class="msheet-row"><button class="m-btn primary" onclick="msNewScene(\''+cid+'\')">+ Add a scene</button></div>'+
+    '<div class="msheet-row"><button class="m-btn" '+(i===0?'disabled':'')+' onclick="msMoveChapter(\''+cid+'\',-1)">↑ Earlier</button><button class="m-btn" '+(i===ms.chapters.length-1?'disabled':'')+' onclick="msMoveChapter(\''+cid+'\',1)">↓ Later</button><span style="flex:1"></span><button class="m-btn danger" id="msDelCh" onclick="msDeleteChapter(\''+cid+'\')">Delete chapter</button></div>',
+    renderManuscript);
+}
+function msSetChapter(cid,v){var c=getMs().chapters.find(function(x){return x.id===cid;});if(!c)return;c.title=v;msQueueSave();}
+function msMoveChapter(cid,dir){var ch=getMs().chapters,i=ch.findIndex(function(c){return c.id===cid;}),j=i+dir;if(j<0||j>=ch.length)return;var t=ch[i];ch[i]=ch[j];ch[j]=t;persist();msChapterSheet(cid);}
+var _msDelChArm=null;
+function msDeleteChapter(cid){
+  var b=document.getElementById('msDelCh'),ch=getMs().chapters,c=ch.find(function(x){return x.id===cid;});
+  var w=c?msChapterWords(c):0;
+  if(_msDelChArm!==cid){_msDelChArm=cid;if(b)b.textContent=w?'Delete '+msFmt(w)+' words? Tap again':'Tap again to delete';setTimeout(function(){_msDelChArm=null;},3500);return;}
+  _msDelChArm=null;getMs().chapters=ch.filter(function(x){return x.id!==cid;});persist();mSheetClose();showToast('Chapter deleted.');
+}
+function msGoalSheet(){
+  var ms=getMs();
+  mSheet('Daily goal','<div class="m-field"><span class="m-lbl">Words per day</span><input class="m-input" type="number" inputmode="numeric" min="0" step="50" id="msGoalInp" value="'+(+ms.goal||'')+'" placeholder="e.g. 500"/></div>'+
+    '<p class="pw-none" style="font-style:normal">Today: '+msFmt(msTodayWords())+' words. The count resets each morning.</p>'+
+    '<div class="msheet-row"><button class="m-btn primary" onclick="getMs().goal=Math.max(0,parseInt(document.getElementById(\'msGoalInp\').value)||0);persist();mSheetClose()">Save goal</button></div>',renderManuscript);
+}
+/* export */
+function msExportSheet(){
+  mSheet('Export manuscript','<p class="pw-none" style="font-style:normal">Chapters become headings and scenes are separated by a centred #. '+msFmt(msTotalWords())+' words.</p>'+
+    '<div class="msheet-row"><button class="m-btn primary" onclick="msExport(\'doc\')">Word document</button><button class="m-btn" onclick="msExport(\'txt\')">Plain text</button></div>');
+}
+function msExport(kind){
+  var ms=getMs(),proj=(loadIndex().find(function(p){return p.id===currentProjectId;})||{}).name||'Manuscript';
+  var fname=proj.replace(/[^a-z0-9]+/gi,'_').replace(/^_|_$/g,'')||'manuscript';
+  var blob;
+  if(kind==='txt'){
+    var t=proj.toUpperCase()+'\n\n';
+    ms.chapters.forEach(function(c,i){t+='\n\n'+msChapterLabel(c,i).toUpperCase()+'\n\n';t+=c.scenes.map(function(s){return(s.text||'').trim();}).filter(Boolean).join('\n\n#\n\n');});
+    blob=new Blob([t.trim()+'\n'],{type:'text/plain'});fname+='.txt';
+  } else {
+    var h='<html><head><meta charset="utf-8"><title>'+esc(proj)+'</title><style>body{font-family:"Times New Roman",serif;font-size:12pt;line-height:2;max-width:6.5in;margin:1in auto;}h1{text-align:center;font-size:14pt;font-weight:normal;text-transform:uppercase;margin:3em 0 2em;page-break-before:always}h1:first-of-type{page-break-before:avoid}p{text-indent:0.5in;margin:0}p.first{text-indent:0}.brk{text-align:center;margin:1em 0}.title{text-align:center;font-size:18pt;margin-top:3in}</style></head><body><div class="title">'+esc(proj)+'</div>';
+    ms.chapters.forEach(function(c,i){
+      h+='<h1>'+esc(msChapterLabel(c,i))+'</h1>';
+      var parts=c.scenes.map(function(s){return(s.text||'').trim();}).filter(Boolean);
+      h+=parts.map(function(t){return t.split(/\n+/).map(function(p,k){return'<p'+(k===0?' class="first"':'')+'>'+esc(p)+'</p>';}).join('');}).join('<p class="brk">#</p>');
+    });
+    blob=new Blob([h+'</body></html>'],{type:'application/msword'});fname+='.doc';
+  }
+  var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=fname;document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(a.href);a.remove();},500);
+  mSheetClose();
+}
+
+
 
 
 /* ══════════════════════════════════════════════════════
@@ -2598,7 +2988,8 @@ let data={
   settings:{darkMode:false,font:'Crimson Pro',bgColor:null,traitColors:JSON.parse(JSON.stringify(DEFAULT_TRAIT_COLORS)),roleColors:JSON.parse(JSON.stringify(DEFAULT_ROLE_COLORS))},
   quickNotes:{scratch:'',log:[]},
   world:{locations:{},lore:{}},
-  powers:{}
+  powers:{},
+  manuscript:{chapters:[],goal:0,log:{}}
 };
 let currentFid=null,currentSid=null;
 let saveTimer=null,deleteCallback=null,sheetPickerCallback=null;
@@ -2627,6 +3018,7 @@ function resetData(){
   data.timeline={beats:[],cards:[]};
   data.world={locations:{},lore:{}};
   data.powers={};
+  data.manuscript={chapters:[],goal:0,log:{}};
   data.quickNotes={scratch:'',log:[]};
   var _lt=null;try{_lt=localStorage.getItem('arcwright-last-theme');}catch(e){}
   data.settings={theme:(_lt&&typeof THEMES!=='undefined'&&THEMES[_lt])?_lt:'parchment',darkMode:false,font:'',bgColor:null,
@@ -2643,6 +3035,7 @@ function load(){
     data.world=(d.world&&!Array.isArray(d.world))?d.world:{locations:{},lore:{}};
     data.quickNotes=d.quickNotes||{scratch:'',log:[]};
     data.powers=(d.powers&&typeof d.powers==='object')?d.powers:{};
+    data.manuscript=(d.manuscript&&Array.isArray(d.manuscript.chapters))?d.manuscript:{chapters:[],goal:0,log:{}};
     data.timeline=(d.timeline&&!Array.isArray(d.timeline))?d.timeline:{beats:[],cards:[]};
     if(d.settings){
       data.settings=Object.assign({},data.settings,d.settings);
@@ -2732,14 +3125,14 @@ var currentWorldId=null;
 var worldCatFilter=null;
 function switchTab(tab){
   if(currentFid&&currentSid)collectSheet();
-  ['sheets','overview','factions','world','powers'].forEach(function(t){
+  ['sheets','manuscript','overview','factions','world','powers'].forEach(function(t){
     var tabEl=document.getElementById('tab-'+t);
     var paneEl=document.getElementById('pane-'+t);
     if(tabEl)tabEl.classList.toggle('active',t===tab);
     if(paneEl)paneEl.classList.toggle('active',t===tab);
   });
   // sync bottom nav active states
-  var bnavMap={sheets:'bnav-sheets',overview:'bnav-overview',factions:'bnav-factions',world:'bnav-world',powers:'bnav-powers'};
+  var bnavMap={sheets:'bnav-sheets',manuscript:'bnav-write',overview:'bnav-write',factions:'bnav-factions',world:'bnav-world',powers:'bnav-powers'};
   document.querySelectorAll('.bnav-item').forEach(function(el){el.classList.remove('active');});
   var bnavId=bnavMap[tab];
   if(bnavId){var bn=document.getElementById(bnavId);if(bn)bn.classList.add('active');}
@@ -2747,6 +3140,7 @@ function switchTab(tab){
   if(tab==='factions')renderFactionTab();
   if(tab==='world')renderWorldTab();
   if(tab==='powers')renderPowersTab();
+  if(tab==='manuscript')renderManuscript();
 }
 function toggleDrawer(){
   document.querySelector('.sidebar').classList.toggle('drawer-open');
@@ -3016,6 +3410,7 @@ function renderTree(filter){
     if(fc)hdr.style.cssText=`--folder-color:${fc};border-left-color:${fc};`;
     hdr.innerHTML=`<span class="folder-arrow${isOpen?' open':''}">▶</span><div class="folder-color-pip" style="${pipStyle}" onclick="openFolderColorPicker(event,'${fid}')" title="Set folder color"></div><span class="folder-name" data-fid="${fid}">${esc(folder.name||'Unnamed')}</span><div class="folder-actions"><button class="icon-btn" onclick="newSheet('${fid}',event)" title="Add sheet">+</button><button class="icon-btn" onclick="startRenameFolder('${fid}',event)" title="Rename">✎</button><button class="icon-btn danger" onclick="promptDelete('folder','${fid}',null,event)" title="Delete">✕</button></div>`;
     hdr.querySelector('.folder-arrow').onclick=e=>{e.stopPropagation();toggleFolder(fid);};
+    hdr.onclick=e=>{if(e.target.closest('.folder-actions,.folder-color-pip,input'))return;if(typeof isPhone==='function'&&isPhone())toggleFolder(fid);};
     hdr.querySelector('.folder-name').ondblclick=e=>{e.stopPropagation();startRenameFolder(fid,e);};
     folderEl.appendChild(hdr);
     const sheetsDiv=document.createElement('div');sheetsDiv.className='folder-sheets'+(isOpen?' open':'');
@@ -3143,7 +3538,7 @@ function buildSheet(sheet,fid){
   const abHTML=abs.map(ab=>buildAbilityCard(ab)).join('');
   const psHTML=ps.map(p=>buildPsCard(p)).join('');
   const relHTML=rels.map(r=>buildRelCard(r)).join('');
-  const arcHTML=arcs.map((arc,i)=>`<div class="arc-block arc-stage"><div class="arc-num">${ARC_NUMS[i]||i+1}</div><div style="flex:1;"><div class="field" style="margin-bottom:8px;"><span class="field-lbl arc-lbl" ondblclick="startEditArcLabel(event)" title="Double-click to rename">${esc(arc.label)}</span><textarea class="arc-text" placeholder="Describe this stage of their journey...">${esc(arc.text)}</textarea></div><div class="field"><span class="field-lbl">Story position — where does this happen in the narrative?</span><input class="arc-pos" value="${esc(arc.storyPosition||'')}" placeholder="e.g. Act 1 opening, midpoint of arc 2, final confrontation..."/></div></div></div>`).join('');
+  const arcHTML=arcs.map((arc,i)=>`<div class="arc-block arc-stage"><div class="arc-num">${ARC_NUMS[i]||i+1}</div><div style="flex:1;"><div class="field" style="margin-bottom:8px;"><span class="field-lbl arc-lbl" ondblclick="startEditArcLabel(event)" title="Double-click to rename">${esc(arc.label)}</span><textarea class="arc-text" placeholder="Describe this stage of their journey...">${esc(arc.text)}</textarea></div><div class="field"><span class="field-lbl">Story position — where does this happen in the narrative?</span><textarea data-line rows="1" class="arc-pos" placeholder="e.g. Act 1 opening, midpoint of arc 2, final confrontation...">${esc(arc.storyPosition||'')}</textarea></div></div></div>`).join('');
   const likesHTML=buildLikesItems(det.likes,'like-item','e.g. Strong coffee, rainy afternoons...');
   const disHTML=buildLikesItems(det.dislikes,'dislike-item','e.g. Crowded places, being pitied...');
   const habHTML=buildLikesItems(det.habits,'habit-item','e.g. Drums fingers when thinking...');
@@ -3179,13 +3574,13 @@ function buildSheet(sheet,fid){
 
 ${sectionWrap('identity','Identity',`
 <div class="field-grid">
-  <div class="field"><span class="field-lbl">Age / stage of life</span><input id="f-age" value="${esc(id.age)}" placeholder="e.g. 17, mid-30s, ancient..."/></div>
-  <div class="field"><span class="field-lbl">Species / race</span><input id="f-species" value="${esc(id.species||'')}" placeholder="e.g. Human, Fishman, Giant, Elf, Half-demon..."/></div>
-  <div class="field"><span class="field-lbl">Origin / background</span><input id="f-origin" value="${esc(id.origin)}" placeholder="e.g. Rural village, royal court..."/></div>
-  <div class="field"><span class="field-lbl">Social standing</span><input id="f-social" value="${esc(id.social)}" placeholder="e.g. Orphan, noble, outcast..."/></div>
-  <div class="field"><span class="field-lbl">Role / class in their world</span><input id="f-rank" value="${esc(id.rank)}" placeholder="e.g. Knight, wizard, shinobi..."/></div>
-  <div class="field full"><span class="field-lbl">One-line essence</span><input id="f-essence" value="${esc(id.essence)}" placeholder="Who are they in a single sentence?"/></div>
-  <div class="field full"><span class="field-lbl">Name &amp; pronunciation notes</span><input id="f-nameNotes" value="${esc(id.nameNotes||'')}" placeholder="Pronunciation, nicknames, what different characters call them, aliases..."/></div>
+  <div class="field"><span class="field-lbl">Age / stage of life</span><textarea data-line rows="1" id="f-age" placeholder="e.g. 17, mid-30s, ancient...">${esc(id.age)}</textarea></div>
+  <div class="field"><span class="field-lbl">Species / race</span><textarea data-line rows="1" id="f-species" placeholder="e.g. Human, Fishman, Giant, Elf, Half-demon...">${esc(id.species||'')}</textarea></div>
+  <div class="field"><span class="field-lbl">Origin / background</span><textarea data-line rows="1" id="f-origin" placeholder="e.g. Rural village, royal court...">${esc(id.origin)}</textarea></div>
+  <div class="field"><span class="field-lbl">Social standing</span><textarea data-line rows="1" id="f-social" placeholder="e.g. Orphan, noble, outcast...">${esc(id.social)}</textarea></div>
+  <div class="field"><span class="field-lbl">Role / class in their world</span><textarea data-line rows="1" id="f-rank" placeholder="e.g. Knight, wizard, shinobi...">${esc(id.rank)}</textarea></div>
+  <div class="field full"><span class="field-lbl">One-line essence</span><textarea data-line rows="1" id="f-essence" placeholder="Who are they in a single sentence?">${esc(id.essence)}</textarea></div>
+  <div class="field full"><span class="field-lbl">Name &amp; pronunciation notes</span><textarea data-line rows="1" id="f-nameNotes" placeholder="Pronunciation, nicknames, what different characters call them, aliases...">${esc(id.nameNotes||'')}</textarea></div>
 </div>
 <div style="margin-top:14px;">
   <div id="factionControlsRow"></div>
@@ -3197,8 +3592,8 @@ ${sectionWrap('wound','Wound, Want &amp; Need',`
   <div class="field full"><span class="field-lbl">The wound</span><textarea class="tall" id="f-wound" placeholder="Be specific. Not just 'parents died' but the exact shape of the loss and what false conclusion they drew from it...">${esc(w.wound)}</textarea></div>
   <div class="field"><span class="field-lbl">The want</span><textarea id="f-want" placeholder="e.g. Hermione wants to prove herself; Naruto wants acknowledgment...">${esc(w.want)}</textarea></div>
   <div class="field"><span class="field-lbl">The need</span><textarea id="f-need" placeholder="e.g. Azula needs to accept vulnerability...">${esc(w.need)}</textarea></div>
-  <div class="field full"><span class="field-lbl">The lie they believe</span><input id="f-lie" value="${esc(w.lie)}" placeholder="e.g. 'Strength is the only thing that earns respect'..."/></div>
-  <div class="field full"><span class="field-lbl">The truth they must learn</span><input id="f-truth" value="${esc(w.truth)}" placeholder="e.g. 'True strength comes from protecting others'..."/></div>
+  <div class="field full"><span class="field-lbl">The lie they believe</span><textarea data-line rows="1" id="f-lie" placeholder="e.g. 'Strength is the only thing that earns respect'...">${esc(w.lie)}</textarea></div>
+  <div class="field full"><span class="field-lbl">The truth they must learn</span><textarea data-line rows="1" id="f-truth" placeholder="e.g. 'True strength comes from protecting others'...">${esc(w.truth)}</textarea></div>
 </div>`,sheet)}
 
 ${sectionWrap('personality','Personality &amp; Traits',`
@@ -3210,9 +3605,9 @@ ${sectionWrap('personality','Personality &amp; Traits',`
   <button class="trait-add-btn" onclick="addTrait()">Add trait</button>
 </div>
 <div class="field-grid" style="margin-top:14px;">
-  <div class="field"><span class="field-lbl">Speech pattern / voice</span><input id="f-speech" value="${esc(p.speech)}" placeholder="e.g. Formal and clipped, deflecting humour..."/></div>
-  <div class="field"><span class="field-lbl">Under pressure</span><input id="f-pressure" value="${esc(p.pressure)}" placeholder="e.g. Goes cold, makes reckless decisions, shuts down..."/></div>
-  <div class="field full"><span class="field-lbl">The contradiction at their core</span><input id="f-contradiction" value="${esc(p.contradiction)}" placeholder="e.g. Preaches forgiveness but cannot forgive themselves..."/></div>
+  <div class="field"><span class="field-lbl">Speech pattern / voice</span><textarea data-line rows="1" id="f-speech" placeholder="e.g. Formal and clipped, deflecting humour...">${esc(p.speech)}</textarea></div>
+  <div class="field"><span class="field-lbl">Under pressure</span><textarea data-line rows="1" id="f-pressure" placeholder="e.g. Goes cold, makes reckless decisions, shuts down...">${esc(p.pressure)}</textarea></div>
+  <div class="field full"><span class="field-lbl">The contradiction at their core</span><textarea data-line rows="1" id="f-contradiction" placeholder="e.g. Preaches forgiveness but cannot forgive themselves...">${esc(p.contradiction)}</textarea></div>
 </div>`,sheet)}
 
 ${sectionWrap('details','Personality Details',`
@@ -3256,7 +3651,7 @@ ${sectionWrap('philosophy','Philosophy &amp; Moral Code',`
   <div class="field"><span class="field-lbl">What they will never do (they think)</span><textarea id="f-never" class="bare-ta" placeholder="The line they won't cross — until the story forces them to...">${esc(ph.never)}</textarea></div>
 </div>
 <div class="field-grid">
-  <div class="field full"><span class="field-lbl">Their answer to the story's central question</span><input id="f-answer" value="${esc(ph.answer)}" placeholder="e.g. 'Can people change?' → 'Only if they choose to'..."/></div>
+  <div class="field full"><span class="field-lbl">Their answer to the story's central question</span><textarea data-line rows="1" id="f-answer" placeholder="e.g. 'Can people change?' → 'Only if they choose to'...">${esc(ph.answer)}</textarea></div>
   <div class="field full"><span class="field-lbl">Why their actions feel justified to them</span><textarea id="f-villainLogic" placeholder="Thanos believed he was saving life. Magneto's fear came from lived experience...">${esc(ph.villainLogic)}</textarea></div>
 </div>`,sheet)}
 
@@ -3339,9 +3734,9 @@ function removeTrait(btn){btn.closest('.trait-tag')?.remove();scheduleSave();}
 /* ══════════════════════════════════════════════════════
    POWER SYSTEMS & ABILITIES
 ══════════════════════════════════════════════════════ */
-function buildPsCard(ps){const _lp=ps.powerId&&getPowers()[ps.powerId];return`<div class="power-system-card${_lp?' linked':''}" data-power-id="${_lp?ps.powerId:''}">${powerLinkBar(ps,'system')}<div class="power-system-top"><div class="field"><span class="field-lbl">Power system name</span><input class="ps-name" value="${esc(_lp?powerName(_lp):(ps.name||''))}"${_lp?' readonly title="Rename it in the Powers tab"':''} placeholder="e.g. Chakra, Haki, Magic, The Force..."/></div><div class="field"><span class="field-lbl">Combat / style</span><input class="ps-style" value="${esc(ps.fightStyle||'')}" placeholder="e.g. Tactician, brawler, speed..."/></div><button class="power-system-remove" onclick="this.closest('.power-system-card').remove();scheduleSave()">✕ Remove</button></div><div class="field full"><span class="field-lbl">How does this power reflect their personality?</span><input class="ps-reflect" value="${esc(ps.reflect||'')}" placeholder="e.g. A character who never feels safe creates a power rooted in detection..."/></div></div>`;}
+function buildPsCard(ps){const _lp=ps.powerId&&getPowers()[ps.powerId];return`<div class="power-system-card${_lp?' linked':''}" data-power-id="${_lp?ps.powerId:''}">${powerLinkBar(ps,'system')}<div class="power-system-top"><div class="field"><span class="field-lbl">Power system name</span><textarea data-line rows="1" class="ps-name"${_lp?' readonly title="Rename it in the Powers tab"':''} placeholder="e.g. Chakra, Haki, Magic, The Force...">${esc(_lp?powerName(_lp):(ps.name||''))}</textarea></div><div class="field"><span class="field-lbl">Combat / style</span><textarea data-line rows="1" class="ps-style" placeholder="e.g. Tactician, brawler, speed...">${esc(ps.fightStyle||'')}</textarea></div><button class="power-system-remove" onclick="this.closest('.power-system-card').remove();scheduleSave()">✕ Remove</button></div><div class="field full"><span class="field-lbl">How does this power reflect their personality?</span><textarea data-line rows="1" class="ps-reflect" placeholder="e.g. A character who never feels safe creates a power rooted in detection...">${esc(ps.reflect||'')}</textarea></div></div>`;}
 function addPs(){const div=document.createElement('div');div.innerHTML=buildPsCard({});document.getElementById('psContainer').appendChild(div.firstElementChild);scheduleSave();}
-function buildAbilityCard(ab){const dots=[1,2,3,4,5].map(n=>`<div class="dot${n<=(ab.rank||0)?' filled':''}" onclick="setRank(this,${n})" title="Rank ${n}"></div>`).join('');const descOpen=ab.desc?'open':'';const _lp=ab.powerId&&getPowers()[ab.powerId];return`<div class="ability-card${_lp?' linked':''}" data-power-id="${_lp?ab.powerId:''}">${powerLinkBar(ab,'ability')}<div class="ability-top"><div class="field"><span class="field-lbl">Ability / skill name</span><input class="ab-name" value="${esc(_lp?powerName(_lp):(ab.name||''))}"${_lp?' readonly title="Rename it in the Powers tab"':''} placeholder="e.g. Shadow Step, Occlumency..."/></div><div class="field"><span class="field-lbl">What it reveals about them</span><input class="ab-meaning" value="${esc(ab.meaning||'')}" placeholder="Thematic meaning..."/></div><button class="ability-remove" onclick="this.closest('.ability-card').remove();scheduleSave()">✕ Remove</button></div><div class="ability-rank-row"><span class="ability-rank-label">Proficiency</span><div class="ab-rank power-rank" data-rank="${ab.rank||0}">${dots}</div></div><button class="ability-desc-toggle" onclick="toggleAbDesc(this)">${descOpen?'▲ Hide description':'▼ Add description / how it works'}</button><div class="ability-desc ${descOpen}"><div class="field full" style="margin-top:6px;"><span class="field-lbl">Description &amp; mechanics</span><textarea class="ab-desc" placeholder="How does this ability work? What are its limitations?">${esc(ab.desc||'')}</textarea></div></div></div>`;}
+function buildAbilityCard(ab){const dots=[1,2,3,4,5].map(n=>`<div class="dot${n<=(ab.rank||0)?' filled':''}" onclick="setRank(this,${n})" title="Rank ${n}"></div>`).join('');const descOpen=ab.desc?'open':'';const _lp=ab.powerId&&getPowers()[ab.powerId];return`<div class="ability-card${_lp?' linked':''}" data-power-id="${_lp?ab.powerId:''}">${powerLinkBar(ab,'ability')}<div class="ability-top"><div class="field"><span class="field-lbl">Ability / skill name</span><textarea data-line rows="1" class="ab-name"${_lp?' readonly title="Rename it in the Powers tab"':''} placeholder="e.g. Shadow Step, Occlumency...">${esc(_lp?powerName(_lp):(ab.name||''))}</textarea></div><div class="field"><span class="field-lbl">What it reveals about them</span><textarea data-line rows="1" class="ab-meaning" placeholder="Thematic meaning...">${esc(ab.meaning||'')}</textarea></div><button class="ability-remove" onclick="this.closest('.ability-card').remove();scheduleSave()">✕ Remove</button></div><div class="ability-rank-row"><span class="ability-rank-label">Proficiency</span><div class="ab-rank power-rank" data-rank="${ab.rank||0}">${dots}</div></div><button class="ability-desc-toggle" onclick="toggleAbDesc(this)">${descOpen?'▲ Hide description':'▼ Add description / how it works'}</button><div class="ability-desc ${descOpen}"><div class="field full" style="margin-top:6px;"><span class="field-lbl">Description &amp; mechanics</span><textarea class="ab-desc" placeholder="How does this ability work? What are its limitations?">${esc(ab.desc||'')}</textarea></div></div></div>`;}
 function addAb(){const div=document.createElement('div');div.innerHTML=buildAbilityCard({});document.getElementById('abContainer').appendChild(div.firstElementChild);}
 function toggleAbDesc(btn){const d=btn.nextElementSibling;d.classList.toggle('open');btn.textContent=d.classList.contains('open')?'▲ Hide description':'▼ Add description / how it works';}
 function setRank(dot,val){const row=dot.closest('.ab-rank');row.querySelectorAll('.dot').forEach((d,i)=>{if(i<val)d.classList.add('filled');else d.classList.remove('filled');});row.dataset.rank=val;scheduleSave();}
@@ -3357,12 +3752,12 @@ function buildRelCard(r){
   const hasLink=!!(r.linkedSheet);
   return `<div class="rel-card rel-row-item">
     <div class="rel-card-top">
-      <div class="field"><span class="field-lbl">Character name</span><input class="rn" value="${esc(r.name||'')}" placeholder="Name..." oninput="scheduleSave()"/></div>
+      <div class="field"><span class="field-lbl">Character name</span><textarea data-line rows="1" class="rn" placeholder="Name..." oninput="scheduleSave()">${esc(r.name||'')}</textarea></div>
       <div class="field"><span class="field-lbl">Relationship type</span><select class="rel-type-select rt" onchange="onRelTypeChange(this)">${typeOptHTML}</select></div>
       <button class="rel-remove-btn" onclick="this.closest('.rel-card').remove();scheduleSave()" title="Remove">✕</button>
     </div>
     <div class="rel-card-mid">
-      <div class="field"><span class="field-lbl">How they shape each other</span><input class="rd" value="${esc(r.desc||'')}" placeholder="What does this demand, reveal, or cost?" oninput="scheduleSave()"/></div>
+      <div class="field"><span class="field-lbl">How they shape each other</span><textarea data-line rows="1" class="rd" placeholder="What does this demand, reveal, or cost?" oninput="scheduleSave()">${esc(r.desc||'')}</textarea></div>
       <div class="field"><span class="field-lbl">Link to existing sheet</span><select class="rel-link-select rl" onchange="onRelLinkChange(this)">${sheetOptHTML}</select></div>
     </div>
     <div class="field full" style="margin-top:4px;"><span class="field-lbl">Notes — your perspective on this relationship (private to this sheet)</span><textarea class="rel-card-notes rnotes" placeholder="How does this character experience this relationship? What do they feel but never say?">${esc(r.notes||'')}</textarea></div>
@@ -3458,7 +3853,7 @@ function startEditArcLabel(e){
 /* ══════════════════════════════════════════════════════
    LIKES / DETAILS
 ══════════════════════════════════════════════════════ */
-function buildLikesItems(arr,cls,ph){if(!arr?.length)arr=[''];return arr.map(v=>`<div class="likes-item"><input class="${cls}" value="${esc(v)}" placeholder="${ph}"/><button class="remove-btn" onclick="this.closest('.likes-item').remove();scheduleSave()">✕</button></div>`).join('');}
+function buildLikesItems(arr,cls,ph){if(!arr?.length)arr=[''];return arr.map(v=>`<div class="likes-item"><textarea data-line rows="1" class="${cls}" placeholder="${ph}">${esc(v)}</textarea><button class="remove-btn" onclick="this.closest('.likes-item').remove();scheduleSave()">✕</button></div>`).join('');}
 function addLike(listId,cls,ph){const list=document.getElementById(listId);const item=document.createElement('div');item.className='likes-item';item.innerHTML=`<input class="${cls}" placeholder="${ph}"/><button class="remove-btn" onclick="this.closest('.likes-item').remove();scheduleSave()">✕</button>`;list.appendChild(item);scheduleSave();}
 
 /* ══════════════════════════════════════════════════════
@@ -4333,7 +4728,7 @@ function renderWorldDetail(){
     wrap.appendChild(lbl);
     var inp;
     if(fd.type==='textarea'){inp=document.createElement('textarea');inp.rows=3;}
-    else{inp=document.createElement('input');}
+    else{inp=document.createElement('textarea');inp.rows=1;inp.setAttribute('data-line','');}
     inp.placeholder=fd.ph;inp.value=val;
     inp.oninput=function(){entry.fields[fd.key]=inp.value;persist();};
     wrap.appendChild(inp);
@@ -4606,7 +5001,7 @@ function renderFactionDetail(facId){
     if(fd.type==='textarea'){
       inp=document.createElement('textarea');inp.placeholder=fd.ph;inp.value=val;inp.rows=3;
     } else {
-      inp=document.createElement('input');inp.placeholder=fd.ph;inp.value=val;
+      inp=document.createElement('textarea');inp.rows=1;inp.setAttribute('data-line','');inp.placeholder=fd.ph;inp.value=val;
     }
     inp.oninput=function(){if(!fac.details)fac.details={};fac.details[fd.key]=inp.value;persist();};
     wrap.appendChild(inp);
@@ -4772,6 +5167,13 @@ function renderProjGrid(){
     card.onclick=function(){openProject(proj.id);};
     grid.appendChild(card);
   });
+  // a fresh device: offer to bring worlds from the account before creating one
+  if(!idx.length){
+    var hint=mkEl('div','proj-sign-hint');hint.id='projSignHint';
+    hint.innerHTML='<div class="proj-sign-title">Already use ArcWright?</div><div class="proj-sign-sub">Sign in to bring your worlds to this device.</div><button class="m-btn primary" onclick="openAccountModal()">Sign in</button>';
+    if(typeof _sbUser!=='undefined'&&_sbUser)hint.hidden=true;
+    grid.appendChild(hint);
+  }
   // new project card
   var newCard=mkEl('div','proj-new-card');
   newCard.appendChild(mkEl('span','proj-new-icon','+'));
@@ -4990,9 +5392,9 @@ if(_qn)_qn.value=(data.quickNotes&&data.quickNotes.scratch)||'';
       <svg viewBox="0 0 24 24"><path d="M12 2l3 7 7 3-7 3-3 7-3-7-7-3 7-3z"/></svg>
       Powers
     </button>
-    <button class="bnav-item" id="bnav-overview" onclick="switchTab('overview')">
-      <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-      Story
+    <button class="bnav-item" id="bnav-write" onclick="switchTab('manuscript')">
+      <svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg>
+      Write
     </button>
     <button class="bnav-item" id="bnav-more" onclick="toggleMobileMenu()">
       <svg viewBox="0 0 24 24"><circle cx="12" cy="5" r="1" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1" fill="currentColor" stroke="none"/><circle cx="12" cy="19" r="1" fill="currentColor" stroke="none"/></svg>
@@ -5127,7 +5529,8 @@ var _syncPending = false;
     _sb.auth.onAuthStateChange(function(event, session){
       _sbUser = session ? session.user : null;
       _updateSyncUI();
-      if(_sbUser && (event === 'SIGNED_IN' || event === 'INITIAL_SESSION')) _syncDown();
+      if(_sbUser && event === 'SIGNED_IN') _syncDown().then(_syncAllUp);
+      else if(_sbUser && event === 'INITIAL_SESSION') _syncDown();
       if(_sbUser && _syncPending){ _syncPending=false; _syncAllUp(); }
     });
     _sb.auth.getSession().then(function(r){
@@ -5139,6 +5542,9 @@ var _syncPending = false;
 
 /* ── Sync status UI ───────────────────────────────────────────────── */
 function _updateSyncUI(){
+  var pd=document.getElementById('projSyncDot'),pl=document.getElementById('projAcctLbl');
+  if(pd){pd.className='sync-dot '+(_sbUser?'live':'offline');pl.textContent=_sbUser?('Synced \u00B7 '+(_sbUser.email||'')):'Sign in to sync';}
+  var hint=document.getElementById('projSignHint');if(hint)hint.hidden=!!_sbUser;
   var dot=document.getElementById('syncDot');
   var lbl=document.getElementById('syncLabel');
   if(!dot)return;
